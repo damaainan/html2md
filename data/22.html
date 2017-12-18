@@ -1,0 +1,723 @@
+
+<!DOCTYPE HTML>
+
+<!--
+ ______________ 
+< TUICOOL.COM >
+ -------------- 
+        \   ^__^
+         \  (**)\__$__$__
+            (__)\       )\/\
+             U  ||------|
+                ||     ||
+-->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="tc-auth" content="MTA1MDI2+86875870bff5e99d6b02d11ffbc16e3c2c165896" />
+  <meta content="authenticity_token" name="csrf-param" />
+<meta content="JNxVSJLBdOy7Ofbdg1CRJubKH4w5qmGP5I4tZJpuoBU=" name="csrf-token" />
+    <title>
+            分布式一致性与共识算法 - 推酷
+   </title>
+    <meta name="description" content="分布式一致性与共识算法"/>
+  <link rel="shortcut icon" href="https://static0.tuicool.com/favicon.ico" type="image/x-icon" />
+  <link href="https://static0.tuicool.com/images/icon114.png" rel="Bookmark" />
+  <link rel="apple-touch-icon" sizes="57x57" href="https://static1.tuicool.com/images/icon57.png" />
+  <link rel="apple-touch-icon" sizes="72x72" href="https://static2.tuicool.com/images/icon72.png" />
+  <link rel="apple-touch-icon" sizes="114x114" href="https://static0.tuicool.com/images/icon114.png" />
+  <link rel="apple-touch-icon" sizes="144x144" href="https://static1.tuicool.com/images/icon144.png"/>
+  <link href="https://asset.tuicool.com/assets/pub.css" rel="stylesheet">
+  <link href="https://asset.tuicool.com/assets/application-c0585331e3c13ddf719e006bdaa6ca2e.css" media="screen" rel="stylesheet" type="text/css" />
+  <link href="https://static0.tuicool.com/assets/font-awesome1.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://asset.tuicool.com/assets/pub.js"></script>
+  <script src="https://asset.tuicool.com/assets/application-2c6232a2f1d2d02d3efb47e836648248.js" type="text/javascript"></script>
+  
+      <style type="text/css">
+      .btn-large {
+        padding: 0;
+      }
+      .load-fail {
+        display: none;
+      }
+    </style>
+
+</head>
+<body>
+  
+  <div id="header" class="navbar-fixed-top">
+    <div class="container">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
+            <span class="icon-bar"></span> 
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span> 
+          </a>
+          <a href="https://www.tuicool.com/" class="brand">推酷</a>        
+        <nav class="nav-collapse collapse">
+            <ul class="nav navbar primary-nav">                            
+              <li class="active">
+                <a href="https://www.tuicool.com/a/">
+                  文章
+                </a>
+              </li>              
+              <li class="">
+                <a href="https://www.tuicool.com/sites">
+                  站点
+                </a>
+              </li>
+              <li class="">
+                <a href="https://www.tuicool.com/topics">
+                  主题
+                </a>
+              </li>
+              <li class="">
+                <a href="https://huodong.tuicool.com/">
+                  活动
+                </a>
+              </li>
+              <li class="">
+                <a href="https://www.tuicool.com/mobile">
+                  APP
+                </a>
+              </li>
+              <li class="dropdown  ">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">周刊 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="https://www.tuicool.com/mags">编程狂人</a></li>
+                  <li><a href="https://www.tuicool.com/mags/design">设计匠艺</a></li> 
+                  <li><a href="https://www.tuicool.com/mags/startup">创业周刊</a></li> 
+                  <li><a href="https://www.tuicool.com/mags/tech">科技周刊</a></li>      
+                  <li><a href="https://www.tuicool.com/articles/weekly">一周拾遗</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">更多 <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="https://www.tuicool.com/daily_news">今日酷闻</a></li>
+                  <li><a href="https://www.tuicool.com/bbs/go/issues">意见反馈</a></li>
+                </ul>
+              </li>
+              </ul>
+            <form class="navbar-search pull-left" action="https://www.tuicool.com/search">
+              <input type="text" class="search-query span2" name="kw" placeholder="搜索">
+            </form>
+            <ul class="nav pull-right">
+                <li id="unread">
+                    <a href="https://www.tuicool.com/notifications" target="_blank">
+                        <span class="badge" style="background:#009461;">1</span>
+                    </a>
+                </li>
+                          
+                <li class="dropdown">         
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img alt="damaainan" src="https://static0.tuicool.com/images/profile/default_profile_2.jpg">
+                    damaainan
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href='https://www.tuicool.com/user/2593971258'>我的主页</a></li>
+                    <li><a href='https://www.tuicool.com/articles/my'>我的收藏</a></li>
+                    <li><a href="https://www.tuicool.com/settings">个人设置</a></li>           
+                    <li><a href="https://www.tuicool.com/notifications">消息通知</a></li>
+                    <li></li>
+                    <li><a href="https://www.tuicool.com/logout">退出</a></li>
+                  </ul>
+                </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+  </div>   
+</div>
+  <div id ="flash_container" class="noPrint">    
+  </div>
+  
+  <div class="container-fluid">  
+      
+<div class="row-fluid article_row_fluid">
+    <div class="span8 contant article_detail_bg">
+        <h1>分布式一致性与共识算法</h1>
+        <div class="article_meta">
+            <div style="margin-bottom: 5px;">
+            <span class="timestamp">时间&nbsp;2017-12-18 14:55:44
+            </span>
+            <span class="from">
+                <i class="icon-globe"></i>
+                    <a class="cut cut28 from" href="/sites/B3Qf6vf" target="_blank">DeltaX
+                    </a>
+            </span>
+            </div>
+            <div class="source">
+                <i style="float:left;">原文</i>&nbsp; 
+                <a class="cut cut70" href="http://draveness.me/consensus?utm_source=tuicool&amp;utm_medium=referral" style="display:inline-block;">http://draveness.me/consensus</a>
+            </div>
+            <div>
+                <span>主题</span>
+                <a href="/topics/11000146" target='_blank' >
+                    <span class="new-label">分布式系统</span>
+                </a>
+                <a href="/topics/11000083" target='_blank' >
+                    <span class="new-label">算法</span>
+                </a>
+            </div>
+        </div>
+        <div class="article_body" id="nei">
+            <div> 
+ <p>区块链技术是近几年逐渐变得非常热门的技术，以比特币为首的密码货币其实已经被无数人所知晓，但是却很少有人会去研究它们的底层技术，也就是作为一个分布式网络比特币等加密货币是如何工作的。</p> 
+ <p> <img src="https://img2.tuicool.com/EfQfA3B.png!web" class="alignCenter" /> </p> 
+ <p>无论是 Bitcoin、Ethereum 还是 EOS，作为一个分布式网络，首先需要解决分布式一致性的问题，也就是所有的节点如何对同一个提案或者值达成共识，这一问题在一个所有节点都是可以被信任的分布式集群中都是一个比较难以解决的问题，更不用说在复杂的区块链网络中了。</p> 
+ <h2>分布式一致性 </h2> 
+ <p>在一个分布式系统中，如何保证集群中所有节点中的数据完全相同并且能够对某个提案（Proposal）达成一致是分布式系统正常工作的核心问题，而共识算法就是用来保证分布式系统一致性的方法。</p> 
+ <p> <img src="https://img1.tuicool.com/MnQVFji.png!web" class="alignCenter" /> </p> 
+ <p>然而分布式系统由于引入了多个节点，所以系统中会出现各种非常复杂的情况；随着节点数量的增加，节点失效、故障或者宕机就变成了一件非常常见的事情，解决分布式系统中的各种边界条件和意外情况也增加了解决分布式一致性问题的难度。</p> 
+ <p> <img src="https://img0.tuicool.com/iIZv6rm.png!web" class="alignCenter" /> </p> 
+ <p>在一个分布式系统中，除了节点的失效是会导致一致性不容易达成的主要原因之外，节点之间的网络通信收到干扰甚至阻断以及分布式系统的运行速度的差异都是解决分布式系统一致性所面临的难题。</p> 
+ <p> 在 1998 年的秋天，加州伯克利大学的教授 Eric Brewer 第一次发布了 CAP 理论，在 1999 年论文 <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.67.6951&amp;rep=rep1&amp;type=pdf" rel="nofollow,noindex" target="_blank">Brewer’s Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services</a> 正式发布，其中总结了 Eric Brewer 提出的 CAP 理论。 </p> 
+ <p> <img src="https://img0.tuicool.com/ryAJreM.png!web" class="alignCenter" /> </p> 
+ <p>这篇论文证明了两个非常有意思的理论，首先是在异步的网络模型中，所有的节点由于没有时钟仅仅能根据接收到的消息作出判断，这时完全不能同时保证一致性、可用性和分区容错性，每一个系统只能在这三种特性中选择两种。</p> 
+ <p> 不过这里讨论的一致性其实都是强一致性，也就是所有节点接收到同样的操作时会按照完全相同的顺序执行，被一个节点提交的更新操作会立刻反映在其他通过 <strong>异步或部分同步网络</strong> 连接的节点上，如果想要同时满足一致性和分区容错性，在异步的网络中，我们只能 <strong>中心化存储所有数据</strong> ，通过其他节点将请求路由给中心节点达到这两个目的。 </p> 
+ <p> <img src="https://img2.tuicool.com/NnyAJfn.png!web" class="alignCenter" /> </p> 
+ <p> 但是在现实世界中其实并不存在 <strong>绝对</strong> 异步的网络环境，如果我们允许每一个节点拥有自己的时钟，这些时钟虽然有着完全不同的时间，但是它们的 <strong>更新频率是完全相同的</strong> ，所以我们可以通过时钟得知接收消息的间隔时间，在这种更宽松的前提下，我们能够得到更强大的服务。 </p> 
+ <p> 然而在部分同步的网络环境中，我们仍然没有办法同时保证一致性、可用性和分区容错性，证明的过程其实非常简单，可以直接阅读 <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.67.6951&amp;rep=rep1&amp;type=pdf" rel="nofollow,noindex" target="_blank">论文</a> 的 4.2 节，然而时钟的出现能够让我们知道当前消息有多久没有得到回应，通过超时时间就能在一定程度上解决信息丢失的问题。 </p> 
+ <p> 由于网络一定会存在延时，所以没有办法在分布式系统中做到强一致性的同时保证可用性，不过我们可以通过降低对一致性的要求，在一致性和可用性之间做出权衡，而这其实也是设计分布式系统首先需要考虑的问题，由于强一致性的系统会导致系统的可用性降低，仅仅将接受请求的工作交给其他节点对于高并发的服务并不能解决问题，所以在目前主流的分布式系统中都选择 <em>最终一致性</em> 。 </p> 
+ <p> <img src="https://img1.tuicool.com/vqm6jiy.png!web" class="alignCenter" /> </p> 
+ <p> 最终一致性允许多个节点的状态出现冲突，但是所有能够沟通的节点都能够在有限的时间内解决冲突，从不一致的状态恢复到一致，这里列出的两个条件比较重要，一是节点直接可以 <strong>正常通信</strong> ，二是冲突需要在 <strong>有限的时间</strong> 内解决，只有在这两个条件成立时才能达到最终一致性。 </p> 
+ <h4>拜占庭将军问题 </h4> 
+ <p> 拜占庭将军问题是 Leslie Lamport 在 <a href="https://web.archive.org/web/20170205142845/http://lamport.azurewebsites.net/pubs/byz.pdf" rel="nofollow,noindex" target="_blank">The Byzantine Generals Problem</a> 论文中提出的分布式领域的容错问题，它是分布式领域中最复杂、最严格的容错模型。 </p> 
+ <p>在该模型下，系统不会对集群中的节点做任何的限制，它们可以向其他节点发送随机数据、错误数据，也可以选择不响应其他节点的请求，这些无法预测的行为使得容错这一问题变得更加复杂。</p> 
+ <p>拜占庭将军问题描述了一个如下的场景，有一组将军分别指挥一部分军队，每一个将军都不知道其它将军是否是可靠的，也不知道其他将军传递的信息是否可靠，但是它们需要通过投票选择是否要进攻或者撤退：</p> 
+ <p> <img src="https://img0.tuicool.com/Nn2UZzu.png!web" class="alignCenter" /> </p> 
+ <p>在这一节中，黄色代表状态未知，绿色代表进攻，蓝色代表撤退，最后红色代表当前将军的信息不可靠。</p> 
+ <p>在这时，无论将军是否可靠，只要所有的将军达成了统一的方案，选择进攻或者撤退其实就是没有任何问题的：</p> 
+ <p> <img src="https://img0.tuicool.com/Qz267jv.png!web" class="alignCenter" /> </p> 
+ <p>上述的情况不会对当前的战局有太多的影响，也不会造成损失，但是如果其中的一个将军告诉其中一部分将军选择进攻、另一部分选择撤退，就会出现非常严重的问题了。</p> 
+ <p> <img src="https://img0.tuicool.com/MJbQBnY.png!web" class="alignCenter" /> </p> 
+ <p>由于将军的队伍中出了一个叛徒或者信息在传递的过程中被拦截，会导致一部分将军会选择进攻，剩下的一部分会选择撤退，它们都认为自己的选择是大多数人的选择，这时就出现了严重的不一致问题。</p> 
+ <p>拜占庭将军问题是对分布式系统容错的最高要求，然而这不是日常工作中使用的大多数分布式系统中会面对的问题，我们遇到更多的还是节点故障宕机或者不响应等情况，这就大大简化了系统对容错的要求；不过类似 Bitcoin、Ethereum 等分布式系统确实需要考虑拜占庭容错的问题，我们会在下面介绍它们是如何解决的。</p> 
+ <p> FLP 不可能定理是分布式系统领域最重要的定理之一，它给出了一个非常重要的结论： <span>在网络可靠并且存在节点失效的异步模型系统中，不存在一个可以解决一致性问题的确定性算法</span> 。 </p> 
+ <p>In this paper, we show the surprising result that no completely asynchronous consensus protocol can tolerate even a single unannounced process death. We do not consider Byzantine failures, and we assume that the message system is reliable it delivers all messages correctly and exactly once.</p> 
+ <p> 这个定理其实也就是告诉我们不要浪费时间去为异步分布式系统设计在任意场景上都能够实现共识的算法，异步系统完全没有办法保证能在有限时间内达成一致，在这里作者并不会尝试去证明 FLP 不可能定理，读者可以阅读相关论文 <a href="https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf" rel="nofollow,noindex" target="_blank">Impossibility of Distributed Consensuswith One Faulty Process</a> 了解更多的内容。 </p> 
+ <h2>共识算法 </h2> 
+ <p>在上一节中，我们已经简单了解了分布式系统中面对的问题与挑战，在这里我们会介绍不同共识算法的实现原理，包括传统分布式系统领域的 Paxos、Raft 以及密码货币中使用的工作量证明（POW）、权益证明（POS）和委托权益证明（DPOS），通过对这些共识算法原理的介绍和分析，我相信各位读者能对分布式一致性和共识算法有更深的理解。</p> 
+ <h3>Paxos 和 Raft </h3> 
+ <p>Paxos 和 Raft 是目前分布式系统领域中两种非常著名的解决一致性问题的共识算法，两者都能解决分布式系统中的一致性问题，但是前者的实现与证明非常难以理解，后者的实现比较简洁并且遵循人的直觉，它的出现就是为了解决 Paxos 难以理解并和难以实现的问题。</p> 
+ <p> <img src="https://img0.tuicool.com/63QjAz2.png!web" class="alignCenter" /> </p> 
+ <p> 我们先来简单介绍一下 <a href="https://en.wikipedia.org/wiki/Paxos_(computer_science)" rel="nofollow,noindex" target="_blank">Paxos</a> 究竟是什么，Paxos 其实是 <strong>一类</strong> 能够解决分布式一致性问题的协议，它能够让分布式网络中的节点在出现错误时仍然保持一致；Leslie Lamport 提出的 Paxos 可以在没有恶意节点的前提下保证系统中节点的一致性，也是第一个被证明完备的共识算法，目前的 <strong>完备的</strong> 共识算法包括 Raft 本质上都是 Paxos 的变种。 </p> 
+ <p>作为一类协议，Paxos 中包含 Basic Paxos、Multi-Paxos、Cheap Paxos 和其他的变种，在这一小节我们会简单介绍 Basic Paxos 和 Multi-Paxos 这两种协议。</p> 
+ <h4>Basic Paxos </h4> 
+ <p>Basic Paxos 是 Paxos 中最为基础的协议，每一个 Basic Paxos 的协议实例最终都会选择唯一一个结果；使用 Paxos 作为共识算法的分布式系统中，节点都会有三种身份，分别是 Proposer、Acceptor 和 Learner：</p> 
+ <p> <img src="https://img2.tuicool.com/JnQramm.png!web" class="alignCenter" /> </p> 
+ <p>我们在这里会忽略最后一种身份 Learner 简化协议的运行过程，便于读者理解；Paxos 的运行过程分为两个阶段，分别是准备阶段（Prepare）和接受阶段（Accept），当 Proposer 接收到来自客户端的请求时，就会进入如下流程：</p> 
+ <p> <img src="https://img0.tuicool.com/mUVJfeY.png!web" class="alignCenter" /> </p> 
+ <p> 以上截图取自 <a href="https://ramcloud.stanford.edu/~ongaro/userstudy/paxos.pdf" rel="nofollow,noindex" target="_blank">Paxos lecture (Raft user study)</a> 的第 12 页。 </p> 
+ <p> 在整个共识算法运行的过程中，Proposer 负责提出提案并向 Acceptor 分别发出两次 RPC 请求，Prepare 和 Accept；Acceptor 会根据其持有的信息 <code>minProposal</code> 、 <code>acceptedProposal</code> 和 <code>acceptedValue</code> 选择接受或者拒绝当前的提案，当某一个提案被过半数的 Acceptor 接受之后，我们就认为当前提案被整个集群接受了。 </p> 
+ <p> <img src="https://img1.tuicool.com/b2u6ZfV.png!web" class="alignCenter" /> </p> 
+ <p> 我们简单举一个例子介绍 Paxos 是如何在多个提案下保证最终能够达到一致性的，上述图片中 S1 和 S5 分别收到了来自客户端的请求 X 和 Y，S1 首先向 S2 和 S3 发出 Prepare RPC 和 Accept RPC，三个服务器都接受了 S1 的提案 X；在这之后，S5 向 S3 和 S4 服务器发出 <code>Prepare(2.5)</code> 的请求，S3 由于已经接受了 X，所以它会返回接受的提案和值 <code>(1.1, X)</code> ，这时服务器使用接收到的提案代替自己的提案 Y，重新向其他服务器发送 <code>Accept(2.5, X)</code> 的 RPC，最终所有的服务器会达成一致并选择相同的值。 </p> 
+ <p> 想要了解更多与 Paxos 协议在运行过程中的其他情况可以看一下 <a href="https://www.youtube.com/watch?v=JEpsBg0AO6o" rel="nofollow,noindex" target="_blank">Paxos lecture (Raft user study)</a> 视频。 </p> 
+ <h4>Multi-Paxos </h4> 
+ <p>由于大多数的分布式集群都需要接受一系列的值，如果使用 Basic Paxos 来处理数据流，那么就会导致非常明显的性能损失，而 Multi-Paxos 是前者的加强版，如果集群中的 Leader 是非常稳定的，那么我们往往不需要准备阶段的工作，这样就能够将 RPC 的数量减少一半。</p> 
+ <p> <img src="https://img1.tuicool.com/vQvMN3n.png!web" class="alignCenter" /> </p> 
+ <p>上述图片中描述的就是稳定阶段 Multi-Paxos 的处理过程，S1 是整个集群的 Leader，当其他的服务器接收到来自客户端的请求时，都会将请求转发给 Leader 进行处理。</p> 
+ <p> 当然，Leader 角色的出现自然会带来另一个问题，也就是 Leader 究竟应该如何选举，在 <a href="http://140.123.102.14:8080/reportSys/file/paper/lei/lei_5_paper.pdf" rel="nofollow,noindex" target="_blank">Paxos Made Simple</a> 一文中并没有给出 Multi-Paxos 的具体实现方法和细节，所以不同 Multi-Paxos 的实现上总有各种各样细微的差别。 </p> 
+ <p>Raft 其实就是 Multi-Paxos 的一个变种，Raft 通过简化 Multi-Paxos 的模型，实现了一种更容易让人理解的共识算法，它们两者都能够对一系列连续的问题达成一致。</p> 
+ <p>Raft 在 Multi-Paxos 的基础之上做了两个限制，首先是 Raft 中追加日志的操作必须是连续的，而 Multi-Paxos 中追加日志的操作是并发的，但是对于节点内部的状态机来说两者都是有序的，第二就是 Raft 对 Leader 选举的条件做了限制，只有拥有最新、最全日志的节点才能够当选 Leader，但是 Multi-Paxos 由于任意节点都可以写日志，所以在选择 Leader 上也没有什么限制，只是在选择 Leader 之后需要将 Leader 中的日志补全。</p> 
+ <p> <img src="https://img1.tuicool.com/QFzaMjZ.png!web" class="alignCenter" /> </p> 
+ <p>在 Raft 中，所有 Follower 的日志都是 Leader 的子集，而 Multi-Paxos 中的日志并不会做这个保证，由于 Raft 对日志追加的方式和选举过程进行了限制，所以在实现上会更加容易和简单。</p> 
+ <p>从理论上来讲，支持并发日志追加的 Paxos 会比 Raft 有更优秀的性能，不过其理解和实现上还是比较复杂的，很多人都会说 Paxos 是科学，而 Raft 是工程，当作者需要去实现一个共识算法，会选择使用 Raft 和更简洁的实现，避免因为一些边界条件而带来的复杂问题。</p> 
+ <p> 这篇文章并不会展开介绍 Raft 的实现过程和细节，如果对 Raft 有兴趣的读者可以在 <a href="https://raft.github.io" rel="nofollow,noindex" target="_blank">The Raft Consensus Algorithm</a> 找到非常多的资料。 </p> 
+ <h3>POW(Proof-of-Work) </h3> 
+ <p>上一节介绍的共识算法，无论是 Paxos 还是 Raft 其实都只能解决非拜占庭将军容错的一致性问题，不能够应对分布式网络中出现的极端情况，但是这在传统的分布式系统都不是什么问题，无论是分布式数据库还是消息队列集群，它们内部的节点并不会故意的发送错误信息，在类似系统中，最常见的问题就是节点失去响应或者失效，所以它们在这种前提下是有效可行的，也是充分的。</p> 
+ <p> 这一节介绍的 <a href="https://en.wikipedia.org/wiki/Proof-of-work_system" rel="nofollow,noindex" target="_blank">工作量证明</a> （POW，Proof-of-Work）是一个用于阻止拒绝服务攻击和类似垃圾邮件等服务错误问题的协议，它在 1993 年被 Cynthia Dwork 和 Moni Naor 提出，它能够帮助分布式系统达到拜占庭容错。 </p> 
+ <p> <img src="https://img2.tuicool.com/2q22Aff.png!web" class="alignCenter" /> </p> 
+ <p> 工作量证明的关键特点就是，分布式系统中的请求服务的节点必须解决一个 <strong>一般难度但是可行（feasible）的问题</strong> ，但是验证问题答案的过程对于服务提供者来说却非常容易，也就是一个不容易解答但是容易验证的问题。 </p> 
+ <p>这种问题通常需要消耗一定的 CPU 时间来计算某个问题的答案，目前最大的区块链网络 - 比特币（Bitcoin）就使用了工作量证明的分布式一致性算法，网络中的所有节点计算通过以下的谜题来获得当前区块的记账权：</p> 
+ <p> <img src="https://img1.tuicool.com/UjuEr2E.png!web" class="alignCenter" /> </p> 
+ <p> SHA-256 作为一个哈希函数，想要通过 SHA-256 函数的输出推断出输入在目前来看可能性是 <strong>可以忽略不计的</strong> ，比特币网络就需要每一个节点不断改变 <code>NONCE</code> 来得到不同的结果 <code>HASH</code> ，如果得到的 HASH 结果在小于某个范围，目前（2017.12.17）的难度是： </p> 
+ <pre>0x0000000000000000000000000000000000000000000000000000017268d8a21a</pre> 
+ <p>也就是如果只计算一次 SHA-256 的值能够小于上述结果的可能性是 $1.37*10^{-65}$，当前的全网算力也达到了 13,919 PH/s，这是一个非常恐怖的数字，随着网络算力的不断改变比特币也会不断改变当前问题的难度，保证每个区块被发现的时间在 10min 左右；在整个比特币网络中，谁先得到当前问题的答案就能够获得这个区块的记账权并将当前区块通过 Gossip 协议发送给尽可能多的比特币节点。</p> 
+ <p>工作量证明的原理其实非常简单，比特币网络选择的谜题非常好的适应了工作量证明定义中的问题，比较难以寻找同时又易于证明，我们可以简单理解为工作量证明防止错误或者无效请求的原理就是增加客户端请求服务的工作量，而适合难度的谜题又能够保证合法的请求不会受到影响。</p> 
+ <p>由于工作量证明需要消耗大量的算力，同时比特币大约 10min 才会产生一个区块，区块的大小也只有 1MB，仅仅能够包含 3、4000 笔交易，平均下来每秒只能够处理 5~7（个位数）笔交易，所以比特币网络的拥堵状况非常严重。</p> 
+ <h3>POS(Proof-of-Stake) </h3> 
+ <p>权益证明是区块链网络中的使用的另一种共识算法，在基于权益证明的密码货币中，下一个区块的选择是根据不同节点的股份和时间进行随机选择的。</p> 
+ <p>由于创造新的区块并不会消耗大量的 CPU，如果它不诚实也不会失去什么，这也就给了很多节点作弊的理由，每一个节点为了最大化利益会在多条链上同时挖矿。</p> 
+ <p> <img src="https://img1.tuicool.com/vm6Bbm3.png!web" class="alignCenter" /> </p> 
+ <p>在早期的所有权证明算法中，整个网络只会奖励创建区块的节点，不存在任何惩罚，在这时每个节点在创造的多条链上同时投票才能够最大化利益，在这种情况下网络中的节点很难对一条链达成共识。</p> 
+ <p> 有两种办法能够解决缺乏利害关系（nothing-at-stake）造成的问题，一种是使用 <a href="https://blog.ethereum.org/2014/01/15/slasher-a-punitive-proof-of-stake-algorithm/" rel="nofollow,noindex" target="_blank">Slasher</a> 协议，惩罚同时在多条链上投票的节点，第二种方法时直接惩罚在错误的链上创建块的节点，总而言之就是通过算法之外的事情解决这个问题，引入激励和惩罚。 </p> 
+ <p>与工作量证明相比，权益证明不需要消耗大量的电力就能够保证区块链网络的安全性，同时也不需要在每个区块中创建新的货币来激励矿工参与当前网络的运行，这也就在一定程度上缩短了达成共识所需要的时间，基于权益证明的 Ethereum 每秒大概能处理 30 笔交易左右。</p> 
+ <h3>DPOS(Delegated Proof-of-Stake) </h3> 
+ <p>前面介绍的权益证明算法可以将整个区块链网络理解为一家公司，出资最多、占比最大的人有更多的机会得到话语权（记账权）；对于小股东来说，千分之几甚至万分之几的股份很难有什么作为，只能得到股份带来的分红和收益。</p> 
+ <p>但是在这里介绍的委托权益证明（DPOS，Delegated Proof-of-Stake）能够让每一个人选出可以代表自己利益的人参与到记账权的争夺中，这样多个小股东就能够通过投票选出自己的代理人，保障自己的利益。整个网络中选举出的多个节点能够在 1s 中之内对 99.9% 的交易进行确认，使用委托权益证明的 EOS 能够每秒处理几十万笔交易，同时也能够比较监管的干预。</p> 
+ <p> <img src="https://img1.tuicool.com/qARRvae.png!web" class="alignCenter" /> </p> 
+ <p>在委托权益证明中，每一个参与者都能够选举任意数量的节点生成下一个区块，得票最多的前 N 个节点会被选择成为区块的创建者，下一个区块的创建者就会从这样一组当选者中随机选取，除此之外，N 的数量也是由整个网络投票决定的，所以可以尽可能地保证网络的去中心化。</p> 
+ <p>在这篇文章中，我们首先介绍了分布式系统中面对的最重要问题，分布式一致性，随后又介绍了五种不同的共识算法，从解决非拜占庭问题下一致性的 Paxos 和 Raft 到解决拜占庭问题下的 POW、POS 和 DPOS，简单回忆一下，解决拜占庭问题的多个共识算法的实现反而更加简单，这是一件非常有意思的事情。</p> 
+ <p>当整个网络需要实现拜占庭容错时，仅靠算法确实是比较难以实现的，往往都需要使用其他方面的激励或者惩罚，让诚实表现的节点利益最大化才是解决一致性的最佳方案；从工作量证明、权益证明再到委托权益证明，共识算法的不同导致性能也有着非常大的差异，我们可以看到随着网络中进行『投票』的节点越少，网络的处理能力就会越强和性能就会越快，委托权益证明选举了 N 个节点来保证性能和去中心化程度确实是一件非常聪明的事情。</p> 
+ <p>中心化的网络确实能够带来性能的提升，但是在密码货币中，参与者往往更相信去中心化的机制，因为没有激励和惩罚我们并不能保证下一个负责记账的节点是否是诚实的，由此来看，如何在保证去中心化的同时提升网络的性能是每一个区块链网络都需要考虑的事情。</p> 
+ <h2>Reference </h2> 
+ <ul> 
+  <li> <a href="https://en.wikipedia.org/wiki/Consensus_(computer_science)" rel="nofollow,noindex" target="_blank">Consensus (computer science)</a> </li> 
+  <li> <a href="http://blog.csdn.net/lsttoy/article/details/61624287" rel="nofollow,noindex" target="_blank">区块链共识算法（POW,POS,DPOS,PBFT）介绍和心得</a> </li> 
+  <li> <a href="https://yeasy.gitbooks.io/blockchain_guide/content/distribute_system/paxos.html" rel="nofollow,noindex" target="_blank">Paxos 与 Raft</a> </li> 
+  <li> <a href="https://en.wikipedia.org/wiki/Proof-of-work_system" rel="nofollow,noindex" target="_blank">Proof-of-work system</a> </li> 
+  <li> <a href="https://en.wikipedia.org/wiki/Proof-of-stake" rel="nofollow,noindex" target="_blank">Proof-of-stake</a> </li> 
+  <li> <a href="https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ" rel="nofollow,noindex" target="_blank">Proof of Stake FAQ &middot; Ethereum Wiki</a> </li> 
+  <li> <a href="http://docs.bitshares.org/bitshares/dpos.html" rel="nofollow,noindex" target="_blank">Delegated Proof of Stake</a> </li> 
+  <li> <a href="https://bitshares.org/technology/delegated-proof-of-stake-consensus/" rel="nofollow,noindex" target="_blank">Delegated Proof-of-Stake Consensus</a> </li> 
+  <li> <a href="https://steemit.com/dpos/@legendx/dpos" rel="nofollow,noindex" target="_blank">DPOS共识算法 – 缺失的白皮书</a> </li> 
+  <li> <a href="https://yeasy.gitbooks.io/blockchain_guide/content/distribute_system/consensus.html" rel="nofollow,noindex" target="_blank">共识算法</a> </li> 
+  <li> <a href="https://en.wikipedia.org/wiki/CAP_theorem" rel="nofollow,noindex" target="_blank">CAP theorem</a> </li> 
+  <li> <a href="http://140.123.102.14:8080/reportSys/file/paper/lei/lei_5_paper.pdf" rel="nofollow,noindex" target="_blank">Paxos Made Simple</a> </li> 
+  <li> <a href="https://raft.github.io" rel="nofollow,noindex" target="_blank">The Raft Consensus Algorithm</a> </li> 
+  <li> <a href="https://raft.github.io/raft.pdf" rel="nofollow,noindex" target="_blank">In Search of an Understandable Consensus Algorithm</a> </li> 
+  <li> <a href="https://baotiao.github.io/2016/05/05/paxos-raft/" rel="nofollow,noindex" target="_blank">谈谈 paxos, multi-paxos, raft</a> </li> 
+  <li> <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.67.6951&amp;rep=rep1&amp;type=pdf" rel="nofollow,noindex" target="_blank">Brewer’s Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services</a> </li> 
+  <li> <a href="https://stackoverflow.com/questions/29381442/eventual-consistency-vs-strong-eventual-consistency-vs-strong-consistency" rel="nofollow,noindex" target="_blank">“Eventual Consistency” vs “Strong Eventual Consistency” vs “Strong Consistency”?</a> </li> 
+  <li> <a href="https://groups.csail.mit.edu/tds/papers/Lynch/jacm85.pdf" rel="nofollow,noindex" target="_blank">Impossibility of Distributed Consensuswith One Faulty Process</a> </li> 
+  <li> <a href="https://web.archive.org/web/20170205142845/http://lamport.azurewebsites.net/pubs/byz.pdf" rel="nofollow,noindex" target="_blank">The Byzantine Generals Problem</a> </li> 
+  <li> <a href="https://en.wikipedia.org/wiki/Byzantine_fault_tolerance" rel="nofollow,noindex" target="_blank">Byzantine fault tolerance</a> </li> 
+  <li> <a href="http://the-paper-trail.org/blog/a-brief-tour-of-flp-impossibility/" rel="nofollow,noindex" target="_blank">A Brief Tour of FLP Impossibility</a> </li> 
+  <li> <a href="http://140.123.102.14:8080/reportSys/file/paper/lei/lei_5_paper.pdf" rel="nofollow,noindex" target="_blank">Paxos Made Simple</a> </li> 
+  <li> <a href="http://harry.me/blog/2014/12/27/neat-algorithms-paxos/" rel="nofollow,noindex" target="_blank">Neat Algorithms - Paxos</a> </li> 
+  <li> <a href="http://danielw.cn/FLP-proof" rel="nofollow,noindex" target="_blank">FLP Impossibility 的证明</a> </li> 
+  <li> <a href="https://read.douban.com/ebook/42852957/" rel="nofollow,noindex" target="_blank">白话区块链</a> </li> 
+  <li> <a href="https://en.wikipedia.org/wiki/Paxos_(computer_science)" rel="nofollow,noindex" target="_blank">Paxos</a> </li> 
+  <li> <a href="https://www.youtube.com/watch?v=JEpsBg0AO6o" rel="nofollow,noindex" target="_blank">Paxos lecture (Raft user study)</a> </li> 
+  <li> <a href="https://bitcoin.org/bitcoin.pdf" rel="nofollow,noindex" target="_blank">Bitcoin: A Peer-to-Peer Electronic Cash System</a> </li> 
+  <li> <a href="https://en.bitcoin.it/wiki/Proof_of_Stake" rel="nofollow,noindex" target="_blank">Proof of Stake &middot; Bitcoin Wiki</a> </li> 
+  <li> <a href="https://blog.ethereum.org/2014/01/15/slasher-a-punitive-proof-of-stake-algorithm/" rel="nofollow,noindex" target="_blank">Slasher</a> </li> 
+  <li> <a href="https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ" rel="nofollow,noindex" target="_blank">Proof of Stake FAQ</a> </li> 
+ </ul> 
+ <h3>关于图片和转载</h3> 
+ <p> <img src="https://img2.tuicool.com/uuMbUz.png!web" /> </p> 本作品采用 
+ <a rel="nofollow,noindex" href="http://creativecommons.org/licenses/by/4.0/" target="_blank">知识共享署名 4.0 国际许可协议</a> 
+ <p>进行许可。 转载时请注明原文链接，图片在使用时请保留图片中的全部内容，可适当缩放并在引用处附上图片所在的文章链接，图片使用 Sketch 进行绘制。</p> 
+ <h3>关于评论和留言</h3> 如果对本文 
+ <p>的内容有疑问，请在下面的评论系统中留言，谢谢。</p> 
+</div>
+        </div>
+        <div class="article_social">
+         <div class="article_like">
+    <div class="circle circle-like" id="my_zan" data_id="BVnYBvj">  </div>
+
+</div>
+        <div id="share_weixin_image">
+            <img width="100px" height="100px" src="http://s.jiathis.com/qrcode.php?url=https://www.tuicool.com/articles/BVnYBvj?via=wechat_qr">
+        </div>
+<div class="article_share_fav">
+    <div class="share" id="ckepop">
+        <span>分享</span>
+        <button class="share_weibo" id="share_weibo_id"  title="分享到新浪微博"></button>
+        <button class="share_qq" id="share_qq_id"  title="分享到QQ空间"></button>
+        <button class="share_weixin" id="share_weixin_id"></button>
+    </div>
+    <div class="fav_correct">
+        <button id="my_fav" data_id="BVnYBvj">
+            <i class="icon icon-star-empty"></i> <span id="fav_tip">收藏</span>
+        </button>
+        <button id="article-correct" data_id="BVnYBvj" uid="2593971258">
+            <i class="icon icon-warning-sign"></i>
+            <span>纠错</span>
+        </button>
+    </div>
+</div>
+<script type="text/javascript">
+$("#share_weibo_id").click( function() {
+   window.open("http://share.baidu.com/s?type=text&searchPic=0&sign=on&to=tsina&url=https://www.tuicool.com/articles/BVnYBvj&title=%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95++%28%E5%88%86%E4%BA%AB%E8%87%AA+%40%E6%8E%A8%E9%85%B7%E7%BD%91%29&key=3113829255");
+});
+$("#share_qq_id").click( function() {
+   window.open("http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://www.tuicool.com/articles/BVnYBvj&title=%E5%88%86%E5%B8%83%E5%BC%8F%E4%B8%80%E8%87%B4%E6%80%A7%E4%B8%8E%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95&desc=&summary=&site=");
+});
+$("#share_weixin_id").click( function() {
+  $("#share_weixin_image").toggle();
+});
+</script>
+
+
+            <div class="bottom_plink clearfix">
+                    <a href="https://www.mtyun.com/promote/917eab6a-5d8f-468b-a69d-8b3f4299a92a/" target="_blank"><img src="https://static2.tuicool.com/images/upload/ksyun774.jpg"/></a>
+
+            </div>
+        </div>
+        <div id="site_articles" style="clear:both;">
+              <div class="article-part-title">
+                <span>推荐文章</span>
+              </div>
+          <ul class="side_article_list">
+                <li class="side_article_list_item">
+                    1.<a href="/articles/jQryi2R" target="_blank" title="Raft 算法的理解">
+                    Raft 算法的理解
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    2.<a href="/articles/aURzuqz" target="_blank" title="SkyWalking 源码分析 —— Collector Naming Server 命名服务">
+                    SkyWalking 源码分析 —— Collector Naming Server 命名服务
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    3.<a href="/articles/3uEnu2y" target="_blank" title="海量非结构数据存储技术路线选型：对象存储与块存储、文件存储等对比">
+                    海量非结构数据存储技术路线选型：对象存储与块存储、文件存储等对..
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    4.<a href="/articles/UFFzQj3" target="_blank" title="从图引擎平台技术，看华为云 EI 的决心和野心">
+                    从图引擎平台技术，看华为云 EI 的决心和野心
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    5.<a href="/articles/6RzA7nj" target="_blank" title="从图引擎平台技术，看华为云EI的决心和野心">
+                    从图引擎平台技术，看华为云EI的决心和野心
+                    </a>
+                </li>
+                <li class="side_article_list_item">
+                    6.<a href="/articles/veuIBzN" target="_blank" title="SkyWalking 源码分析 —— Collector Cluster 集群管理">
+                    SkyWalking 源码分析 —— Collector Cluster 集群管理
+                    </a>
+                </li>
+          </ul>
+        </div>
+        <div id="kan_articles"></div>
+        <div id="article_weibo" style="display:none;">
+            <div class='article-part-title'>
+                <span>相关微博</span>
+                <sub>
+                    <a href="/articles/weibo_list/BVnYBvj" target="_blank">(<i id="weibo_num"></i>)</a> 
+               </sub>
+            </div>
+            <div class="related-weibo-list"></div>
+        </div>
+        <div class="comments">
+    <div class="comments-area">
+    <div class="comments-header">
+        <h5>我来评几句</h5>
+        <div class="alert comment-alert alert-error" style="display:none;">
+            错误
+        </div>
+           <textarea name="comment[body]" id="comment-body" cols="60" rows="6" placeholder="请输入评论内容..." style="resize: none;"></textarea>
+           <a href="javascript:commentsub();" class="btn btn-medium btn-submit" id="comment-submit">发表评论</a>
+        <p style="margin-top: 5px;margin-left:10px;">
+            已发表评论数(<span class="comment_cnt"></span>)
+        </p>
+    </div>
+    <div class="comments-list">
+        <div class="empty-cmts alert alert-success" style="display:none;">
+            没有更多评论了^^
+        </div>
+    </div>
+    <div class="more-comments" style="display:none;">
+        <a href="">更多评论</a>
+    </div>
+    <div class="load-fail">
+        评论加载失败，<a href="javascript:reload_comments('BVnYBvj',1,0,1);">重新加载</a>
+        <img src="https://static1.tuicool.com//images/spinner.gif" id="spinner3"/>
+    </div>
+    </div>
+</div>
+
+    </div>
+        <div class="span4 article_right_side">
+            <div class="article_related_site article_detail_bg">
+    <h4 class="article-part-title">相关站点</h4>
+    <div class="article_related_site_body clearfix">
+        <div class="logo">
+            <img src="https://stimg1.tuicool.com/B3Qf6vf.png"/>
+        </div>
+        <div class="name">
+            <div>
+                <a href="/sites/B3Qf6vf" target="_blank"> DeltaX</a>
+            </div>
+            <div>
+                <div class="btn btn-success right_site_follow" id="my_follow" data_id="B3Qf6vf">＋订阅</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="right_site_articles" class="article_detail_bg">
+    <div class="article-part-title">
+        <span>热门文章</span>
+    </div>
+    <ul class="side_article_list">
+        <li class="side_article_list_item">
+            1.<a href="/articles/jQryi2R" target="_blank" title="Raft 算法的理解"> Raft 算法的理解 </a>
+        </li>
+        <li class="side_article_list_item">
+            2.<a href="/articles/aURzuqz" target="_blank" title="SkyWalking 源码分析 —— Collector Naming Server 命名服务"> SkyWalking 源码分析 —— Collector Naming Server 命名服务 </a>
+        </li>
+        <li class="side_article_list_item">
+            3.<a href="/articles/UFFzQj3" target="_blank" title="从图引擎平台技术，看华为云 EI 的决心和野心"> 从图引擎平台技术，看华为云 EI 的决心和野心 </a>
+        </li>
+        <li class="side_article_list_item">
+            4.<a href="/articles/6RzA7nj" target="_blank" title="从图引擎平台技术，看华为云EI的决心和野心"> 从图引擎平台技术，看华为云EI的决心和野心 </a>
+        </li>
+        <li class="side_article_list_item">
+            5.<a href="/articles/veuIBzN" target="_blank" title="SkyWalking 源码分析 —— Collector Cluster 集群管理"> SkyWalking 源码分析 —— Collector Cluster 集群管理 </a>
+        </li>
+    </ul>
+</div>
+<div class="right-link">
+        <a href="https://www.mtyun.com/promote/917eab6a-5d8f-468b-a69d-8b3f4299a92a/" target="_blank"><img src="https://static2.tuicool.com/images/upload/ksyun310.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+        <a href="http://click.aliyun.com/m/17039/" target="_blank"><img src="https://static0.tuicool.com/images/upload/aliyun322.jpg"/></a>
+
+</div>
+<div class="right-link" style="margin-top: 5px">
+
+</div>
+<div class="frd_pos">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-7054762349007490"
+     data-ad-slot="5705695566"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+</div>
+
+         </div>
+</div>
+
+<div>
+   <!-- add_article to kan -->
+<div id="add-article-to-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <span class="add-title">收藏到推刊</span>
+    <a href="#new-kan" class="btn pull-right" data-toggle="modal">创建推刊</a>
+    <i class="clearfix"></i>
+  </div>
+  <div class="modal-body">
+    <ul id="add-kan-list">
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <input type="hidden" value="BVnYBvj" class="article-id" /> 
+    <button class="btn btn-primary pull-left add-to-btn">  收 藏  </button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true" style="margin-right: 15px">取消</button>
+  </div>
+</div>
+
+   <div id="new-kan" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+    <input type="text" name="name" id="new-kan-name"  placeholder="推刊名(必填)" required data-validation-required-message="请填写推刊名" />
+    <span class="new-ness-name">请填写推刊名</span>
+    <br/>
+    <textarea name="desc" id="desc" rows="6" placeholder="推刊描述"></textarea>
+    <span class="new-ness-desc">描述不能大于100个字符!</span>
+    <br/>
+    权限设置：<input type="radio" name="type" value="1" checked="checked" /> 公开
+    <input type="radio" name="type" value="0"> 仅自己可见
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary pull-left create-kan-btn" disabled>创建</button>
+    <button class="btn dismiss-new-kan" data-dismiss="modal" aria-hidden="true">取消</button>
+  </div>
+</div>
+
+
+</div>
+<div id="article-correct-modal" class="modal hide fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            &times;
+        </button>
+        <h3>文章纠错</h3>
+    </div>
+    <div class="modal-body">
+        <input type="hidden" value="BVnYBvj" id="article-correct-source">
+        <div>
+            <label for="article-correct-select">
+                错误类型
+            </label>
+            <select id="article-correct-select">
+                <option value="正文不准确">正文不准确</option>
+                <option value="标题不准确">标题不准确</option>
+                <option value="排版有问题">排版有问题</option>
+                <option value="排版有问题">主题不准确</option>
+                <option value="没有分页内容">没有分页内容</option>
+                <option value="图片无法显示">图片无法显示</option>
+                <option value="视频无法显示">视频无法显示</option>
+                <option value="与原文不一致">与原文不一致</option>
+            </select>
+        </div>
+        <div>
+            <label for="article-correct-other">
+                补充信息
+            </label>
+            <textarea id="article-correct-other" class="span4"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary pull-right huodong_correct_submit" id="article-correct-submit">
+            &nbsp;&nbsp;提交&nbsp;&nbsp;
+        </button>
+    </div>
+</div>
+      <div class="share_zone">
+    <div class="bdsharebuttonbox"> 
+         <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_more" data-cmd="more"></a>
+     </div>
+    <script>
+        window._bd_share_config = {
+            "common" : {
+                "bdSnsKey" : {
+                    "tsina" : "3113829255",
+                    "tqq" : "801536792"
+                },
+                "bdText" : "分布式一致性与共识算法 (分享自 @推酷网)",
+                "bdMini" : "2",
+                "bdMiniList" : false,
+                "bdPic" : "https://aimg0.tuicool.com/EfQfA3B.png",
+                "bdStyle" : "1",
+                "bdSize" : "24"
+            },
+            "slide" : {
+                "type" : "slide",
+                "bdImg" : "1",
+                "bdPos" : "left",
+                "bdTop" : "200"
+            }
+        };
+        with (document)
+        0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = '/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+    </script>
+</div>
+      <link rel="stylesheet" href="https://static0.tuicool.com/stylesheets/highlight.default.css">
+      <script src="https://static2.tuicool.com/javascripts/highlight.pack.js"></script>
+<script type="text/javascript">
+    $('table').each(function(i) {
+        var size = $(this).children().size();
+        if (size > 1) {
+            $(this).attr('class',"table table-bordered");
+        } else if (size == 1) {
+            var e11 = $(this).children(":first");
+            var e1 = e11[0];
+            var name = e1.nodeName.toLowerCase();
+            if ("tbody" == name) {
+                if (e1.children.length > 1) {
+                    $(this).attr('class',"table table-bordered");
+                } else if (e1.children.length == 1){
+                    var e12 = e1.children[0];
+                    var name2 = e12.nodeName.toLowerCase();
+                    if ("tr" == name2) {
+                       if (e12.children.length > 1) {
+                         $(this).attr('class',"table table-bordered");
+                       }
+                    }
+                }
+            }
+        }
+    });
+        window.page = 0;
+        window.last = 0;    
+        window.first = true;
+        resize_article_image('#nei', 550);
+                load_comments("BVnYBvj",1,0,"MTA1MDI2+86875870bff5e99d6b02d11ffbc16e3c2c165896");
+                window.uid = parseInt("105026");
+        open_add_article_to_kan("true");
+        async_do_zan_article();
+      $('pre').each(function(i, e) {
+        hljs.highlightBlock(e, "<span class='indent'>  </span>", false)
+      });
+          function commentsub(){  
+    $.ajaxSetup({
+    error:function(x,e){        
+      $('.comment-alert').text("系统出现问题，请稍候再试").show();
+      $('textarea').attr('disabled',false);
+      return false;
+    },
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    }
+  }); 
+    $("#comment-body").attr("disabled",true);
+    $("#comment-submit").addClass("disabled");
+    $("#comment-submit").attr("href","#comment-body");
+    text = $("#comment-body").val();
+    if(text.length < 2 ){
+        $('.comment-alert').text("你的字数太少了").show();
+        reset_submit_btn();
+    }else if(text.length > 500){
+        $('.comment-alert').text("你的字数太多了,不能超过500字!").show();
+        reset_submit_btn();
+    }else{      
+    $.post("/comments.json", { aid: "BVnYBvj", html_body: $("#comment-body").val(), auth: "MTA1MDI2+86875870bff5e99d6b02d11ffbc16e3c2c165896"},function(data){
+      if(data.success == true){
+        $(".comments-list").show();
+        var aComment = data.comment;
+        var text = aComment.content;
+        var id = "BVnYBvj";
+        var title = "分布式一致性与共识算法";
+        var share_code = "<ul class='dropdown-menu'><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=tsina&amp;url=https://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>新浪微博</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=tqq&amp;url=https://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @tuicool）'>腾讯微博</a></li><li><a target='blank' href='http://s.evernote.com/grclip?url=https://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>印象笔记</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=douban&amp;url=http://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>豆瓣</a></li><li><a target='blank' href='http://share.baidu.com/s?type=text&amp;searchPic=0&amp;sign=on&amp;to=renren&amp;url=https://www.tuicool.com/articles/"+id+"&amp;title=分享评论:"+text+" //"+title+"（分享自 @推酷网）'>人人网</a></li></ul>"
+        $(".comments-list").prepend("<div class='single' id='c-"+aComment.id+"'><img src='"+aComment.avatar+"' class='img avatar'><div class='comment-item' style='padding:0 0 0 5px;'><div class='info mine'>"+"<a class='uname' href='/user/"+ aComment.uid+ "' target='_blank'>"+ aComment.username  +"</a>" +"<span class='timestamp'>" +aComment.timestamp +"</span> <div class='reply dropdown'><a class='dropdown-toggle share' data-toggle='dropdown' href='javascript:share("+aComment.id+");'>分享<b class='caret'></b></a> | <a href='javascript:reply(\""+aComment.username+"\");'>回复</a>"+share_code+"</div> "+ "</div><div class='body' id='comment-"+aComment.id+"'>" + aComment.content + "</div></div></div>");
+        $("#comment-body").attr("disabled",false).val("");
+        $("#comment-submit").removeClass("disabled");
+        $("#comment-submit").attr("href","javascript:commentsub();");
+        location = "#c-"+aComment.id
+        $('.empty-cmts').hide();
+        $('.comment-alert').hide();
+        $('.comment_cnt').text(parseInt($('.comment_cnt').text())+1);
+       } else{
+        $('.comment-alert').text(data.error).show();
+        reset_submit_btn();
+       }
+    },"json");
+    }
+}
+function reset_submit_btn() {
+  $('textarea').attr('disabled',false);
+  $("#comment-submit").removeClass("disabled");
+  $("#comment-submit").attr("href","javascript:commentsub();");
+}
+
+       handle_follow_site("#my_follow","已订阅","+ 订阅");
+       function log_article(id) {
+          $.ajaxSetup({
+           headers: {
+             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+           },
+           error:function(x,t,e){         
+             return false;
+           }
+          });
+          $.post("/articles/log", { id : id },function(data){});
+        }
+        function do_log_article(id) {
+            window.setTimeout("log_article(\"" + id + "\")",12000);
+        }
+        do_log_article("BVnYBvj");
+</script>
+
+
+    <div class="loader-inner ball-pulse ball-loading-center" id="page-loading" style="display: none">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="read-later-alert"></div>
+  </div>
+
+        <div class="footer">
+      <div class="footer-inner" style="padding-top: 50px;padding-bottom: 50px">
+        <a href="https://www.tuicool.com/about" target="_blank">关于我们</a>
+        <a href="https://www.tuicool.com/mobile" target="_blank">移动应用</a>
+        <a href="https://www.tuicool.com/bbs/go/issues" target="_blank">意见反馈</a>
+        <a target="_blank" href="https://weibo.com/tuicool2012">官方微博</a>
+      </div>
+    </div>
+    <div style="display:none;">
+      <script src="https://s22.cnzz.com/stat.php?id=5541078&web_id=5541078&show=pic" language="JavaScript"></script>
+    </div>
+
+    <script type="text/javascript" src="https://static2.tuicool.com/assets/tip.js?t=3" async></script>
+</body>
+</html>
