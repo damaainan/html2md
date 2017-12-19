@@ -6,13 +6,45 @@ header("Content-type:text/html; Charset=utf-8");
  */
 require "../vendor/autoload.php";
 
-require "../lib/replaceElement.calss.php";
-use QL\QueryList;
+require "../lib/getContent.class.php";
 
+// 从脚本参数获取地址  或者 从 文件获取一系列地址
+$url = [];
+if($argv[1] === "urls.txt"){
+    // 从文本获取地址
+    $fp = fopen("urls.txt","r");
+    while(!feof($fp)){
+        $href = fgets($fp);
+        echo $href;
+        if($href){
+            $url[] = $href;
+        }
+    }
+    fclose($fp);
+}else{
+    for ($i = 1; $i < $argc; $i++) {
+        $url[]=$argv[$i];
+    }
+}
+
+var_dump($url);
+
+// 遍历数组全部采集
+
+$Mark = new getContent();
+foreach ($url as $va) {
+    // $ret = $Mark->doMark($url);
+    // echo $ret;
+}
 
 // 根据地址区分使用不同的规则 
 
-$url = "https://www.tuicool.com/articles/BVnYBvj";
+// $url = "https://www.tuicool.com/articles/BVnYBvj";
+
+
+
+
+/*
 
 $arr = explode('/', $url);
 $name = $arr[count($arr)-1];
@@ -34,6 +66,7 @@ $ret = $data->all();
  * 处理 body 
  */
 
+/*
 $title = $ret[0]['title'];
 $source = $ret[0]['source'];
 $time = $ret[0]['time'];
@@ -65,3 +98,6 @@ fwrite($fp,$body);
 fclose($fp);
 
 // file_put_contents("../out/ret.md",$body);
+
+
+*/
