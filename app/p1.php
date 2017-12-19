@@ -4,7 +4,7 @@ require '../phpQuery/phpQuery.php';
 
 $html = file_get_contents("../data/cont.html");
 
-
+// 获取所有节点元素的类型 
 
 $res = getNodes($html);
 

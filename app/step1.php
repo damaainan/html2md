@@ -9,10 +9,17 @@ require "../vendor/autoload.php";
 require "../lib/replaceElement.calss.php";
 use QL\QueryList;
 
+
 // 根据地址区分使用不同的规则 
 
-// $html = file_get_contents("https://www.tuicool.com/articles/BVnYBvj");
-$html = file_get_contents("../data/22.html");
+$url = "https://www.tuicool.com/articles/BVnYBvj";
+
+$arr = explode('/', $url);
+$name = $arr[count($arr)-1];
+
+
+$html = file_get_contents($url);
+// $html = file_get_contents("../data/22.html");
 $rules = array(
 	"title" => array(".article_row_fluid h1",'text'),
 	"source" => array(".article_meta .source a",'text'),
@@ -23,8 +30,6 @@ $rules = array(
 $data = QueryList::html($html)->rules($rules)->query()->getData();
 $ret = $data->all();
 
-// var_dump($ret[0]);
-
 /**
  * 处理 body 
  */
@@ -34,10 +39,29 @@ $source = $ret[0]['source'];
 $time = $ret[0]['time'];
 $body = $ret[0]['body'];
 
+
+$title = "## ".$title."\r\n\r\n";
+$time= $time."\r\n\r\n";
+$source = "来源：[".$source."](".$source.")"."\r\n\r\n";
+
 // file_put_contents("../data/cont.html",$body);
 
 $replaceElement = new replaceElement();
 
 $body = $replaceElement->doReplace($body);
 
-file_put_contents("../out/ret.md",$body);
+$file = "../out/".$name.".md";
+
+if(is_file($file)){
+    unlink($file);
+}
+
+$fp = fopen($file,"a");
+
+fwrite($fp,$title);
+fwrite($fp,$source);
+fwrite($fp,$time);
+fwrite($fp,$body);
+fclose($fp);
+
+// file_put_contents("../out/ret.md",$body);
