@@ -16,9 +16,24 @@ class getContent{
             "time" => array(".article_meta .timestamp",'text'),
             "body" => array("#nei",'html')
         ),
-        "csdn" => array(),
-        "segment" => array(),
-        "cnblogs" => array(),//博客园
+        "csdn" => array(
+            "title" => array(".article_row_fluid h1",'text'),
+            "source" => array(".article_meta .source a",'text'),
+            "time" => array(".article_meta .timestamp",'text'),
+            "body" => array("#nei",'html')
+        ),
+        "segment" => array(
+            "title" => array(".article_row_fluid h1",'text'),
+            "source" => array(".article_meta .source a",'text'),
+            "time" => array(".article_meta .timestamp",'text'),
+            "body" => array("#nei",'html')
+        ),
+        "cnblogs" => array(
+            "title" => array(".article_row_fluid h1",'text'),
+            "source" => array(".article_meta .source a",'text'),
+            "time" => array(".article_meta .timestamp",'text'),
+            "body" => array("#nei",'html')
+        ),//博客园
     ];
     public static function getConfig(){
         return self::$config;
@@ -27,7 +42,7 @@ class getContent{
     public static function doMark($url){
         $arr = explode('/', $url);
         $name = $arr[count($arr)-1];
-        $html = file_get_contents($url);
+        $html = file_get_contents($url); // 可以优化为专门的 curl 方法
 
         // 判断 url 选择方法
         // 
