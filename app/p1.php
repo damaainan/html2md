@@ -6,14 +6,70 @@ $html = file_get_contents("../data/cont.html");
 
 // 获取所有节点元素的类型 
 
-$res = getNodes($html);
+// $res = getNodes($html);
 
-$arr = getStr($res);
-$arr = array_flip($arr);
-$allEle = array_flip($arr);
-var_dump($allEle);
+// $arr = getStr($res);
+// $arr = array_flip($arr);
+// $allEle = array_flip($arr);
+// var_dump($allEle);
 // var_dump($res);
 
+// reCode($html);
+function reCode($html){ // clean pre code 
+    $doc = phpQuery::newDocumentHTML($html);
+    $ch = pq($doc)->find("pre");
+    // var_dump($ch);
+
+    // $ele = $ch->elements;
+    foreach ($ch as $va) {
+        $te=pq($va)->text();
+        // pq($va)->html($te);
+        $ht=pq($va)->html();
+        $html=str_replace($ht, $te, $html);
+    }
+    var_dump($html);
+    // return $arr;
+}
+replaceImgSeg($html);
+function replaceImgSeg($html){
+    $doc = phpQuery::newDocumentHTML($html);
+    $ch = pq($doc)->find("img");
+    // var_dump($ch);
+
+    // $ele = $ch->elements;
+    foreach ($ch as $ke=>$va) {
+        // var_dump($va);
+        $te=pq($va)->attr("data-src");
+        // var_dump($te);
+        // pq($va)->html($te);
+        $ht= $doc["img:eq($ke)"];
+        // var_dump($ht);
+        // $ht=pq($va)->replaceWith();
+        $html=str_replace($ht, "![]($te)", $html);
+    }
+    var_dump($html);
+}
+// replaceHrefSeg($html);
+function replaceHrefSeg($html){
+    $doc = phpQuery::newDocumentHTML($html);
+    $ch = pq($doc)->find("a");
+    // var_dump($ch);
+
+    // $ele = $ch->elements;
+    foreach ($ch as $ke => $va) {
+        // var_dump($va);
+        $href=pq($va)->attr("href");
+        $te=pq($va)->text();
+        $ht = $doc["a:eq($ke)"];
+        // var_dump($te);
+        // pq($va)->html($te);
+        // $ht=pq($va)->prop("outerHTML");
+        // var_dump($ht);
+        // $ht=pq($va)->replaceWith();
+        $html=str_replace($ht, "[$te]($href)", $html);
+    }
+    var_dump($html);
+}
 
 function getNodes($html) {
     $doc = phpQuery::newDocumentHTML($html);
