@@ -1,10 +1,24 @@
 <?php
 header("Content-type:text/html; Charset=utf-8");
+require "../vendor/autoload.php";
 require '../phpQuery/phpQuery.php';
+require "../lib/replaceElement.calss.php";
+use QL\QueryList;
+// $html = file_get_contents("../data/cont.html");
+$html = file_get_contents("../data/in.html");
 
-$html = file_get_contents("../data/cont.html");
+$rules = array(
+    // "title" => array(".article_row_fluid h1", 'text'),
+    // "source" => array(".article_meta .source a",'text'),
+    // "time" => array(".article_meta .timestamp",'text'),
+    "body" => array("#nei", 'html'),
+);
+// var_dump($html);
+$data = QueryList::html($html)->rules($rules)->query()->getData();
+$ret = $data->all();
+var_dump($ret);
 
-// 获取所有节点元素的类型 
+// 获取所有节点元素的类型
 
 // $res = getNodes($html);
 
@@ -15,42 +29,43 @@ $html = file_get_contents("../data/cont.html");
 // var_dump($res);
 
 // reCode($html);
-function reCode($html){ // clean pre code 
+function reCode($html) {
+    // clean pre code
     $doc = phpQuery::newDocumentHTML($html);
     $ch = pq($doc)->find("pre");
     // var_dump($ch);
 
     // $ele = $ch->elements;
     foreach ($ch as $va) {
-        $te=pq($va)->text();
+        $te = pq($va)->text();
         // pq($va)->html($te);
-        $ht=pq($va)->html();
-        $html=str_replace($ht, $te, $html);
+        $ht = pq($va)->html();
+        $html = str_replace($ht, $te, $html);
     }
     var_dump($html);
     // return $arr;
 }
-replaceImgSeg($html);
-function replaceImgSeg($html){
+// replaceImgSeg($html);
+function replaceImgSeg($html) {
     $doc = phpQuery::newDocumentHTML($html);
     $ch = pq($doc)->find("img");
     // var_dump($ch);
 
     // $ele = $ch->elements;
-    foreach ($ch as $ke=>$va) {
+    foreach ($ch as $ke => $va) {
         // var_dump($va);
-        $te=pq($va)->attr("data-src");
+        $te = pq($va)->attr("data-src");
         // var_dump($te);
         // pq($va)->html($te);
-        $ht= $doc["img:eq($ke)"];
+        $ht = $doc["img:eq($ke)"];
         // var_dump($ht);
         // $ht=pq($va)->replaceWith();
-        $html=str_replace($ht, "![]($te)", $html);
+        $html = str_replace($ht, "![]($te)", $html);
     }
     var_dump($html);
 }
 // replaceHrefSeg($html);
-function replaceHrefSeg($html){
+function replaceHrefSeg($html) {
     $doc = phpQuery::newDocumentHTML($html);
     $ch = pq($doc)->find("a");
     // var_dump($ch);
@@ -58,15 +73,15 @@ function replaceHrefSeg($html){
     // $ele = $ch->elements;
     foreach ($ch as $ke => $va) {
         // var_dump($va);
-        $href=pq($va)->attr("href");
-        $te=pq($va)->text();
+        $href = pq($va)->attr("href");
+        $te = pq($va)->text();
         $ht = $doc["a:eq($ke)"];
         // var_dump($te);
         // pq($va)->html($te);
         // $ht=pq($va)->prop("outerHTML");
         // var_dump($ht);
         // $ht=pq($va)->replaceWith();
-        $html=str_replace($ht, "[$te]($href)", $html);
+        $html = str_replace($ht, "[$te]($href)", $html);
     }
     var_dump($html);
 }
@@ -101,9 +116,8 @@ function checkNode($html) {
     }
 }
 
-
 function getStr($res, $nodestr = '') {
-	$arr =[];
+    $arr = [];
     foreach ($res as $kk => $vv) {
         $nodeLink = $nodestr;
         $ret = checkArray($vv);
@@ -112,16 +126,16 @@ function getStr($res, $nodestr = '') {
             if (is_int($kk)) {
                 // $nodeLink .= "eq(" . $kk . ")->";
             } else {
-            	$arr[]=$kk;
-            	// echo $kk,"<br/>";
+                $arr[] = $kk;
+                // echo $kk,"<br/>";
                 // $nodeLink .= "children('" . $kk . "')->";
                 // $nodeLink .= "children()->";
             }
             $arr1 = getStr($vv, $nodeLink);
-            $arr =array_merge($arr,$arr1);
+            $arr = array_merge($arr, $arr1);
         } else {
-        	// echo $vv,"<br/>";
-        	$arr[]=$vv;
+            // echo $vv,"<br/>";
+            $arr[] = $vv;
             // echo $nodeLink;
             // echo "eq(" . $kk . ")->children('" . $vv . "');<br/>";
         }
@@ -136,3 +150,8 @@ function checkArray($arr) {
         return 0;
     }
 }
+
+// $replaceElement = new replaceElement();
+
+// $html    = $replaceElement->doReplace($html);
+// var_dump($html);

@@ -4,12 +4,10 @@ header("Content-type:text/html; Charset=utf-8");
 /**
  * 替换 html 元素为 md 标识
  */
-class replaceElement
-{
+class replaceElement {
 
-    public function doReplace($str)
-    {
-        $str = preg_replace('/<pre[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n```LANG\r\n", $str);
+    public function doReplace($str) {
+        $str = preg_replace('/\s{0,3}<pre[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n```LANG\r\n", $str);
         // 这个替换放在最前面就可以 在最后就失败 有一个干扰项
         // 可以加个标记在前部  再次编辑的时候方便改动
 
@@ -59,6 +57,23 @@ class replaceElement
 
         $str = preg_replace('/&lt;/', "<", $str);
         $str = preg_replace('/&gt;/', ">", $str);
+
+        $str = preg_replace('/<table[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<\/table>/', "\r\n", $str);
+
+        $str = preg_replace('/\s{0,}<thead[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/\s{0,}<\/thead>/', "\r\n", $str);
+
+        $str = preg_replace("/[ ]{0,}<tr[\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>/", "| ", $str);
+        $str = preg_replace("/[ ]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<\/tr>/", " | ", $str);
+        $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>/", " | ", $str);
+        $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<\/tr>/", " |", $str);
+
+        // $str = preg_replace('/\s{0,}<th[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
+        // $str = preg_replace('/\s{0,}<\/th>/', "\r\n", $str);
+
+        $str = preg_replace('/\s{0,}<tbody[\sa-zA-Z\'\"=_:%-]{0,}>/', "", $str);
+        $str = preg_replace('/\s{0,}<\/tbody>/', "", $str);
 
         return $str;
     }
