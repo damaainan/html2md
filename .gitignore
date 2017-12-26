@@ -3,3 +3,4 @@ composer.lock
 
 out/*
 data/*
+urls.txt

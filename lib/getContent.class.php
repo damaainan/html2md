@@ -10,6 +10,7 @@ use QL\QueryList;
  * 获取最后内容
  */
 class getContent {
+    // 配置文件要独立出来
     private static $config = [
         "tuicool" => array(
             "title" => array(".article_row_fluid h1", 'text'),
