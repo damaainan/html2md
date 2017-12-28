@@ -1,6 +1,7 @@
 <?php
-header("Content-type:text/html; Charset=utf-8");
+namespace Tools;
 
+header("Content-type:text/html; Charset=utf-8");
 /**
  * 替换 html 元素为 md 标识
  */

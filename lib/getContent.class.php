@@ -2,8 +2,8 @@
 
 header("Content-type:text/html; Charset=utf-8");
 require "../vendor/autoload.php";
-require '../phpQuery/phpQuery.php';
-require "replaceElement.calss.php";
+// require '../phpQuery/phpQuery.php';
+// require "replaceElement.calss.php";
 use QL\QueryList;
 
 /**
@@ -136,7 +136,7 @@ class getContent {
         // $time= $time."\r\n\r\n";
         $source = "来源：[https://segmentfault.com" . $source . "](https://segmentfault.com" . $source . ")" . "\r\n\r\n";
         // file_put_contents("../data/cont.html",$body);
-        $replaceElement = new replaceElement();
+        $replaceElement = new Tools\replaceElement();
 
         $body = $replaceElement->doReplace($body);
         $content = $title . $source . $body;
