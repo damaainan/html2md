@@ -5,7 +5,7 @@ require "../vendor/autoload.php";
 // require '../phpQuery/phpQuery.php';
 // require "replaceElement.calss.php";
 use QL\QueryList;
-
+use Tools\replaceElement;
 /**
  * 获取最后内容
  */

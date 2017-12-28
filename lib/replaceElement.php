@@ -1,7 +1,9 @@
 <?php
 namespace Tools;
 
-header("Content-type:text/html; Charset=utf-8");
+// header("Content-type:text/html; Charset=utf-8"); // 不能有 header 头， composer 会报错 not found 
+// 待解决
+
 /**
  * 替换 html 元素为 md 标识
  */

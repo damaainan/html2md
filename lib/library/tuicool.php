@@ -1,5 +1,7 @@
 <?php 
-header("Content-type:text/html; Charset=utf-8");
+namespace Tools\lib;
+
+// header("Content-type:text/html; Charset=utf-8");
 class Tuicool{
 
     public static function getTuiku($html) {
