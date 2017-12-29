@@ -1,12 +1,13 @@
 <?php
 header("Content-type:text/html; Charset=utf-8");
-set_time_limit(0);
+// set_time_limit(0);
 /**
  * 第一步 获取各部分元素 querylist
  */
 require "../vendor/autoload.php";
 
-require "../lib/getContent.class.php";
+use Tools\getContent;
+// require "../lib/getContent.class.php";
 
 // 从脚本参数获取地址  或者 从 文件获取一系列地址
 $urls = [];

@@ -13,20 +13,20 @@ class Tuicool{
      * @param  [type] $html [description]
      * @return [type]       [description]
      */
-    public static function getTuiku($html) {
+    public static function getTuiku($html,$rules) {
         // var_dump($html);
         // file_put_contents("../data/in.html", $html);
         // $html = file_get_contents("../data/in.html");
         // 部分网址获取不到内容
-        
+
         // $config = self::getConfig();
         // $rules = $config['tuicool']; // 从config 根据 url 获取
-        $rules = array(
-            "title" => array(".article_row_fluid h1", 'text'),
-            "source" => array(".article_meta .source a", 'text'),
-            "time" => array(".article_meta .timestamp", 'text'),
-            "body" => array("#nei", 'html'),
-        );
+        // $rules = array(
+        //     "title" => array(".article_row_fluid h1", 'text'),
+        //     "source" => array(".article_meta .source a", 'text'),
+        //     "time" => array(".article_meta .timestamp", 'text'),
+        //     "body" => array("#nei", 'html'),
+        // );
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 

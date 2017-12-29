@@ -34,6 +34,16 @@ class Segmentfault{
         $content = $title . $source . $body;
         return $content;
     }
+    public static function reCode($html) {
+        $doc = phpQuery::newDocumentHTML($html);
+        $ch = pq($doc)->find("pre");
+        foreach ($ch as $va) {
+            $te = pq($va)->text();
+            $ht = pq($va)->html();
+            $html = str_replace($ht, $te, $html);
+        }
+        return $html;
+    }
 
     private static function replaceHrefSeg($html) {
         $doc = phpQuery::newDocumentHTML($html);
