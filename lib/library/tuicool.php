@@ -1,17 +1,32 @@
 <?php 
 namespace Tools\lib;
 
+// require "../../vendor/autoload.php";  // 只需要在父文件引入一次 不需要再次引入
+
+use QL\QueryList;
+use Tools\replaceElement;
+use phpQuery;
 // header("Content-type:text/html; Charset=utf-8");
 class Tuicool{
-
+    /**
+     * 转载自博客园的会发生跳转 从原链接处理
+     * @param  [type] $html [description]
+     * @return [type]       [description]
+     */
     public static function getTuiku($html) {
         // var_dump($html);
         // file_put_contents("../data/in.html", $html);
         // $html = file_get_contents("../data/in.html");
         // 部分网址获取不到内容
-        $config = self::getConfig();
-        $rules = $config['tuicool']; // 从config 根据 url 获取
-
+        
+        // $config = self::getConfig();
+        // $rules = $config['tuicool']; // 从config 根据 url 获取
+        $rules = array(
+            "title" => array(".article_row_fluid h1", 'text'),
+            "source" => array(".article_meta .source a", 'text'),
+            "time" => array(".article_meta .timestamp", 'text'),
+            "body" => array("#nei", 'html'),
+        );
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 

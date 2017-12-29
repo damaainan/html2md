@@ -1,6 +1,8 @@
 <?php 
 namespace Tools\lib;
-
+use QL\QueryList;
+use Tools\replaceElement;
+use phpQuery;
 // header("Content-type:text/html; Charset=utf-8");
 class Segmentfault{
 
