@@ -69,13 +69,10 @@ class getContent {
 
     private static function putContent($name, $content, $flag) {
         $file = "../out/" . $flag . $name . ".md";
-
         if (is_file($file)) {
             unlink($file);
         }
-
         $fp = fopen($file, "a");
-
         fwrite($fp, $content);
         fclose($fp);
     }
