@@ -35,5 +35,8 @@ $config = [
         ), // 伯乐在线
         "mengzhidu" => array( // https://www.mengzhidu.com/online/item/4/49
 
-        	),
+    	),
+        "github" => array( // issue
+
+        ),
     ];
