@@ -24,7 +24,7 @@ $config = [
             "title" => array("#cb_post_title_url", 'text'),
             "source" => array("#cb_post_title_url", 'href'),
             "time" => array("#post-date", 'text'),
-            "body" => array("#nei", 'html'),
+            "body" => array("#cnblogs_post_body", 'html'),
         ), //博客园
 
         "jobbole" => array(

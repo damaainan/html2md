@@ -6,10 +6,7 @@ use phpQuery;
 // header("Content-type:text/html; Charset=utf-8");
 class Segmentfault{
 
-    public static function getSegmentfault($html) {
-        $config = self::getConfig();
-        $rules = $config['segmentfault']; // 从config 根据 url 获取
-
+    public static function getSegmentfault($html,$rules) {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 

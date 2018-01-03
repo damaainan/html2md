@@ -52,7 +52,7 @@ class replaceElement {
         $str = preg_replace('/<ol[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/ol>/', "", $str);
 
-        $str = preg_replace('/<ul[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/ul>/', "", $str);
 
         $str = preg_replace('/\s{0,2}<li[\sa-zA-Z\'\"=_:-]{0,}>/', '* ', $str);
@@ -60,6 +60,7 @@ class replaceElement {
 
         $str = preg_replace('/&lt;/', "<", $str);
         $str = preg_replace('/&gt;/', ">", $str);
+        $str = preg_replace('/&amp;/', "&", $str);
 
         $str = preg_replace('/<table[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/table>/', "\r\n", $str);

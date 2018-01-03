@@ -12,6 +12,7 @@ use QL\QueryList;
 use Tools\replaceElement;
 use Tools\lib\Tuicool;
 use Tools\lib\Segmentfault;
+use Tools\lib\Cnblogs;
 
 /**
  * 获取最后内容
@@ -44,7 +45,7 @@ class getContent {
         if (strpos($url, "segmentfault")) {
             $rules = $configs['segmentfault'];
             $obj = new Segmentfault();
-            $content = $obj->getSegmentfault($html);
+            $content = $obj->getSegmentfault($html,$rules);
             $flag = 'segmentfault';
         } else if (strpos($url, "tuicool")) {
             $rules = $configs['tuicool'];
@@ -52,7 +53,9 @@ class getContent {
             $content = $obj->getTuiku($html,$rules);
             $flag = 'tuicool';
         } else if (strpos($url, "cnblogs")) {
-            $content = self::getCnblogs($html);
+            $rules = $configs['cnblogs'];
+            $obj = new Cnblogs();
+            $content = $obj->getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
         }
