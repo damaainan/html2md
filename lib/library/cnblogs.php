@@ -17,8 +17,10 @@ class Cnblogs{
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
 
-        // 代码部分 view code 需要单独处理
-        // $body = self::replaceImgTui($body);
+        // 代码部分 view code 需要单独处理 
+        // 需要先清理代码部分 
+        $body = self::reCode($body);
+        $body = self::replaceImg($body);
         $body = self::replaceHref($body);
 
         $title = "## " . $title . "\r\n\r\n";
@@ -46,13 +48,26 @@ class Cnblogs{
         }
         return $html;
     }
-    // 代码部分特殊处理
+    // 代码部分特殊处理 多种代码形式 正常形式的代码可以了
     public static function reCode($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("pre");
         foreach ($ch as $va) {
             $te = pq($va)->text();
             $ht = pq($va)->html();
+            $ht = trim($ht); // html 代码 两侧有换行符
+            $html = str_replace($ht, $te, $html);
+        }
+        return $html;
+    }
+    
+    public static function reCode1($html) {
+        $doc = phpQuery::newDocumentHTML($html);
+        $ch = pq($doc)->find("pre");
+        foreach ($ch as $va) {
+            $te = pq($va)->text();
+            $ht = pq($va)->html();
+            $ht = trim($ht); // html 代码 两侧有换行符
             $html = str_replace($ht, $te, $html);
         }
         return $html;
@@ -61,8 +76,7 @@ class Cnblogs{
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         foreach ($ch as $ke => $va) {
-            $te = pq($va)->attr("data-src");
-            $te = "https://segmentfault.com" . explode("?", $te)[0];
+            $te = pq($va)->attr("src");
             $ht = $doc["img:eq($ke)"];
             $html = str_replace($ht, "\r\n\r\n![]($te)", $html);
         }

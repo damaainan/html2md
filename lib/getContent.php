@@ -44,18 +44,15 @@ class getContent {
         // 判断 url 选择方法
         if (strpos($url, "segmentfault")) {
             $rules = $configs['segmentfault'];
-            $obj = new Segmentfault();
-            $content = $obj->getSegmentfault($html,$rules);
+            $content = Segmentfault::getSegmentfault($html,$rules);
             $flag = 'segmentfault';
         } else if (strpos($url, "tuicool")) {
             $rules = $configs['tuicool'];
-            $obj = new Tuicool();
-            $content = $obj->getTuiku($html,$rules);
+            $content = Tuicool::getTuiku($html,$rules);
             $flag = 'tuicool';
         } else if (strpos($url, "cnblogs")) {
             $rules = $configs['cnblogs'];
-            $obj = new Cnblogs();
-            $content = $obj->getCnblogs($html,$rules);
+            $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
         }
