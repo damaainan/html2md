@@ -18,8 +18,8 @@ class Segmentfault{
 
         // pre 中的 code 需要 去除  pre code .html replacewith .text
         $body = self::reCode($body);
-        $body = self::replaceImgSeg($body);
         $body = self::replaceHrefSeg($body);
+        $body = self::replaceImgSeg($body);
 
         $title = "## " . $title . "\r\n\r\n";
         // $time= $time."\r\n\r\n";
@@ -45,23 +45,35 @@ class Segmentfault{
     private static function replaceHrefSeg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("a");
+        $dh = pq($doc)->find("img");
+        $count = count($dh);
+        $i=$count;
+        $src='';
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
             $te = pq($va)->text();
             $ht = $doc["a:eq($ke)"];
-            $html = str_replace($ht, "[$te]($href)", $html);
+            $src .= "\n[$i]: $href";
+            $html = str_replace($ht, "[$te][$i]", $html);
+            $i++;
         }
+        $html = $html.$src;
         return $html;
     }
     public static function replaceImgSeg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
+        $i=0;
+        $src='';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-src");
             $te = "https://segmentfault.com" . explode("?", $te)[0];
             $ht = $doc["img:eq($ke)"];
-            $html = str_replace($ht, "\r\n\r\n![]($te)", $html);
+            $src .= "\n[$i]: $te";
+            $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
+            $i++;
         }
+        $html = $html.$src;
         return $html;
     }
 }
