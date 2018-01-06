@@ -37,6 +37,9 @@ $config = [
 
     	),
         "github" => array( // issue
-
+            "title" => array(".js-issue-title", 'text'),
+            // "source" => array(".article_meta .source a", 'text'),
+            "time" => array("relative-time", 'datetime'),
+            "body" => array("td.d-block", 'html'),
         ),
     ];

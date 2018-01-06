@@ -10,9 +10,11 @@ require "../vendor/autoload.php";
 
 use QL\QueryList;
 use Tools\replaceElement;
+use Tools\getHtml;
 use Tools\lib\Tuicool;
 use Tools\lib\Segmentfault;
 use Tools\lib\Cnblogs;
+use Tools\lib\github;
 
 /**
  * 获取最后内容
@@ -39,6 +41,7 @@ class getContent {
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
         $html = file_get_contents($url); // 可以优化为专门的 curl 方法
+        // $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;
 
         // 判断 url 选择方法
@@ -55,7 +58,11 @@ class getContent {
             $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
-        }
+        } else if (strpos($url, "github")) {
+            $rules = $configs['github'];
+            $content = Github::getGithub($html,$rules);
+            $flag = 'github';
+        } 
         if ($content) {
             self::putContent($name, $content, $flag);
             echo ".";
