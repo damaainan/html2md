@@ -45,8 +45,8 @@ class getContent {
         // var_dump($configs);die();
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
-        $html = file_get_contents($url); // 可以优化为专门的 curl 方法
-        // $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
+        // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
+        $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;
 
         // array_search 
@@ -91,10 +91,44 @@ class getContent {
     }
 
     public static function getListUrl($url){
-        $configs = self::getConfig();
-        $arr = explode('/', $url);
-        $name = $arr[count($arr) - 1];
+        $configs = new Config();
         $html = file_get_contents($url);
         // 分离列表项
+        if (strpos($url, "segmentfault")) {
+            $rules = $configs->getListConfig('segmentfault');
+        } else if (strpos($url, "tuicool")) {
+            $rules = $configs->getListConfig('tuicool');
+        } else if (strpos($url, "cnblogs")) {
+            $rules = $configs->getListConfig('cnblogs');
+        } else if (strpos($url, "github")) {
+            $rules = $configs->getListConfig('github');
+        } 
+        $data = QueryList::html($html)->rules($rules)->query()->getData();
+        $ret = $data->all();
+        foreach ($ret as $val) {
+            $urls[] = $val['url'];
+        }
+        return $urls;
+    }
+
+    public static function getKeyWord($url){
+        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github'];
+        $res = array_filter(array_map(function($val){
+                                $rr = strpos($url,$val);
+                                if($rr!==false)
+                                    return $rr;
+                                else
+                                    return false;
+                            }, $arr), 
+                            function($v, $k){
+                                  return $v!==false;  
+                            }, 
+                            ARRAY_FILTER_USE_BOTH
+        );
+        $res = array_keys($res);
+        if($res){
+            return $arr[$res[0]];
+        }
+        return 0;
     }
 }

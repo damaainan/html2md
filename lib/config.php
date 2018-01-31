@@ -48,4 +48,37 @@ class Config{
         ];
         return $config[$str];
     }
+
+    /**
+     * 获取页面链接集合
+     * @param  string $name 
+     * @return array
+     */
+    public function getListConfig($name){
+        $config = [
+            "tuicool" => array(
+                "url" => array(".article_row_fluid h1", 'text')
+            ),
+            "csdn" => array(
+                "url" => array(".article_row_fluid h1", 'text')
+            ),
+            "segmentfault" => array(
+                "url" => array("#articleTitle a", 'text')
+            ),
+            "cnblogs" => array(// 还有页面中的
+                "url" => array("#myposts .PostList .postTitl2 a", 'href')
+            ), //博客园
+
+            "jobbole" => array(
+                "url" => array(".article_row_fluid h1", 'text')
+            ), // 伯乐在线
+            "mengzhidu" => array( // https://www.mengzhidu.com/online/item/4/49
+
+            ),
+            "github" => array( // issue
+                "url" => array(".js-issue-title", 'text')
+            ),
+        ];
+        return $config[$name];
+    }
 }
