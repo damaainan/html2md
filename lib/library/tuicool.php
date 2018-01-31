@@ -1,19 +1,20 @@
-<?php 
+<?php
 namespace Tools\lib;
 
 // require "../../vendor/autoload.php";  // 只需要在父文件引入一次 不需要再次引入
 
+use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
-use phpQuery;
+
 // header("Content-type:text/html; Charset=utf-8");
-class Tuicool{
+class Tuicool {
     /**
      * 转载自博客园的会发生跳转 从原链接处理
      * @param  [type] $html [description]
      * @return [type]       [description]
      */
-    public static function getTuiku($html,$rules) {
+    public static function getTuiku($html, $rules) {
         // var_dump($html);
         // file_put_contents("../data/in.html", $html);
         // $html = file_get_contents("../data/in.html");
@@ -55,8 +56,8 @@ class Tuicool{
     public static function replaceImgTui($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
-        $i=0;
-        $src='';
+        $i = 0;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("src");
             $ht = $doc["img:eq($ke)"];
@@ -64,7 +65,7 @@ class Tuicool{
             $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
             $i++;
         }
-        $html = $html.$src;
+        $html = $html . $src;
         return $html;
     }
     private static function replaceHrefTui($html) {
@@ -72,8 +73,8 @@ class Tuicool{
         $ch = pq($doc)->find("a");
         $dh = pq($doc)->find("img");
         $count = count($dh);
-        $i=$count;
-        $src='';
+        $i = $count;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
             $te = pq($va)->text();
@@ -82,7 +83,7 @@ class Tuicool{
             $html = str_replace($ht, "[$te][$i]", $html);
             $i++;
         }
-        $html = $html.$src;
+        $html = $html . $src;
         return $html;
     }
 }

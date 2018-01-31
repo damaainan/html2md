@@ -11,6 +11,7 @@ require "../vendor/autoload.php";
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\getHtml;
+use Tools\config;
 use Tools\lib\Tuicool;
 use Tools\lib\Segmentfault;
 use Tools\lib\Cnblogs;
@@ -30,13 +31,17 @@ class getContent {
     // }
 
     public static function getConfig() {
-        require "config.php";  // 这样很 low 
+        // require "config.php";  // 这样很 low 
         // var_dump($config);
-        return $config;
+        // return $config;
+        $config = new Config();
+        return $config->getConfig();
     }
 
     public static function doMark($url) {
-        $configs = self::getConfig();
+        $config = new Config();
+        // $configs = $config->getConfig();
+
         // var_dump($configs);die();
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
@@ -44,22 +49,23 @@ class getContent {
         // $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;
 
+        // array_search 
         // 判断 url 选择方法
         if (strpos($url, "segmentfault")) {
-            $rules = $configs['segmentfault'];
+            $rules = $config->getConfig('segmentfault');
             $content = Segmentfault::getSegmentfault($html,$rules);
             $flag = 'segmentfault';
         } else if (strpos($url, "tuicool")) {
-            $rules = $configs['tuicool'];
+            $rules = $config->getConfig('tuicool');
             $content = Tuicool::getTuiku($html,$rules);
             $flag = 'tuicool';
         } else if (strpos($url, "cnblogs")) {
-            $rules = $configs['cnblogs'];
+            $rules = $config->getConfig('cnblogs');
             $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
         } else if (strpos($url, "github")) {
-            $rules = $configs['github'];
+            $rules = $config->getConfig('github');
             $content = Github::getGithub($html,$rules);
             $flag = 'github';
         } 
@@ -82,5 +88,13 @@ class getContent {
         $fp = fopen($file, "a");
         fwrite($fp, $content);
         fclose($fp);
+    }
+
+    public static function getListUrl($url){
+        $configs = self::getConfig();
+        $arr = explode('/', $url);
+        $name = $arr[count($arr) - 1];
+        $html = file_get_contents($url);
+        // 分离列表项
     }
 }

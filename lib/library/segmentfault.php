@@ -1,12 +1,13 @@
-<?php 
+<?php
 namespace Tools\lib;
+use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
-use phpQuery;
-// header("Content-type:text/html; Charset=utf-8");
-class Segmentfault{
 
-    public static function getSegmentfault($html,$rules) {
+// header("Content-type:text/html; Charset=utf-8");
+class Segmentfault {
+
+    public static function getSegmentfault($html, $rules) {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 
@@ -47,8 +48,8 @@ class Segmentfault{
         $ch = pq($doc)->find("a");
         $dh = pq($doc)->find("img");
         $count = count($dh);
-        $i=$count;
-        $src='';
+        $i = $count;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
             $te = pq($va)->text();
@@ -57,14 +58,14 @@ class Segmentfault{
             $html = str_replace($ht, "[$te][$i]", $html);
             $i++;
         }
-        $html = $html.$src;
+        $html = $html . $src;
         return $html;
     }
     public static function replaceImgSeg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
-        $i=0;
-        $src='';
+        $i = 0;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-src");
             $te = "https://segmentfault.com" . explode("?", $te)[0];
@@ -73,7 +74,7 @@ class Segmentfault{
             $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
             $i++;
         }
-        $html = $html.$src;
+        $html = $html . $src;
         return $html;
     }
 }
