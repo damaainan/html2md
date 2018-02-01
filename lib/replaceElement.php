@@ -30,7 +30,7 @@ class replaceElement {
         $str = preg_replace('/<span[\sa-zA-Z\'\"=_:-]{0,}>/', '', $str);
         $str = preg_replace('/<\/span>/', "\r\n", $str);
 
-        $str = preg_replace('/\s{0,1}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,2}/', '', $str);
+        $str = preg_replace('/\s{0,3}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,2}[\r|\n]{0,1}/', '', $str);
         $str = preg_replace('/<\/p>/', "\r\n", $str);
 
         $str = preg_replace('/\s{0,2}<h1[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n## ", $str);
@@ -46,16 +46,16 @@ class replaceElement {
         $str = preg_replace('/\s{0,2}<h6[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n###### ", $str);
         $str = preg_replace('/<\/h6>/', "\r\n", $str);
 
-        $str = preg_replace('/<code[\sa-zA-Z\'\"=_:-]{0,}>/', '`', $str);
-        $str = preg_replace('/<\/code>/', "`", $str);
+        $str = preg_replace('/\s{0,4}<code[\sa-zA-Z\'\"=_:-]{0,}>/', '`', $str);
+        $str = preg_replace("/<\/code>\n/", "`", $str);
 
-        $str = preg_replace('/<ol[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
-        $str = preg_replace('/<\/ol>/', "", $str);
+        $str = preg_replace('/\s{0,2}<ol[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<\/ol>/', "\r\n", $str);
 
-        $str = preg_replace('/<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
-        $str = preg_replace('/<\/ul>/', "", $str);
+        $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<\/ul>/', "\r\n", $str);
 
-        $str = preg_replace('/\s{0,2}<li[\sa-zA-Z\'\"=_:-]{0,}>/', '* ', $str);
+        $str = preg_replace('/\s{0,4}<li[\sa-zA-Z\'\"=_:-]{0,}>/', '* ', $str);
         $str = preg_replace('/<\/li>/', "", $str);
 
         $str = preg_replace('/&lt;/', "<", $str);

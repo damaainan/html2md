@@ -30,8 +30,7 @@ class Tuicool {
         // );
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
-var_dump($html);
-die();
+
         $title = $ret[0]['title'];
         $source = $ret[0]['source'];
         $time = $ret[0]['time'];

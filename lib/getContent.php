@@ -46,25 +46,29 @@ class getContent {
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
         // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
-        $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
+        // $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;
 
         // array_search 
         // 判断 url 选择方法
         if (strpos($url, "segmentfault")) {
+            $html = getHtml::getUrl($url, 'segmentfault');
             $rules = $config->getConfig('segmentfault');
             $content = Segmentfault::getSegmentfault($html,$rules);
             $flag = 'segmentfault';
         } else if (strpos($url, "tuicool")) {
+            $html = getHtml::getUrl($url);
             $rules = $config->getConfig('tuicool');
             $content = Tuicool::getTuiku($html,$rules);
             $flag = 'tuicool';
         } else if (strpos($url, "cnblogs")) {
+            $html = getHtml::getUrl($url, 'cnblogs');
             $rules = $config->getConfig('cnblogs');
             $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
         } else if (strpos($url, "github")) {
+            $html = getHtml::getUrl($url, 'github');
             $rules = $config->getConfig('github');
             $content = Github::getGithub($html,$rules);
             $flag = 'github';
@@ -89,8 +93,12 @@ class getContent {
         fwrite($fp, $content);
         fclose($fp);
     }
-
+    // 用 sqllite 存储已抓取过的 url 
     public static function getListUrl($url){
+        // 根据 url 中的关键字 判断采取何种 rule 
+        // 列表 list 收藏 bookmarks 页面总结 page 
+        // 还需要分页抓取 
+        
         $configs = new Config();
         $html = file_get_contents($url);
         // 分离列表项
