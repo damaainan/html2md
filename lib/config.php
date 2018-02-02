@@ -57,7 +57,7 @@ class Config{
     public function getListConfig($name){
         $config = [
             "tuicool" => array(
-                "url" => array(".article_row_fluid h1", 'text')
+                "url" => array(".single_simple span a", 'href')
             ),
             "csdn" => array(
                 "url" => array(".article_row_fluid h1", 'text')

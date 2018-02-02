@@ -4,7 +4,7 @@ namespace Tools;
 require "../vendor/autoload.php";
 
 class getHtml{
-	public static function getUrl($url, $flag = 'tuicool'){
+	public static function getUrl($url){
 		// 1. 初始化
 		 $ch = curl_init();
 		 // 2. 设置选项，包括URL
@@ -12,18 +12,19 @@ class getHtml{
 		 curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
 		 curl_setopt($ch,CURLOPT_HEADER,0); //https://www.tuicool.com/topics
 		 curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3322.4 Safari/537.36");
-	    if($flag == 'tuicool'){
+	    if(strpos($url, 'tuicool')){
 		    curl_setopt($ch, CURLOPT_REFERER, "https://www.tuicool.com/topics");
 		    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查
 		    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);  // 从证书中检查SSL加密算法是否存在
 		    // 为防止跳转 需要 加 cookie
-		    curl_setopt($ch, CURLOPT_COOKIE, '_tuicool_session=');  
+		    $cookie = file_get_contents(dirname(__FILE__).'/../data/cookie');
+		    curl_setopt($ch, CURLOPT_COOKIE, $cookie);  
+		    // curl_setopt($ch, CURLOPT_COOKIEFILE,  dirname(__FILE__).'/../data/cookie');  // cookie存入文件
 	    }
-
 		 // 3. 执行并获取HTML文档内容
 		 $output = curl_exec($ch);
 		 if($output === FALSE ){
-		 echo "CURL Error:".curl_error($ch);
+			 echo "CURL Error:".curl_error($ch);
 		 }
 		 // 4. 释放curl句柄
 		 curl_close($ch);

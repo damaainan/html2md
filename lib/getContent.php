@@ -46,29 +46,25 @@ class getContent {
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
         // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
-        // $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
+        $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;
 
         // array_search 
         // 判断 url 选择方法
         if (strpos($url, "segmentfault")) {
-            $html = getHtml::getUrl($url, 'segmentfault');
             $rules = $config->getConfig('segmentfault');
             $content = Segmentfault::getSegmentfault($html,$rules);
             $flag = 'segmentfault';
         } else if (strpos($url, "tuicool")) {
-            $html = getHtml::getUrl($url);
             $rules = $config->getConfig('tuicool');
             $content = Tuicool::getTuiku($html,$rules);
             $flag = 'tuicool';
         } else if (strpos($url, "cnblogs")) {
-            $html = getHtml::getUrl($url, 'cnblogs');
             $rules = $config->getConfig('cnblogs');
             $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
         } else if (strpos($url, "github")) {
-            $html = getHtml::getUrl($url, 'github');
             $rules = $config->getConfig('github');
             $content = Github::getGithub($html,$rules);
             $flag = 'github';
@@ -100,29 +96,37 @@ class getContent {
         // 还需要分页抓取 
         
         $configs = new Config();
-        $html = file_get_contents($url);
+        $html = getHtml::getUrl($url);
         // 分离列表项
-        if (strpos($url, "segmentfault")) {
-            $rules = $configs->getListConfig('segmentfault');
-        } else if (strpos($url, "tuicool")) {
-            $rules = $configs->getListConfig('tuicool');
-        } else if (strpos($url, "cnblogs")) {
-            $rules = $configs->getListConfig('cnblogs');
-        } else if (strpos($url, "github")) {
-            $rules = $configs->getListConfig('github');
-        } 
+        // if (strpos($url, "segmentfault")) {
+        //     $rules = $configs->getListConfig('segmentfault');
+        // } else if (strpos($url, "tuicool")) {
+        //     $rules = $configs->getListConfig('tuicool');
+        // } else if (strpos($url, "cnblogs")) {
+        //     $rules = $configs->getListConfig('cnblogs');
+        // } else if (strpos($url, "github")) {
+        //     $rules = $configs->getListConfig('github');
+        // } 
+
+        $keyword = self::getKeyWord($url);
+        $rules = $configs->getListConfig($keyword);
+        $prefix = '';
+        if($keyword == 'tuicool'){
+            $prefix = "https://www.tuicool.com";
+        }
+
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
         foreach ($ret as $val) {
-            $urls[] = $val['url'];
+            $urls[] = $prefix . $val['url'];
         }
         return $urls;
     }
 
     public static function getKeyWord($url){
         $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github'];
-        $res = array_filter(array_map(function($val){
-                                $rr = strpos($url,$val);
+        $res = array_filter(array_map(function($val) use ($url){
+                                $rr = strpos($url, $val);
                                 if($rr!==false)
                                     return $rr;
                                 else
