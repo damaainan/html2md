@@ -1,53 +1,42 @@
-<?php
+<?php 
 namespace Tools\lib;
-
-// require "../../vendor/autoload.php";  // 只需要在父文件引入一次 不需要再次引入
-
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
-
-// header("Content-type:text/html; Charset=utf-8");
-class Tuicool {
-    /**
-     * @param  [type] $html [description]
-     * @return [type]       [description]
-     */
-    public static function getTuiku($html, $rules) {
-        // var_dump($html);
-        // file_put_contents("../data/in.html", $html);
-        // $html = file_get_contents("../data/in.html");
-        // 部分网址获取不到内容
+class Zhihu{
+        public static function getZhihu($html, $rules) {
+        
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 
         $title = $ret[0]['title'];
-        $source = $ret[0]['source'];
+        // $source = $ret[0]['source'];
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
-        
-        $body = self::replaceHrefTui($body);
-        $body = self::replaceImgTui($body);
+        // remove noscript
+        $body = self::replaceHref($body);
+        $body = self::replaceImg($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
-        $source = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
-        // file_put_contents("../data/cont.html",$body);
+        // $source = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
-        $content = $title . $source . $time . $body;
+        $content = $title . $time . $body;
         return $content;
 
     }
 
-    public static function replaceImgTui($html) {
+    // <figure><noscript>  需要处理    Latex 公式需要处理 
+
+    public static function replaceImg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         $i = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
-            $te = pq($va)->attr("src");
+            $te = pq($va)->attr("data-original");
             $ht = $doc["img:eq($ke)"];
             $src .= "\n[$i]: $te";
             $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
@@ -56,7 +45,7 @@ class Tuicool {
         $html = $html . $src;
         return $html;
     }
-    private static function replaceHrefTui($html) {
+    private static function replaceHref($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("a");
         $dh = pq($doc)->find("img");

@@ -16,6 +16,7 @@ use Tools\lib\Tuicool;
 use Tools\lib\Segmentfault;
 use Tools\lib\Cnblogs;
 use Tools\lib\github;
+use Tools\lib\zhihu;
 
 /**
  * 获取最后内容
@@ -68,6 +69,10 @@ class getContent {
             $rules = $config->getConfig('github');
             $content = Github::getGithub($html,$rules);
             $flag = 'github';
+        } else if (strpos($url, "zhihu")) {
+            $rules = $config->getConfig('zhihu');
+            $content = Zhihu::getZhihu($html,$rules);
+            $flag = 'zhihu';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);

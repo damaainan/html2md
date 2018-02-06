@@ -45,6 +45,12 @@ class Config{
                 "time" => array("relative-time", 'datetime'),
                 "body" => array("td.d-block", 'html'),
             ),
+            "zhihu" => array( 
+                "title" => array("h1", 'text'),
+                // "source" => array(".article_meta .source a", 'text'),
+                "time" => array("time", 'datetime'),
+                "body" => array(".PostIndex-content", 'html'),
+            ),
         ];
         return $config[$str];
     }
@@ -76,6 +82,9 @@ class Config{
 
             ),
             "github" => array( // issue
+                "url" => array(".js-issue-title", 'text')
+            ),
+            "zhihu" => array( // issue
                 "url" => array(".js-issue-title", 'text')
             ),
         ];
