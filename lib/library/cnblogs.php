@@ -1,11 +1,12 @@
-<?php 
+<?php
 namespace Tools\lib;
+use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
-use phpQuery;
+
 // header("Content-type:text/html; Charset=utf-8");
-class Cnblogs{
-    public static function getCnblogs($html,$rules) {
+class Cnblogs {
+    public static function getCnblogs($html, $rules) {
 
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
@@ -14,11 +15,11 @@ class Cnblogs{
 // die();
         $title = $ret[0]['title'];
         $source = $ret[0]['source'];
-        $time = $ret[0]['time'];
+        $time = isset($ret[0]['time']) ? $ret[0]['time'] : '';
         $body = $ret[0]['body'];
 
-        // 代码部分 view code 需要单独处理 
-        // 需要先清理代码部分 
+        // 代码部分 view code 需要单独处理
+        // 需要先清理代码部分
         // $body = self::dealImg($body);die();  // 图片替换没处理好
         $body = self::reCode($body);
         $body = self::replaceImg($body);
@@ -40,7 +41,7 @@ class Cnblogs{
         $ch = pq($doc)->find("a");
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
-            if(!$href){
+            if (!$href) {
                 continue;
             }
             $te = pq($va)->text();
@@ -62,19 +63,19 @@ class Cnblogs{
         return $html;
     }
     // 处理图片第一步
-    public static function dealImg($html){
+    public static function dealImg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("src");
             $ht = pq($va)->parent('a')->attr('href');
-            if($ht == $te){
+            if ($ht == $te) {
                 $img = pq($va)->parent('a')->html();
                 $href = $doc["img:eq($ke)"]->parent('a')->parent()->html();
                 var_dump($img);
                 var_dump($href);
                 $html = str_replace($href, $img, $html);
-            }else{
+            } else {
                 continue;
             }
         }

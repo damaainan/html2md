@@ -33,11 +33,11 @@ class replaceElement {
         $str = preg_replace('/[ ]{0,3}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,2}[\r|\n]{0,1}/', '', $str);
         $str = preg_replace('/<\/p>/', "\r\n", $str);
 
-        $str = preg_replace('/\s{0,2}<h1[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n## ", $str);
+        $str = preg_replace('/\s{0,2}<h1[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"=_:-]{0,}>/u', "\r\n## ", $str);
         $str = preg_replace('/<\/h1>/', "\r\n", $str);
-        $str = preg_replace('/\s{0,3}<h2[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n## ", $str);
+        $str = preg_replace('/\s{0,3}<h2[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"=_:-]{0,}>/u', "\r\n## ", $str);
         $str = preg_replace('/<\/h2>/', "\r\n", $str);
-        $str = preg_replace('/\s{0,2}<h3[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n### ", $str);
+        $str = preg_replace('/\s{0,2}<h3[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"=_:-]{0,}>/u', "\r\n### ", $str);
         $str = preg_replace('/<\/h3>/', "\r\n", $str);
         $str = preg_replace('/\s{0,2}<h4[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n#### ", $str);
         $str = preg_replace('/<\/h4>/', "\r\n", $str);
@@ -52,19 +52,44 @@ class replaceElement {
 
         $str = preg_replace("/<\/{0,1}blockquote>/", "", $str);
 
-        $str = preg_replace('/\s{0,2}<ol[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
-        $str = preg_replace('/<\/ol>/', "\r\n", $str);
+        $str = self::dealList($str);
 
-        $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
-        $str = preg_replace('/<\/ul>/', "\r\n", $str);
+        // $str = preg_replace('/\s{0,2}<ol[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        // $str = preg_replace('/<\/ol>/', "\r\n", $str);
 
-        $str = preg_replace('/[ ]{0,4}<li[\sa-zA-Z\'\"=_:-]{0,}>\n{0,}/', '* ', $str);
-        $str = preg_replace('/<\/li>/', "", $str);
+        // $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        // $str = preg_replace('/<\/ul>/', "\r\n", $str);
+
+        // $str = preg_replace('/[ ]{0,4}<li[\sa-zA-Z\'\"=_:-]{0,}>\n{0,}/', '* ', $str);
+        // $str = preg_replace('/<\/li>/', "", $str);
 
         $str = preg_replace('/&lt;/', "<", $str);
         $str = preg_replace('/&gt;/', ">", $str);
         $str = preg_replace('/&amp;/', "&", $str);
 
+        $str = self::dealTable($str);
+        // $str = preg_replace('/<table[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
+        // $str = preg_replace('/<\/table>/', "\r\n", $str);
+
+        // $str = preg_replace('/\s{0,}<thead[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
+        // $str = preg_replace('/\s{0,}<\/thead>/', "\r\n", $str);
+
+        // $str = preg_replace("/[ ]{0,}<tr[\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>/", "| ", $str);
+        // $str = preg_replace("/[ ]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<\/tr>/", " | ", $str);
+        // $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>/", " | ", $str);
+        // $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<\/tr>/", " |", $str);
+
+        // $str = preg_replace('/\s{0,}<th[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
+        // $str = preg_replace('/\s{0,}<\/th>/', "\r\n", $str);
+
+        // $str = preg_replace('/\s{0,}<tbody[\sa-zA-Z\'\"=_:%-]{0,}>/', "", $str);
+        // $str = preg_replace('/\s{0,}<\/tbody>/', "", $str);
+
+        return $str;
+    }
+
+    // 处理表格
+    private function dealTable($str){
         $str = preg_replace('/<table[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/table>/', "\r\n", $str);
 
@@ -76,12 +101,33 @@ class replaceElement {
         $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>/", " | ", $str);
         $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<\/tr>/", " |", $str);
 
-        // $str = preg_replace('/\s{0,}<th[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
-        // $str = preg_replace('/\s{0,}<\/th>/', "\r\n", $str);
-
         $str = preg_replace('/\s{0,}<tbody[\sa-zA-Z\'\"=_:%-]{0,}>/', "", $str);
         $str = preg_replace('/\s{0,}<\/tbody>/', "", $str);
+        return $str;
+    }
+    // 处理列表
+    private function dealList($str){
+        $str = preg_replace('/\s{0,2}<ol[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<\/ol>/', "\r\n", $str);
 
+        $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<\/ul>/', "\r\n", $str);
+
+        $str = preg_replace('/[ ]{0,4}<li[\sa-zA-Z\'\"=_:-]{0,}>\n{0,}/', '* ', $str);
+        $str = preg_replace('/<\/li>/', "", $str);
+        return $str;
+    }
+    // 处理标题
+    private function dealHead($str){
+        $hbase_p = '/\s{0,2}<';
+        $hbase_s = '[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"=_:-]{0,}>/u'; // 拼接 h1 - h6 
+        for ($i = 1; $i < 7; $i++) {
+            $head = "\n" . str_pad("#", $i);
+            $h = "h".$i;
+            $pattern = $hbase_p . $h .$hbase_s;
+            $str = preg_replace($pattern, $head, $str);
+            $str = preg_replace('/<\/'. $h .'>/', "\r\n", $str);
+        }
         return $str;
     }
 }
