@@ -21,7 +21,7 @@ class getHtml {
         }
     }
 
-    private function curlHttps($url, $cookie, $header) {
+    private static function curlHttps($url, $cookie, $header) {
         $ch = curl_init();
         // 2. 设置选项，包括URL
         curl_setopt($ch, CURLOPT_URL, $url);

@@ -4,7 +4,7 @@ use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
 class Zhihu{
-        public static function getZhihu($html, $rules) {
+        public static function getZhihu($html, $rules, $url) {
         
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
@@ -13,18 +13,29 @@ class Zhihu{
         // $source = $ret[0]['source'];
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
-        // remove noscript
+
+        $body =  self::replaceOther($body);
         $body = self::replaceHref($body);
         $body = self::replaceImg($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
-        // $source = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
+        $source = "来源：$url" . "\r\n\r\n";
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
-        $content = $title . $time . $body;
+        $body = preg_replace("/[\r\n]{2,}/", "\n\n", $body); // 替换多余的换行
+        $content = $title . $source . $time . $body;
         return $content;
+
+    }
+
+    private static function replaceOther($str){
+        $str = preg_replace('/<noscript>.*?<\/noscript>/', '', $str); // ? 避免贪婪模式 不加 ？ 会多匹配
+        $str = preg_replace('/<figcaption>.*?<\/figcaption>/', '', $str); 
+        $str = preg_replace('/<figure>/', '', $str); 
+        $str = preg_replace('/<\/figure>/', '', $str); 
+        return $str;
 
     }
 

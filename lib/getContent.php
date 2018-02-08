@@ -71,7 +71,7 @@ class getContent {
             $flag = 'github';
         } else if (strpos($url, "zhihu")) {
             $rules = $config->getConfig('zhihu');
-            $content = Zhihu::getZhihu($html,$rules);
+            $content = Zhihu::getZhihu($html,$rules,$url);
             $flag = 'zhihu';
         } 
         if ($content) {
