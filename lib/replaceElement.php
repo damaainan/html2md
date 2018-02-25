@@ -12,12 +12,12 @@ class replaceElement {
     public function doReplace($str) {
         // 这个替换放在最前面就可以 在最后就失败 有一个干扰项
         // 可以加个标记在前部  再次编辑的时候方便改动
-        $str = preg_replace('/\s{0,3}<pre[\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n```LANG\r\n", $str);
+        $str = preg_replace('/\s{0,3}<pre[\sa-zA-Z\'\"=_:;\d-]{0,}>/', "\r\n```LANG\r\n", $str);
         $str = preg_replace('/<\/pre>/', "\r\n```\r\n", $str);
 
         $str = preg_replace('/<br[\/]{0,1}>/', "\r\n", $str);
 
-        $str = preg_replace('/<div[\sa-zA-Z\'\"=_:-]{0,}>/', '', $str);
+        $str = preg_replace('/<div[\sa-zA-Z\'\"=_:;#\d-]{0,}>/', '', $str);
         $str = preg_replace('/<\/div>/', "\r\n", $str);
 
         $str = preg_replace('/[ ]{0,}<strong[\sa-zA-Z\'\"=_:-]{0,}>/', ' **`', $str);

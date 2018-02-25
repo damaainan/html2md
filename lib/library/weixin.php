@@ -3,8 +3,8 @@ namespace Tools\lib;
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
-class Zhihu{
-    public static function getZhihu($html, $rules, $url) {
+class Weixin{
+	public static function getWeixin($html, $rules, $url) {
         
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
@@ -14,7 +14,7 @@ class Zhihu{
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
 
-        $body =  self::replaceOther($body);
+        // $body =  self::replaceOther($body);
         $body = self::replaceHref($body);
         $body = self::replaceImg($body);
 
@@ -29,17 +29,6 @@ class Zhihu{
         return $content;
 
     }
-
-    private static function replaceOther($str){
-        $str = preg_replace('/<noscript>.*?<\/noscript>/', '', $str); // ? 避免贪婪模式 不加 ？ 会多匹配
-        $str = preg_replace('/<figcaption>.*?<\/figcaption>/', '', $str); 
-        $str = preg_replace('/<figure>/', '', $str); 
-        $str = preg_replace('/<\/figure>/', '', $str); 
-        return $str;
-
-    }
-
-    // <figure><noscript>  需要处理    Latex 公式需要处理 
 
     public static function replaceImg($html) {
         $doc = phpQuery::newDocumentHTML($html);

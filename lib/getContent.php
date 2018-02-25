@@ -73,6 +73,10 @@ class getContent {
             $rules = $config->getConfig('zhihu');
             $content = Zhihu::getZhihu($html,$rules,$url);
             $flag = 'zhihu';
+        } else if (strpos($url, "weixin")) {
+            $rules = $config->getConfig('weixin');
+            $content = Weixin::getWeixin($html,$rules,$url);
+            $flag = 'weixin';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);
