@@ -12,10 +12,10 @@ class Config{
                 "body" => array("#nei", 'html'),
             ),
             "csdn" => array(
-                "title" => array(".article_row_fluid h1", 'text'),
-                "source" => array(".article_meta .source a", 'text'),
-                "time" => array(".article_meta .timestamp", 'text'),
-                "body" => array("#nei", 'html'),
+                "title" => array(".article_title h1 a", 'text'),
+                "source" => array(".article_title h1 a", 'href'),
+                "time" => array(".article_r .link_postdate", 'text'),
+                "body" => array("#article_content", 'html'),
             ),
             "segmentfault" => array(
                 "title" => array("#articleTitle a", 'text'),

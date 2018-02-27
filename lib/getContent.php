@@ -17,6 +17,7 @@ use Tools\lib\Segmentfault;
 use Tools\lib\Cnblogs;
 use Tools\lib\github;
 use Tools\lib\zhihu;
+use Tools\lib\csdn;
 
 /**
  * 获取最后内容
@@ -77,6 +78,10 @@ class getContent {
             $rules = $config->getConfig('weixin');
             $content = Weixin::getWeixin($html,$rules,$url);
             $flag = 'weixin';
+        } else if (strpos($url, "csdn")) {
+            $rules = $config->getConfig('csdn');
+            $content = Csdn::getCSDN($html,$rules);
+            $flag = 'csdn';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);
