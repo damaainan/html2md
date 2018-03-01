@@ -16,8 +16,8 @@ class Csdn {
         $body = $ret[0]['body'];
 
         $body = self::reCode($body);
-        $body = self::replaceImg($body);
         $body = self::replaceHref($body);
+        $body = self::replaceImg($body);
         $body = self::dealMathjax($body);
 
         $title = "## " . trim($title) . "\r\n\r\n";
@@ -35,15 +35,24 @@ class Csdn {
 
     private static function dealMathjax($html) {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find(".MathJax_Preview");
+        $dh = pq($doc)->find(".MathJax_Display");
+        foreach ($dh as $key => $val) {
+            $no = pq($doc)->find(".MathJax_Display:eq($key)")->html();
+            $te = pq($val)->next("script")->text();
+            $html = str_replace($no, "\n<nnnn>===" . $te . "===</nnnn>", $html);
+        }
+        // 重新解析
+        $doc1 = phpQuery::newDocumentHTML($html);
+        $ch = pq($doc1)->find(".MathJax_Preview");
         foreach ($ch as $ke => $va) {
-            $no = pq($doc)->find("nobr:eq($ke)")->html();
+            $no = pq($doc1)->find("nobr:eq($ke)")->html();
 
             $tes = pq($va)->next(".MathJax");
             $te = pq($tes)->next("script")->text();
 
             $html = str_replace($no, "===" . $te . "===", $html);
         }
+        $html = str_replace("nnnn", "nobr", $html); // nnnn 避免冲突
         return $html;
     }
     // 去除 script 标签  nobr
@@ -51,7 +60,8 @@ class Csdn {
     private static function replaceMathjax($html) {
         $str = preg_replace('/<script[\sa-zA-Z\'\"=_:;\/\d-]{0,}>.*?<\/script>/', "", $html);
         // 去除 nobr
-        preg_match_all('/\n<nobr>===(.*?)===<\/nobr>/', $str, $match); 
+        preg_match_all("/\n<nobr>===(.*?)===<\/nobr>/", $str, $match); 
+        // var_dump($match);
         foreach ($match[0] as $ke => $va) {
             $str = str_replace($match[0][$ke], "\r\n $$ " . $match[1][$ke] . " $$ ", $str);
         }
@@ -63,6 +73,10 @@ class Csdn {
     private static function replaceHref($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("a");
+        $dh = pq($doc)->find("img");
+        $count = count($dh);
+        $i = $count;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
             if (!$href) {
@@ -70,8 +84,12 @@ class Csdn {
             }
             $te = pq($va)->text();
             $ht = $doc["a:eq($ke)"];
-            $html = str_replace($ht, "[$te]($href)", $html);
+            $src .= "\n[$i]: $href";
+            // $html = str_replace($ht, "[$te]($href)", $html);
+            $html = str_replace($ht, "[$te][$i]", $html);
+            $i++;
         }
+        $html = $html . $src;
         return $html;
     }
     // 代码部分特殊处理 多种代码形式 正常形式的代码可以了
@@ -87,7 +105,7 @@ class Csdn {
         return $html;
     }
     // 处理图片第一步
-    public static function dealImg($html) {
+    /*public static function dealImg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         foreach ($ch as $ke => $va) {
@@ -104,16 +122,22 @@ class Csdn {
             }
         }
         return $html;
-    }
+    }*/
 
     public static function replaceImg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
+        $i = 0;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("src");
             $ht = $doc["img:eq($ke)"];
-            $html = str_replace($ht, "![]($te)", $html);
+            $src .= "\n[$i]: $te";
+            // $html = str_replace($ht, "![]($te)", $html);
+            $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
+            $i++;
         }
+        $html = $html . $src;
         return $html;
     }
 }
