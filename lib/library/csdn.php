@@ -6,16 +6,17 @@ use Tools\replaceElement;
 
 // header("Content-type:text/html; Charset=utf-8");
 class Csdn {
-    public static function getCSDN($html, $rules) {
+    public static function getCSDN($html, $rules, $url) {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 
         $title = $ret[0]['title'];
-        $source = $ret[0]['source'];
+        $source = $url;
         $time = isset($ret[0]['time']) ? $ret[0]['time'] : '';
         $body = $ret[0]['body'];
 
         $body = self::reCode($body);
+        $body = self::dealTable($body);
         $body = self::replaceHref($body);
         $body = self::replaceImg($body);
         $body = self::dealMathjax($body);
@@ -138,6 +139,28 @@ class Csdn {
             $i++;
         }
         $html = $html . $src;
+        return $html;
+    }
+
+    // 处理table 内部包含的其他 换行元素
+    private static function dealTable($html){
+        $doc = phpQuery::newDocumentHTML($html);
+        $ch = pq($doc)->find("td");
+        foreach ($ch as $va) {
+            // $te = pq($va)->text();
+            // echo $te;
+            $ht = pq($va)->html(); // 去除ht 中的多余元素
+
+            $te = preg_replace("/[\r|\n]{0,}<span[\sa-zA-Z\'\"=_:;#\d-]{0,}>[\r|\n]{0,}/", '', $ht);
+            $te = preg_replace("/[\r|\n]{0,}<\/span>[\r|\n]{0,}/", "", $te);
+            // echo $te,"\n";
+            $te = preg_replace("/[\r|\n]{0,}[ ]{0,}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,2}[\r|\n]{0,}/", '', $te);
+            $te = preg_replace("/[\r|\n]{0,}<\/p>[\r|\n]{0,}/", "", $te);
+            // echo $te,"\n";
+
+            $ht = trim($ht); // html 代码 两侧有换行符
+            $html = str_replace($ht, $te, $html);
+        }
         return $html;
     }
 }

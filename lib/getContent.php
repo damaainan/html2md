@@ -80,7 +80,7 @@ class getContent {
             $flag = 'weixin';
         } else if (strpos($url, "csdn")) {
             $rules = $config->getConfig('csdn');
-            $content = Csdn::getCSDN($html,$rules);
+            $content = Csdn::getCSDN($html,$rules,$url);
             $flag = 'csdn';
         } 
         if ($content) {

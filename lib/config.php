@@ -12,8 +12,8 @@ class Config{
                 "body" => array("#nei", 'html'),
             ),
             "csdn" => array(
-                "title" => array(".article_title h1 a", 'text'),
-                "source" => array(".article_title h1 a", 'href'),
+                "title" => array("h1", 'text'),
+                // "source" => array("h1 a", 'href'),
                 "time" => array(".article_r .link_postdate", 'text'),
                 "body" => array("#article_content", 'html'),
             ),
