@@ -75,7 +75,7 @@ class Config{
                 "url" => array(".article_row_fluid h1", 'text')
             ),
             "segmentfault" => array(
-                "url" => array("#articleTitle a", 'text')
+                "url" => array(".summary h2 a", 'href')
             ),
             "cnblogs" => array(// 还有页面中的
                 "url" => array("#myposts .PostList .postTitl2 a", 'href')

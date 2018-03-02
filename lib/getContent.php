@@ -110,7 +110,7 @@ class getContent {
         // 还需要分页抓取 
         
         $configs = new Config();
-        $html = getHtml::getUrl($url);
+        $html = getHtml::getUrl($url); // 获取下拉才会出现的 ajax 内容 未解决
         // 分离列表项
         // if (strpos($url, "segmentfault")) {
         //     $rules = $configs->getListConfig('segmentfault');
@@ -124,10 +124,21 @@ class getContent {
 
         $keyword = self::getKeyWord($url);
         $rules = $configs->getListConfig($keyword);
-        $prefix = '';
-        if($keyword == 'tuicool'){
-            $prefix = "https://www.tuicool.com";
-        }
+        $prefixs = [
+            'cnblogs' => '',
+            'tuicool' => 'https://www.tuicool.com',
+            'segmentfault' => 'https://segmentfault.com',
+            'github' => '',
+            'zhihu' => '',
+            'csdn' => '',
+        ];
+        $prefix = $prefixs[$keyword];
+
+        // if($keyword == 'segmentfault'){
+        //     $prefix = "https://segmentfault.com";
+        // }else if($keyword == 'tuicool'){
+        //     $prefix = "https://www.tuicool.com";
+        // }
 
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();

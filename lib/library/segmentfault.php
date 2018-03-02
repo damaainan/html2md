@@ -68,7 +68,11 @@ class Segmentfault {
         $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-src");
-            $te = "https://segmentfault.com" . explode("?", $te)[0];
+            if(strpos($te, "?src=http")){ // 处理来自其他网站的图片
+                $te = explode('&', explode("?src=", $te)[1])[0];
+            }else{
+                $te = "https://segmentfault.com" . explode("?", $te)[0];
+            }
             $ht = $doc["img:eq($ke)"];
             $src .= "\n[$i]: $te";
             $html = str_replace($ht, "\r\n\r\n![][$i]", $html);

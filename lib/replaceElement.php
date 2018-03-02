@@ -67,9 +67,9 @@ class replaceElement {
         // $str = preg_replace('/<\/li>/', "", $str);
 
         // 替换已转义字符
-        $str = preg_replace('/&lt;/', "<", $str);
-        $str = preg_replace('/&gt;/', ">", $str);
-        $str = preg_replace('/&amp;/', "&", $str);
+        $str = str_replace('&lt;', "<", $str);
+        $str = str_replace('&gt;', ">", $str);
+        $str = str_replace('&amp;', "&", $str);
 
         $str = self::dealTable($str);
         // $str = preg_replace('/<table[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
