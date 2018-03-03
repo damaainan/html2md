@@ -95,7 +95,7 @@ class getContent {
     }
 
     private static function putContent($name, $content, $flag) {
-        $file = "../out/" . $flag . $name . ".md";
+        $file = "../out/" . $flag . "/" . $flag . $name . ".md";
         if (is_file($file)) {
             unlink($file);
         }
@@ -107,7 +107,26 @@ class getContent {
     public static function getListUrl($url){
         // 根据 url 中的关键字 判断采取何种 rule 
         // 列表 list 收藏 bookmarks 页面总结 page 
+
         // 还需要分页抓取 
+        
+        $keyword = self::getKeyWord($url);
+        if (strpos($url, "zhuanlan.zhihu")) { // 知乎 特殊处理 直接抓取 json  &offset=20
+            $prefix = "https://zhuanlan.zhihu.com";
+            for($i=0;;$i++){
+                $offset = 20 * $i;
+                $newurl = $url . "&offset=" . $offset;
+                $data = getHtml::getUrl($newurl);
+                $data = json_decode($data,true);
+                if(!$data){
+                    break;
+                }
+                foreach ($data as $val) {
+                    $urls[] = $prefix . $val['url'];
+                }
+            }
+            return $urls;
+        }
         
         $configs = new Config();
         $html = getHtml::getUrl($url); // 获取下拉才会出现的 ajax 内容 未解决
@@ -122,7 +141,6 @@ class getContent {
         //     $rules = $configs->getListConfig('github');
         // } 
 
-        $keyword = self::getKeyWord($url);
         $rules = $configs->getListConfig($keyword);
         $prefixs = [
             'cnblogs' => '',

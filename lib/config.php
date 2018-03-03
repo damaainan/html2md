@@ -13,7 +13,7 @@ class Config{
             ),
             "csdn" => array(
                 "title" => array("h1", 'text'),
-                // "source" => array("h1 a", 'href'),
+                "source" => array("h1 a", 'href'),
                 "time" => array(".article_r .link_postdate", 'text'),
                 "body" => array("#article_content", 'html'),
             ),

@@ -11,7 +11,7 @@ class Csdn {
         $ret = $data->all();
 
         $title = $ret[0]['title'];
-        $source = $url;
+        $source = isset($ret[0]['source']) ? $ret[0]['source'] : $url;
         $time = isset($ret[0]['time']) ? $ret[0]['time'] : '';
         $body = $ret[0]['body'];
 

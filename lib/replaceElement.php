@@ -49,8 +49,17 @@ class replaceElement {
         // $str = preg_replace('/\s{0,2}<h6[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n###### ", $str);
         // $str = preg_replace('/<\/h6>/', "\r\n", $str);
 
-        $str = preg_replace('/[ ]{0,4}<code[\sa-zA-Z\'\"=_:-]{0,}>/', '`', $str);
-        $str = preg_replace("/<\/code>\n{0,}/", "`", $str);
+        $str = preg_replace("/\n{0,1}[ ]{0,}<code[\sa-zA-Z\'\"=_:-]{0,}>/", '`', $str);
+        $str = preg_replace("/<\/code>\s{0,}\n{0,}/", "`", $str);
+
+        $str = preg_replace("/\n{0,1}[ ]{0,}<dt[\sa-zA-Z\'\"=_:-]{0,}>/", '', $str);
+        $str = preg_replace("/<\/dt>\n{0,}/", "\r\n  \r\n", $str);
+
+        $str = preg_replace('/\s{0,}<dl[\sa-zA-Z\'\"=_:;\d-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<\/dl>/', "\r\n", $str);
+
+        $str = preg_replace('/\s{0,}<dd[\sa-zA-Z\'\"=_:;\d-]{0,}>\s{0,}/', "\r\n", $str);
+        $str = preg_replace('/\s{0,}<\/dd>/', "\r\n\r\n", $str);
 
 
         $str = preg_replace("/<\/{0,1}blockquote>/", "", $str);
@@ -102,8 +111,8 @@ class replaceElement {
 
         $str = preg_replace("/[ ]{0,}<tr[\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>/", "| ", $str);
         $str = preg_replace("/[ ]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<\/tr>/", " | ", $str);
-        $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>/", " | ", $str);
-        $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<\/tr>/", " |", $str);
+        $str = preg_replace("/[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>\n{0,}/", " | ", $str);
+        $str = preg_replace("/\n{0,}[ ]{0,}<\/t[dh]>[\s\r\n]{0,}<\/tr>/", " |", $str);
 
         $str = preg_replace('/\s{0,}<tbody[\sa-zA-Z\'\"=_:%-]{0,}>/', "", $str);
         $str = preg_replace('/\s{0,}<\/tbody>/', "", $str);
@@ -117,7 +126,7 @@ class replaceElement {
         $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/ul>/', "\r\n", $str);
 
-        $str = preg_replace('/[ ]{0,6}<li[\sa-zA-Z\'\"=_:-]{0,}>\n{0,}/', '* ', $str);
+        $str = preg_replace('/[ ]{0,}<li[\sa-zA-Z\'\"=_:-]{0,}>\s{0,}\n{0,}/', '* ', $str);
         $str = preg_replace('/<\/li>/', "", $str);
         return $str;
     }
