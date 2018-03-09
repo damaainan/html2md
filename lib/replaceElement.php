@@ -29,8 +29,8 @@ class replaceElement {
         $str = preg_replace('/<em[\sa-zA-Z\'\"=_:-]{0,}>/', ' **', $str);
         $str = preg_replace('/<\/em>/', "** ", $str);
 
-        $str = preg_replace('/<span[\sa-zA-Z\'\"=_:;#\d-]{0,}>/', '', $str);
-        $str = preg_replace('/<\/span>/', "", $str);
+        $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\'\"=_:;#\d-]{0,}>/', '', $str);
+        $str = preg_replace("/<\/span>\n{0,}/", " ", $str);
 
         $str = preg_replace('/[ ]{0,}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,2}[\r|\n]{0,1}/', '', $str);
         $str = preg_replace('/<\/p>/', "\r\n", $str);
@@ -60,6 +60,9 @@ class replaceElement {
 
         $str = preg_replace('/\s{0,}<dd[\sa-zA-Z\'\"=_:;\d-]{0,}>\s{0,}/', "\r\n", $str);
         $str = preg_replace('/\s{0,}<\/dd>/', "\r\n\r\n", $str);
+
+        $str = preg_replace("/[ ]{0,}<tt>\s{0,}\n{0,}/", "", $str);
+        $str = preg_replace("/\s{0,}<\/tt>\n{0,}/", "", $str);
 
 
         $str = preg_replace("/<\/{0,1}blockquote>/", "", $str);

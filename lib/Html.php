@@ -3,7 +3,7 @@ namespace Tools;
 
 require "../vendor/autoload.php";
 
-class getHtml {
+class Html {
     public static function getUrl($url) {
         if (strpos($url, 'tuicool')) {
             $cookie = file_get_contents(dirname(__FILE__) . '/../data/cookie');

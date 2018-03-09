@@ -3,7 +3,7 @@ header("Content-type:text/html; Charset=utf-8");
 // set_time_limit(0);
 require "../vendor/autoload.php";
 
-use Tools\getContent;
+use Tools\Content;
 // require "../lib/getContent.class.php";
 
 // 从脚本参数获取地址  或者 从 文件获取一系列地址
@@ -28,7 +28,7 @@ function deal($argc, $argv){
     }
 
     // 遍历数组全部采集
-    $Mark = new getContent();
+    $Mark = new Content();
 
     for ($i = 0, $len = count($urls); $i < $len; $i++) {
         $url = $urls[$i];

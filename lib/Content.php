@@ -10,7 +10,7 @@ require "../vendor/autoload.php";
 
 use QL\QueryList;
 use Tools\replaceElement;
-use Tools\getHtml;
+use Tools\Html;
 use Tools\config;
 use Tools\lib\Tuicool;
 use Tools\lib\Segmentfault;
@@ -22,7 +22,7 @@ use Tools\lib\csdn;
 /**
  * 获取最后内容
  */
-class getContent {
+class Content {
     // 配置文件要独立出来
     /*private static $config = [
     ];*/
@@ -48,7 +48,7 @@ class getContent {
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
         // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
-        $html = getHtml::getUrl($url); // 可以优化为专门的 curl 方法
+        $html = Html::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;
 
         // array_search 
@@ -129,7 +129,7 @@ class getContent {
         }
         
         $configs = new Config();
-        $html = getHtml::getUrl($url); // 获取下拉才会出现的 ajax 内容 未解决
+        $html = Html::getUrl($url); // 获取下拉才会出现的 ajax 内容 未解决
         // 分离列表项
         // if (strpos($url, "segmentfault")) {
         //     $rules = $configs->getListConfig('segmentfault');
