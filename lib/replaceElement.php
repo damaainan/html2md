@@ -12,7 +12,7 @@ class replaceElement {
     public function doReplace($str) {
         // 这个替换放在最前面就可以 在最后就失败 有一个干扰项
         // 可以加个标记在前部  再次编辑的时候方便改动
-        $str = preg_replace('/\s{0,3}<pre[\sa-zA-Z\'\"=_:;\d-]{0,}>/', "\r\n```LANG\r\n", $str);
+        $str = preg_replace("/\n{0,}[ ]{0,10}<pre[\sa-zA-Z\'\"=_:;\d-]{0,}>/", "\r\n```LANG\r\n", $str);
         $str = preg_replace('/<\/pre>/', "\r\n```\r\n", $str);
 
         $str = preg_replace('/<br[\/]{0,1}>/', "\r\n", $str);
@@ -63,6 +63,14 @@ class replaceElement {
 
         $str = preg_replace("/[ ]{0,}<tt>\s{0,}\n{0,}/", "", $str);
         $str = preg_replace("/\s{0,}<\/tt>\n{0,}/", "", $str);
+
+        $str = preg_replace("/<i>/", "`", $str);
+        $str = preg_replace("/<\/i>/", "`", $str);
+        $str = preg_replace("/<u>\s{0,}/", "", $str);
+        $str = preg_replace("/\s{0,}<\/u>/", "", $str);
+
+        $str = preg_replace("/<figure>\s{0,}\n{0,}/", "", $str);
+        $str = preg_replace("/\s{0,}<\/figure>/", "\n", $str);
 
 
         $str = preg_replace("/<\/{0,1}blockquote>/", "", $str);

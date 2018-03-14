@@ -10,7 +10,7 @@ require "../vendor/autoload.php";
 
 use QL\QueryList;
 use Tools\replaceElement;
-use Tools\Html;
+use Tools\GetHtml;
 use Tools\config;
 use Tools\lib\Tuicool;
 use Tools\lib\Segmentfault;
@@ -22,7 +22,7 @@ use Tools\lib\csdn;
 /**
  * 获取最后内容
  */
-class Content {
+class GetContent {
     // 配置文件要独立出来
     /*private static $config = [
     ];*/
@@ -48,7 +48,7 @@ class Content {
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
         // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
-        $html = Html::getUrl($url); // 可以优化为专门的 curl 方法
+        $html = GetHtml::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;
 
         // array_search 
@@ -160,6 +160,8 @@ class Content {
 
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
+        // echo $html;
+        // var_dump($ret);exit();
         foreach ($ret as $val) {
             $urls[] = $prefix . $val['url'];
         }
