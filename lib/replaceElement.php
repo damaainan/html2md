@@ -15,25 +15,18 @@ class replaceElement {
         $str = preg_replace("/\n{0,}[ ]{0,10}<pre[\sa-zA-Z\'\"=_:;\d-]{0,}>/", "\r\n```LANG\r\n", $str);
         $str = preg_replace('/<\/pre>/', "\r\n```\r\n", $str);
 
-        $str = preg_replace('/<br[\/]{0,1}>/', "\r\n", $str);
+        
 
         $str = preg_replace('/<div[\sa-zA-Z\'\"=_:;#\d-]{0,}>/', '', $str);
         $str = preg_replace('/<\/div>/', "\r\n", $str);
 
-        $str = preg_replace('/[ ]{0,}<strong[\sa-zA-Z\'\"=_:-]{0,}>/', ' **`', $str);
-        $str = preg_replace('/<\/strong>\n{0,}/', "`** ", $str);
-
-        $str = preg_replace('/<b>/', ' **', $str);
-        $str = preg_replace('/<\/b>/', "** ", $str);
-
-        $str = preg_replace('/<em[\sa-zA-Z\'\"=_:-]{0,}>/', ' **', $str);
-        $str = preg_replace('/<\/em>/', "** ", $str);
+        
 
         $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\'\"=_:;#\d-]{0,}>/', '', $str);
         $str = preg_replace("/<\/span>\n{0,}/", " ", $str);
 
-        $str = preg_replace('/[ ]{0,}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,2}[\r|\n]{0,1}/', '', $str);
-        $str = preg_replace('/<\/p>/', "\r\n", $str);
+        $str = preg_replace('/[ ]{0,}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,10}[\r|\n]{0,1}/', '', $str);
+        $str = preg_replace('/\s{0,10}<\/p>/', "\r\n", $str);
 
         $str = self::dealHead($str);
         // $str = preg_replace('/\s{0,2}<h1[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"=_:-]{0,}>/u', "\r\n## ", $str);
@@ -61,19 +54,7 @@ class replaceElement {
         $str = preg_replace('/\s{0,}<dd[\sa-zA-Z\'\"=_:;\d-]{0,}>\s{0,}/', "\r\n", $str);
         $str = preg_replace('/\s{0,}<\/dd>/', "\r\n\r\n", $str);
 
-        $str = preg_replace("/[ ]{0,}<tt>\s{0,}\n{0,}/", "", $str);
-        $str = preg_replace("/\s{0,}<\/tt>\n{0,}/", "", $str);
-
-        $str = preg_replace("/<i>/", "`", $str);
-        $str = preg_replace("/<\/i>/", "`", $str);
-        $str = preg_replace("/<u>\s{0,}/", "", $str);
-        $str = preg_replace("/\s{0,}<\/u>/", "", $str);
-
-        $str = preg_replace("/<figure>\s{0,}\n{0,}/", "", $str);
-        $str = preg_replace("/\s{0,}<\/figure>/", "\n", $str);
-
-
-        $str = preg_replace("/<\/{0,1}blockquote>/", "", $str);
+        $str = self::dealOthers($str);
 
         $str = self::dealList($str);
 
@@ -109,6 +90,40 @@ class replaceElement {
         // $str = preg_replace('/\s{0,}<tbody[\sa-zA-Z\'\"=_:%-]{0,}>/', "", $str);
         // $str = preg_replace('/\s{0,}<\/tbody>/', "", $str);
 
+        return $str;
+    }
+
+    private static function dealOthers($str){
+        $str = preg_replace('/<br[\/]{0,1}>/', "\r\n", $str);
+        $str = preg_replace('/<hr[\/]{0,1}>/', "\r\n-----\r\n", $str);
+
+
+        $str = preg_replace("/\n{0,}[ ]{0,}<strong>/", ' **`', $str);
+        $str = preg_replace('/<\/strong>\n{0,}/', "`** ", $str);
+
+        $str = preg_replace('/<b>/', ' **', $str);
+        $str = preg_replace('/<\/b>/', "** ", $str);
+
+        $str = preg_replace("/\n{0,}[ ]{0,}<em>\n{0,}/", ' ', $str);
+        $str = preg_replace("/\n{0,}[ ]{0,}<\/em>\n{0,}/", " ", $str);
+
+
+
+        $str = preg_replace("/[ ]{0,}<tt>\s{0,}\n{0,}/", "", $str);
+        $str = preg_replace("/\s{0,}<\/tt>\n{0,}/", "", $str);
+
+        $str = preg_replace("/<i>/", "`", $str);
+        $str = preg_replace("/<\/i>/", "`", $str);
+        $str = preg_replace("/<u>\s{0,}/", "", $str);
+        $str = preg_replace("/\s{0,}<\/u>/", "", $str);
+
+        $str = preg_replace("/<figure>\s{0,}\n{0,}/", "", $str);
+        $str = preg_replace("/\s{0,}<\/figure>/", "\n", $str);
+
+
+        $str = preg_replace("/<\/{0,1}blockquote>/", "", $str);
+        
+        $str = preg_replace("/<\/{0,1}font>\n{0,}/", "", $str);
         return $str;
     }
 

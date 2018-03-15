@@ -3,7 +3,7 @@ namespace Tools;
 
 require "../vendor/autoload.php";
 
-class Html {
+class GetHtml {
     public static function getUrl($url) {
         if (strpos($url, 'tuicool')) {
             $cookie = file_get_contents(dirname(__FILE__) . '/../data/cookie');
@@ -13,6 +13,11 @@ class Html {
         } else if (strpos($url, 'segmentfault')) {
             $cookie = file_get_contents(dirname(__FILE__) . '/../data/cookie_seg');
             $header = "https://segmentfault.com/";
+            $ret = self::curlHttps($url, $cookie, $header);
+            return $ret;
+        } else if (strpos($url, 'cnblogs')) {
+            $cookie = file_get_contents(dirname(__FILE__) . '/../data/cookie_cnblogs');
+            $header = "https://www.cnblogs.com/";
             $ret = self::curlHttps($url, $cookie, $header);
             return $ret;
         } else {
