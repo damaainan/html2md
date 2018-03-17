@@ -22,7 +22,7 @@ class replaceElement {
 
         
 
-        $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\'\"=_:;#\d-]{0,}>/', '', $str);
+        $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.=_:;#\d-]{0,}>/u', '', $str);
         $str = preg_replace("/<\/span>\n{0,}/", " ", $str);
 
         $str = preg_replace('/[ ]{0,}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,10}[\r|\n]{0,1}/', '', $str);

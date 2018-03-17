@@ -23,6 +23,7 @@ class Cnblogs {
         // $body = self::dealImg($body);die();  // 图片替换没处理好
         $body = self::reCode($body);
         $body = self::replaceImg($body);
+        // echo $body;
         $body = self::replaceHref($body);
 
         $title = "## " . $title . "\r\n\r\n";
@@ -39,6 +40,8 @@ class Cnblogs {
     private static function replaceHref($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("a");
+        $i = 100;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
             if (!$href) {
@@ -46,8 +49,11 @@ class Cnblogs {
             }
             $te = pq($va)->text();
             $ht = $doc["a:eq($ke)"];
-            $html = str_replace($ht, "[$te]($href)", $html);
+            $src .= "\n[$i]: $href";
+            $html = str_replace($ht, "[$te][$i]", $html);
+            $i++;
         }
+        $html = $html . $src;
         return $html;
     }
     // 代码部分特殊处理 多种代码形式 正常形式的代码可以了
@@ -95,11 +101,24 @@ class Cnblogs {
     public static function replaceImg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
+        $i = 0;
+        $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("src");
             $ht = $doc["img:eq($ke)"];
-            $html = str_replace($ht, "![]($te)", $html);
+
+            $pahtml = pq($doc)->find("img:eq($ke)")->parent("a")->html();
+            $pahtmlstr = pq($doc)->find("img:eq($ke)")->parent("a")->parent("span")->html();
+            // 获取 a 标签的 html
+            $src .= "\n[$i]: $te";
+            if(trim($pahtml) == $ht){
+                $html = str_replace($pahtmlstr, "\r\n\r\n![][$i]", $html);
+            }else{
+                $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
+            }
+            $i++;
         }
+        $html = $html . $src;
         return $html;
     }
 }
