@@ -22,8 +22,8 @@ class Cnblogs {
         // 需要先清理代码部分
         // $body = self::dealImg($body);die();  // 图片替换没处理好
         $body = self::reCode($body);
-        $body = self::replaceImg($body);
         // echo $body;
+        $body = self::replaceImg($body);
         $body = self::replaceHref($body);
 
         $title = "## " . $title . "\r\n\r\n";
@@ -108,11 +108,18 @@ class Cnblogs {
             $ht = $doc["img:eq($ke)"];
 
             $pahtml = pq($doc)->find("img:eq($ke)")->parent("a")->html();
-            $pahtmlstr = pq($doc)->find("img:eq($ke)")->parent("a")->parent("span")->html();
+            $pahtmlstr = pq($doc)->find("img:eq($ke)")->parent("a")->parent()->html();
             // 获取 a 标签的 html
             $src .= "\n[$i]: $te";
-            if(trim($pahtml) == $ht){
-                $html = str_replace($pahtmlstr, "\r\n\r\n![][$i]", $html);
+            if(trim($pahtml) == trim($ht)){
+                // echo "\n*****\n";
+                // echo $pahtml;
+                // echo "\n*****\n";
+                // echo $pahtmlstr;
+                // echo "\n*****\n";
+                // echo $ht;
+                // echo "\n*****\n";   // pahtmlstr 需要去除两边换行  str-replace 是字符串替换，多行替换不行
+                $html = str_replace(trim($pahtmlstr), "\r\n\r\n![][$i]", $html);
             }else{
                 $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
             }

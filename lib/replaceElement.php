@@ -26,7 +26,7 @@ class replaceElement {
         $str = preg_replace("/<\/span>\n{0,}/", " ", $str);
 
         $str = preg_replace('/[ ]{0,}<p[\sa-zA-Z\'\"=_:-]{0,}>\s{0,10}[\r|\n]{0,1}/', '', $str);
-        $str = preg_replace('/\s{0,10}<\/p>/', "\r\n", $str);
+        $str = preg_replace('/[ ]{0,10}<\/p>/', "\r\n", $str);
 
         $str = self::dealHead($str);
         // $str = preg_replace('/\s{0,2}<h1[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"=_:-]{0,}>/u', "\r\n## ", $str);
@@ -152,7 +152,7 @@ class replaceElement {
         $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/ul>/', "\r\n", $str);
 
-        $str = preg_replace('/[ ]{0,}<li[\sa-zA-Z\'\"=_:-]{0,}>\s{0,}\n{0,}/', '* ', $str);
+        $str = preg_replace('/[ ]{0,}<li[\sa-zA-Z\'\"=_:-]{0,}>\s{0,}\n{0,}/', "\r\n* ", $str);
         $str = preg_replace('/<\/li>/', "", $str);
         return $str;
     }

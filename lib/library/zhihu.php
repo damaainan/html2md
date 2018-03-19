@@ -14,13 +14,14 @@ class Zhihu{
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
 
+        $body =  self::reCode($body);
         $body =  self::replaceOther($body);
         $body = self::replaceHref($body);
         $body = self::replaceImg($body);
 
         $title = "## " . $title . "\r\n\r\n";
-        $time = $time . "\r\n\r\n";
-        $source = "来源：$url" . "\r\n\r\n";
+        $time = "时间：" . $time . "\r\n\r\n";
+        $source = "来源：[$url]($url)" . "\r\n\r\n";
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
@@ -29,12 +30,24 @@ class Zhihu{
         return $content;
 
     }
+    public static function reCode($html) {
+        $doc = phpQuery::newDocumentHTML($html);
+        $ch = pq($doc)->find("pre");
+        foreach ($ch as $va) {
+            $te = pq($va)->text();
+            $ht = pq($va)->html();
+            $html = str_replace($ht, $te, $html);
+        }
+        return $html;
+    }
 
     private static function replaceOther($str){
         $str = preg_replace('/<noscript>.*?<\/noscript>/', '', $str); // ? 避免贪婪模式 不加 ？ 会多匹配
         $str = preg_replace('/<figcaption>.*?<\/figcaption>/', '', $str); 
-        $str = preg_replace('/<figure>/', '', $str); 
-        $str = preg_replace('/<\/figure>/', '', $str); 
+        $str = str_replace('<figure>', '', $str); 
+        $str = str_replace('</figure>', '', $str); 
+        $str = str_replace('leqslant', 'leq', $str); 
+        $str = str_replace('geqslant', 'geq', $str); 
         return $str;
 
     }
@@ -47,11 +60,23 @@ class Zhihu{
         $i = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
-            $te = pq($va)->attr("data-original");
+            $te = pq($va)->attr("data-actualsrc");
+            if(!$te){
+                $te = pq($va)->attr("data-original");
+            }
+            if(!$te){
+                $te = pq($va)->attr("src");
+            }
             $ht = $doc["img:eq($ke)"];
-            $src .= "\n[$i]: $te";
-            $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
-            $i++;
+            if(strpos($te, 'equation?tex=')){
+                $tex = pq($va)->attr("alt");
+                $tex = " \\\\" . '( ' . $tex . " \\\\" . ') ';
+                $html = str_replace($ht, $tex, $html);
+            }else{
+                $src .= "\n[$i]: $te";
+                $html = str_replace($ht, "\r\n\r\n![][$i]\r\n", $html);
+                $i++;
+            }
         }
         $html = $html . $src;
         return $html;
