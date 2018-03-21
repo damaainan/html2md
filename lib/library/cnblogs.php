@@ -119,9 +119,9 @@ class Cnblogs {
                 // echo "\n*****\n";
                 // echo $ht;
                 // echo "\n*****\n";   // pahtmlstr 需要去除两边换行  str-replace 是字符串替换，多行替换不行
-                $html = str_replace(trim($pahtmlstr), "\r\n\r\n![][$i]", $html);
+                $html = str_replace(trim($pahtmlstr), "\r\n![][$i]", $html);
             }else{
-                $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
+                $html = str_replace($ht, "\r\n![][$i]", $html);
             }
             $i++;
         }
