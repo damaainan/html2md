@@ -57,6 +57,12 @@ class Config{
                 "time" => array("#post-date", 'text'),
                 "body" => array("#js_content", 'html'),
             ),
+            "kancloud" => array( 
+                // "title" => array("#activity-name", 'text'),
+                // "source" => array(".article_meta .source a", 'text'),
+                // "time" => array("#post-date", 'text'),
+                "body" => array(".content", 'html'),
+            ),
         ];
         return $config[$str];
     }
