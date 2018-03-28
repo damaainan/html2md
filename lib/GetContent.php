@@ -116,7 +116,7 @@ class GetContent {
             for($i=0;;$i++){
                 $offset = 20 * $i;
                 $newurl = $url . "&offset=" . $offset;
-                $data = getHtml::getUrl($newurl);
+                $data = GetHtml::getUrl($newurl);
                 $data = json_decode($data,true);
                 if(!$data){
                     break;
@@ -129,7 +129,7 @@ class GetContent {
         }
         
         $configs = new Config();
-        $html = Html::getUrl($url); // 获取下拉才会出现的 ajax 内容 未解决
+        $html = GetHtml::getUrl($url); // 获取下拉才会出现的 ajax 内容 未解决
         // 分离列表项
         // if (strpos($url, "segmentfault")) {
         //     $rules = $configs->getListConfig('segmentfault');

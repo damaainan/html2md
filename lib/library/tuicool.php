@@ -50,7 +50,7 @@ class Tuicool {
             $te = pq($va)->attr("src");
             $ht = $doc["img:eq($ke)"];
             $src .= "\n[$i]: $te";
-            $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
+            $html = str_replace($ht, "\r\n![][$i]\r\n", $html);
             $i++;
         }
         $html = $html . $src;
