@@ -47,7 +47,7 @@ class Config{
             ),
             "zhihu" => array( 
                 "title" => array("h1", 'text'),
-                // "source" => array(".article_meta .source a", 'text'),
+                "titleimg" => array(".TitleImage", 'src'),
                 "time" => array(".ContentItem-time a span", 'text'),
                 "body" => array(".Post-RichText", 'html'),
             ),
