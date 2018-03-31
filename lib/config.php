@@ -48,8 +48,8 @@ class Config{
             "zhihu" => array( 
                 "title" => array("h1", 'text'),
                 // "source" => array(".article_meta .source a", 'text'),
-                "time" => array("time", 'datetime'),
-                "body" => array(".PostIndex-content", 'html'),
+                "time" => array(".ContentItem-time a span", 'text'),
+                "body" => array(".Post-RichText", 'html'),
             ),
             "weixin" => array( 
                 "title" => array("#activity-name", 'text'),

@@ -115,7 +115,7 @@ class GetContent {
             $prefix = "https://zhuanlan.zhihu.com";
             for($i=0;;$i++){
                 $offset = 20 * $i;
-                $newurl = $url . "&offset=" . $offset;
+                $newurl = $url . "?offset=" . $offset . "&limit=20";
                 $data = GetHtml::getUrl($newurl);
                 $data = json_decode($data,true);
                 if(!$data){

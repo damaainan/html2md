@@ -33,6 +33,9 @@ function deal($argc, $argv){
     for ($i = 0, $len = count($urls); $i < $len; $i++) {
         $url = $urls[$i];
         $ret = $Mark->doMark($url);
+        if($i%10==0){
+            sleep(1);
+        }
         echo $ret;
     }
 }
