@@ -3,6 +3,7 @@ namespace Tools\lib;
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
+use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
 class Cnblogs {
@@ -21,7 +22,7 @@ class Cnblogs {
         // 代码部分 view code 需要单独处理
         // 需要先清理代码部分
         // $body = self::dealImg($body);die();  // 图片替换没处理好
-        $body = self::reCode($body);
+        $body = ToolUtil::reCode($body);
         // echo $body;
         $body = self::replaceImg($body);
         $body = self::replaceHref($body);
@@ -57,19 +58,19 @@ class Cnblogs {
         return $html;
     }
     // 代码部分特殊处理 多种代码形式 正常形式的代码可以了
-    public static function reCode($html) {
-        $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("pre");
-        foreach ($ch as $va) {
-            $te = pq($va)->text();
-            $ht = pq($va)->html();
-            $ht = trim($ht); // html 代码 两侧有换行符
-            $html = str_replace($ht, $te, $html);
-        }
-        return $html;
-    }
+    // public static function reCode($html) {
+    //     $doc = phpQuery::newDocumentHTML($html);
+    //     $ch = pq($doc)->find("pre");
+    //     foreach ($ch as $va) {
+    //         $te = pq($va)->text();
+    //         $ht = pq($va)->html();
+    //         $ht = trim($ht); // html 代码 两侧有换行符
+    //         $html = str_replace($ht, $te, $html);
+    //     }
+    //     return $html;
+    // }
     // 处理图片第一步
-    public static function dealImg($html) {
+    private static function dealImg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         foreach ($ch as $ke => $va) {
@@ -87,18 +88,18 @@ class Cnblogs {
         }
         return $html;
     }
-    public static function reCode1($html) {
-        $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("pre");
-        foreach ($ch as $va) {
-            $te = pq($va)->text();
-            $ht = pq($va)->html();
-            $ht = trim($ht); // html 代码 两侧有换行符
-            $html = str_replace($ht, $te, $html);
-        }
-        return $html;
-    }
-    public static function replaceImg($html) {
+    // public static function reCode1($html) {
+    //     $doc = phpQuery::newDocumentHTML($html);
+    //     $ch = pq($doc)->find("pre");
+    //     foreach ($ch as $va) {
+    //         $te = pq($va)->text();
+    //         $ht = pq($va)->html();
+    //         $ht = trim($ht); // html 代码 两侧有换行符
+    //         $html = str_replace($ht, $te, $html);
+    //     }
+    //     return $html;
+    // }
+    private static function replaceImg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         $i = 0;

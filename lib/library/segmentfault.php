@@ -3,6 +3,7 @@ namespace Tools\lib;
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
+use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
 class Segmentfault {
@@ -18,8 +19,8 @@ class Segmentfault {
         // var_dump($body);
 
         // pre 中的 code 需要 去除  pre code .html replacewith .text
-        $body = self::reCode($body);
-        $body = self::replaceHrefSeg($body);
+        $body = ToolUtil::reCode($body);
+        $body = ToolUtil::replaceHref($body);
         $body = self::replaceImgSeg($body);
 
         $title = "## " . $title . "\r\n\r\n";
@@ -32,7 +33,7 @@ class Segmentfault {
         $content = $title . $source . $body;
         return $content;
     }
-    public static function reCode($html) {
+/*    public static function reCode($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("pre");
         foreach ($ch as $va) {
@@ -60,8 +61,8 @@ class Segmentfault {
         }
         $html = $html . $src;
         return $html;
-    }
-    public static function replaceImgSeg($html) {
+    }*/
+    private static function replaceImgSeg($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         $i = 0;
