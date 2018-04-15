@@ -63,6 +63,9 @@ class Config{
                 // "time" => array("#post-date", 'text'),
                 "body" => array(".content", 'html'),
             ),
+            "souyun" => array(
+                "body" => array(".tab-page:eq(0)", "html")
+            )
         ];
         return $config[$str];
     }

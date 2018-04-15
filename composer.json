@@ -3,7 +3,8 @@
     "autoload": {  
         "psr-4": {  
             "Tools\\": "lib/",
-            "Tools\\lib\\": "lib/library/"
+            "Tools\\lib\\": "lib/library/",
+            "Tools\\DBUtil\\": "lib/db/"
         }  
     },
     "require": {

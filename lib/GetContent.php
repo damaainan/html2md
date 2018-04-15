@@ -18,6 +18,7 @@ use Tools\lib\Cnblogs;
 use Tools\lib\github;
 use Tools\lib\zhihu;
 use Tools\lib\csdn;
+use Tools\lib\souyun;
 
 /**
  * 获取最后内容
@@ -82,7 +83,12 @@ class GetContent {
             $rules = $config->getConfig('csdn');
             $content = Csdn::getCSDN($html,$rules,$url);
             $flag = 'csdn';
-        } 
+        } else if (strpos($url, "sou-yun")) {
+            $rules = $config->getConfig('souyun');
+            $content = Souyun::getYun($html,$rules,$url);
+            $name = explode("=", $name)[1];
+            $flag = 'souyun';
+        }
         if ($content) {
             self::putContent($name, $content, $flag);
             echo ".";
