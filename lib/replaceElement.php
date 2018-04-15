@@ -15,12 +15,8 @@ class replaceElement {
         $str = preg_replace("/\n{0,}[ ]{0,10}<pre[\sa-zA-Z\'\"=_:;\d-]{0,}>/", "\r\n```LANG\r\n", $str);
         $str = preg_replace('/<\/pre>/', "\r\n```\r\n", $str);
 
-        
-
         $str = preg_replace('/<div[\sa-zA-Z\'\"=_:;#\d-]{0,}>/', '', $str);
         $str = preg_replace('/<\/div>/', "\r\n", $str);
-
-        
 
         $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.\(\),=_:;#\d-]{0,}>/u', '', $str);
         $str = preg_replace("/<\/span>\n{0,}/", " ", $str);
@@ -122,6 +118,7 @@ class replaceElement {
 
 
         $str = preg_replace("/<\/{0,1}blockquote>/", "", $str);
+        $str = preg_replace("/<\/{0,1}article>/", "", $str);
         
         $str = preg_replace("/<\/{0,1}font>\n{0,}/", "", $str);
         return $str;

@@ -6,6 +6,7 @@ namespace Tools\lib;
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
+use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
 class Tuicool {
@@ -26,8 +27,9 @@ class Tuicool {
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
         
-        $body = self::replaceHrefTui($body);
-        $body = self::replaceImgTui($body);
+        $body = ToolUtil::reCode($body);
+        $body = ToolUtil::replaceHref($body);
+        $body = ToolUtil::replaceImg($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
@@ -41,7 +43,7 @@ class Tuicool {
 
     }
 
-    public static function replaceImgTui($html) {
+/*    public static function replaceImgTui($html) {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         $i = 0;
@@ -73,5 +75,5 @@ class Tuicool {
         }
         $html = $html . $src;
         return $html;
-    }
+    }*/
 }
