@@ -8,7 +8,7 @@ class SQLite extends \SQLite3{
 
     function __construct(){  
         try {  
-            $this->open(dirname(__FILE__).'/../../data/sqlite.db');  
+            $this->open('../data/sqlite.db');  
         }catch (Exception $e){  
             die($e->getMessage());  
         }  
@@ -26,7 +26,7 @@ class SQLite extends \SQLite3{
      */  
     public static function create($sql){  
         self::instance();  
-        $result = @self::$db->query($sql);  
+        $result = self::$db->query($sql);  
         if ($result) {  
             return true;  
         }  
@@ -51,33 +51,33 @@ class SQLite extends \SQLite3{
      * @param string $sql 
      * @return int 
      */  
-    public static function count($sql){  
-        self::instance();  
-        $result = @self::$db->querySingle($sql);  
-        return $result ? $result : 0;  
-    }  
+    // public static function count($sql){  
+    //     self::instance();  
+    //     $result = self::$db->querySingle($sql);  
+    //     return $result ? $result : 0;  
+    // }  
   
     /** 
      * 查询单个字段 
      * @param string $sql 
      * @return void|string 
      */  
-    public static function querySingle($sql){  
-        self::instance();  
-        $result = @self::$db->querySingle($sql);  
-        return $result ? $result : '';  
-    }  
+    // public static function querySingle($sql){  
+    //     self::instance();  
+    //     $result = self::$db->querySingle($sql);  
+    //     return $result ? $result : '';  
+    // }  
   
     /** 
      * 查询单条记录 
      * @param string $sql 
      * @return array 
      */  
-    public static function queryRow($sql){  
-        self::instance();  
-        $result = @self::$db->querySingle($sql,true);  
-        return $result;  
-    }  
+    // public static function queryRow($sql){  
+    //     self::instance();  
+    //     $result = self::$db->querySingle($sql,true);  
+    //     return $result;  
+    // }  
   
     /** 
      * 查询多条记录 
@@ -87,7 +87,7 @@ class SQLite extends \SQLite3{
     public static function queryList($sql){  
         self::instance();  
         $result = array();  
-        $ret = @self::$db->query($sql);  
+        $ret = self::$db->query($sql);  
         if (!$ret) {  
             return $result;  
         }  

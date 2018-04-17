@@ -10,7 +10,8 @@
     "require": {
         "jaeger/querylist": "^4.0",
         "symfony/dom-crawler": "^3.4",
-        "jaeger/phpquery-single": "^0.9.9"
+        "jaeger/phpquery-single": "^0.9.9",
+        "catfan/Medoo": "^1.5"
     },
     "repositories": {
         "packagist": {
