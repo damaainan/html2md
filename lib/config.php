@@ -3,7 +3,7 @@
 namespace Tools;
 
 class Config{
-    public  function getConfig($str){
+    public static  function getConfig($str){
         $config = [
             "tuicool" => array(
                 "title" => array(".article_row_fluid h1", 'text'),
@@ -75,7 +75,7 @@ class Config{
      * @param  string $name 
      * @return array
      */
-    public function getListConfig($name){
+    public static function getListConfig($name){
         $config = [
             "tuicool" => array(
                 "url" => array(".single_simple span a", 'href')

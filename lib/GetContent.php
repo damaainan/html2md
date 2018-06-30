@@ -9,9 +9,9 @@ require "../vendor/autoload.php";
 // require "config.php"; // 能不能不用引入的方式？
 
 use QL\QueryList;
-use Tools\replaceElement;
-use Tools\GetHtml;
-use Tools\config;
+//use Tools\replaceElement;
+//use Tools\GetHtml;
+//use Tools\Config; // 同一命名空间下 会自动寻找
 use Tools\lib\Tuicool;
 use Tools\lib\Segmentfault;
 use Tools\lib\Cnblogs;
@@ -19,6 +19,7 @@ use Tools\lib\github;
 use Tools\lib\zhihu;
 use Tools\lib\csdn;
 use Tools\lib\souyun;
+use Tools\lib\Weixin;
 
 /**
  * 获取最后内容
@@ -33,16 +34,16 @@ class GetContent {
     //     $this->configs = $config;
     // }
 
-    public static function getConfig() {
+    public static function getConfig($name) {
         // require "config.php";  // 这样很 low 
         // var_dump($config);
         // return $config;
-        $config = new Config();
-        return $config->getConfig();
+        // $config = new Config();
+        return Config::getConfig($name);
     }
 
     public static function doMark($url) {
-        $config = new Config();
+        // $config = new Config();
         // $configs = $config->getConfig();
 
         // var_dump($configs);die();
@@ -54,38 +55,40 @@ class GetContent {
 
         // array_search 
         // 判断 url 选择方法
+        $content = '';
+        $flag = '';
         if (strpos($url, "segmentfault")) {
-            $rules = $config->getConfig('segmentfault');
+            $rules = Config::getConfig('segmentfault');
             $content = Segmentfault::getSegmentfault($html,$rules);
             $flag = 'segmentfault';
         } else if (strpos($url, "tuicool")) {
-            $rules = $config->getConfig('tuicool');
+            $rules = Config::getConfig('tuicool');
             $content = Tuicool::getTuiku($html,$rules);
             $flag = 'tuicool';
         } else if (strpos($url, "cnblogs")) {
-            $rules = $config->getConfig('cnblogs');
+            $rules = Config::getConfig('cnblogs');
             $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
         } else if (strpos($url, "github")) {
-            $rules = $config->getConfig('github');
+            $rules = Config::getConfig('github');
             $content = Github::getGithub($html,$rules);
             $flag = 'github';
         } else if (strpos($url, "zhihu")) {
-            $rules = $config->getConfig('zhihu');
+            $rules = Config::getConfig('zhihu');
             $content = Zhihu::getZhihu($html,$rules,$url);
             $flag = 'zhihu';
         } else if (strpos($url, "weixin")) {
-            $rules = $config->getConfig('weixin');
+            $rules = Config::getConfig('weixin');
             $content = Weixin::getWeixin($html,$rules,$url);
             $flag = 'weixin';
         } else if (strpos($url, "csdn")) {
-            $rules = $config->getConfig('csdn');
+            $rules = Config::getConfig('csdn');
             $content = Csdn::getCSDN($html,$rules,$url);
             $flag = 'csdn';
         } else if (strpos($url, "sou-yun")) {
-            $rules = $config->getConfig('souyun');
-            $content = Souyun::getYun($html,$rules,$url);
+            // $rules = Config::getConfig('souyun');
+            $content = Souyun::getYun($html);
             $name = explode("=", $name)[1];
             $flag = 'souyun';
         }
@@ -117,6 +120,7 @@ class GetContent {
         // 还需要分页抓取 
         
         $keyword = self::getKeyWord($url);
+        $urls = [];
         if (strpos($url, "zhuanlan.zhihu")) { // 知乎 特殊处理 直接抓取 json  &offset=20
             $prefix = "https://zhuanlan.zhihu.com";
             for($i=0;;$i++){
@@ -134,7 +138,7 @@ class GetContent {
             return $urls;
         }
         
-        $configs = new Config();
+        // $configs = new Config();
         $html = GetHtml::getUrl($url); // 获取下拉才会出现的 ajax 内容 未解决
         // 分离列表项
         // if (strpos($url, "segmentfault")) {
@@ -147,7 +151,7 @@ class GetContent {
         //     $rules = $configs->getListConfig('github');
         // } 
 
-        $rules = $configs->getListConfig($keyword);
+        $rules = Config::getListConfig($keyword);
         $prefixs = [
             'cnblogs' => '',
             'tuicool' => 'https://www.tuicool.com',
@@ -183,14 +187,15 @@ class GetContent {
                                 else
                                     return false;
                             }, $arr), 
-                            function($v, $k){
+                            function($v){
                                   return $v!==false;  
                             }, 
                             ARRAY_FILTER_USE_BOTH
         );
         $res = array_keys($res);
+        $key = array_shift($res); // 取开头第一个元素
         if($res){
-            return $arr[$res[0]];
+            return $arr[$key];
         }
         return 0;
     }

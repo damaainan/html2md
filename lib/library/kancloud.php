@@ -1,8 +1,8 @@
 <?php
 namespace Tools\lib;
-use phpQuery;
+//use phpQuery;
 use QL\QueryList;
-use Tools\replaceElement;
+//use Tools\replaceElement;
 
 // header("Content-type:text/html; Charset=utf-8");
 // 不同于其他类  抓取的是整本书的内容
@@ -23,6 +23,7 @@ class Kancloud {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
         $str = '';
+        $href = [];
         foreach ($ret as $va) {
             $name = $va['name'];
             $href[] = $name.'*****'.$link = $pre . $va['link'];

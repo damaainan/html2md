@@ -3,7 +3,7 @@ namespace Tools\lib;
 
 // require "../../vendor/autoload.php";  // 只需要在父文件引入一次 不需要再次引入
 
-use phpQuery;
+//use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\ToolUtil;
@@ -11,8 +11,9 @@ use Tools\ToolUtil;
 // header("Content-type:text/html; Charset=utf-8");
 class Tuicool {
     /**
-     * @param  [type] $html [description]
-     * @return [type]       [description]
+     * @param  string $html
+     * @param string $rules
+     * @return string $content
      */
     public static function getTuiku($html, $rules) {
         // var_dump($html);

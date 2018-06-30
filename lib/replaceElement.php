@@ -105,7 +105,7 @@ class replaceElement {
 
 
 
-        $str = preg_replace("/[ ]{0,}<tt>\s{0,}\n{0,}/", "", $str);
+        $str = preg_replace("/[ ]{0,}<t{2}>\s{0,}\n{0,}/", "", $str);
         $str = preg_replace("/\s{0,}<\/tt>\n{0,}/", "", $str);
 
         $str = preg_replace("/<i>/", "`", $str);
