@@ -126,13 +126,13 @@ class replaceElement {
 
     // 处理表格
     private static function dealTable($str){
-        $str = preg_replace('/<table[\sa-zA-Z\'\"\d=_:%-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/<table[\sa-zA-Z\'\"\d=\#_:%-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/table>/', "\r\n", $str);
 
         $str = preg_replace('/\s{0,}<thead[\sa-zA-Z\'\"=_:%-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/\s{0,}<\/thead>/', "\r\n", $str);
 
-        $str = preg_replace("/[ ]{0,}<tr[\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}/", "| ", $str);
+        $str = preg_replace("/[ ]{0,}<tr[\d\sa-zA-Z\'\"\#=_:%-]{0,}>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=\#_:%-]{0,}>[\s\r\n]{0,}/", "| ", $str);
         $str = preg_replace("/[ ]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}<\/tr>/", " |", $str);
         $str = preg_replace("/[\s\r\n]{0,}<\/t[dh]>[\s\r\n]{0,}<t[dh][\d\sa-zA-Z\'\"=_:%-]{0,}>[\s\r\n]{0,}/", " | ", $str);
         $str = preg_replace("/[\s\r\n]{0,}<\/t[dh]>[\s\r\n]{0,}<\/tr>/", " |", $str);

@@ -50,4 +50,8 @@ class ToolUtil {
         $html = $html . $src;
         return $html;
     }
+    // 在每个 table 第一行后 加 |-|-|-| 
+    public static function dealTable($html){
+
+    }
 }

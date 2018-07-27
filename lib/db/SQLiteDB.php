@@ -63,7 +63,8 @@ class SQLiteDB extends \SQLite3{
     public static function addOne($table, $data) {
         new SQLiteDB(); // 静态方法调用 不执行 构造方法
         $rest = self::$database->insert($table, [$data]);
-        return $rest;
+        $id = self::$database->id();
+        return $id;
     }
 
     public static function alter($table, $where, $data) {
