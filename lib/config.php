@@ -97,7 +97,7 @@ class Config{
 
             ),
             "github" => array( // issue
-                "url" => array(".js-issue-title", 'text')
+                "url" => array(".js-issue-row .js-navigation-open", 'href')
             ),
             "zhihu" => array( // issue
                 "url" => array(".js-issue-title", 'text')

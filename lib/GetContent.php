@@ -72,7 +72,7 @@ class GetContent {
             $name = explode(".", $name)[0];
         } else if (strpos($url, "github")) {
             $rules = Config::getConfig('github');
-            $content = Github::getGithub($html,$rules);
+            $content = Github::getGithub($html,$rules, $url);
             $flag = 'github';
         } else if (strpos($url, "zhihu")) {
             $rules = Config::getConfig('zhihu');
@@ -156,7 +156,7 @@ class GetContent {
             'cnblogs' => '',
             'tuicool' => 'https://www.tuicool.com',
             'segmentfault' => 'https://segmentfault.com',
-            'github' => '',
+            'github' => 'https://github.com',
             'zhihu' => '',
             'csdn' => '',
         ];
@@ -192,8 +192,8 @@ class GetContent {
                             }, 
                             ARRAY_FILTER_USE_BOTH
         );
-        $res = array_keys($res);
-        $key = array_shift($res); // 取开头第一个元素
+        $ret = array_keys($res);
+        $key = array_shift($ret); // 取开头第一个元素
         if($res){
             return $arr[$key];
         }
