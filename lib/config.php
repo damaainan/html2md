@@ -65,7 +65,17 @@ class Config{
             ),
             "souyun" => array(
                 "body" => array(".tab-page:eq(0)", "html")
-            )
+            ),
+            "jianshu" => array( 
+                "title" => array("h1", 'text'),
+                "time" => array(".publish-time", 'text'),
+                "body" => array(".show-content", 'html'),
+            ),
+            "zcfy" => array( 
+                "title" => array("h1", 'text'),
+                "time" => array(".publish-time", 'text'),
+                "body" => array(".show-content", 'html'),
+            ),
         ];
         return $config[$str];
     }

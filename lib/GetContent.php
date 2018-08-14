@@ -20,6 +20,8 @@ use Tools\lib\zhihu;
 use Tools\lib\csdn;
 use Tools\lib\souyun;
 use Tools\lib\Weixin;
+use Tools\lib\Jianshu;
+use Tools\lib\Zcfy;
 
 /**
  * 获取最后内容
@@ -91,7 +93,15 @@ class GetContent {
             $content = Souyun::getYun($html);
             $name = explode("=", $name)[1];
             $flag = 'souyun';
-        }
+        } else if (strpos($url, "jianshu")) {
+            $rules = Config::getConfig('jianshu');
+            $content = Jianshu::getJianshu($html,$rules,$url);
+            $flag = 'jianshu';
+        } else if (strpos($url, "zcfy")) {
+            $rules = Config::getConfig('zcfy');
+            $content = Zcfy::getZCFY($html,$rules,$url);
+            $flag = 'zcfy';
+        } 
         if ($content) {
             self::putContent($name, $content, $flag);
             echo ".";
