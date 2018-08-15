@@ -95,7 +95,7 @@ class GetContent {
             $flag = 'souyun';
         } else if (strpos($url, "jianshu")) {
             $rules = Config::getConfig('jianshu');
-            $content = Jianshu::getJianshu($html,$rules,$url);
+            $content = Jianshu::getJianShu($html,$rules,$url);
             $flag = 'jianshu';
         } else if (strpos($url, "zcfy")) {
             $rules = Config::getConfig('zcfy');

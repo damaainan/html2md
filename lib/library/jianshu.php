@@ -22,7 +22,6 @@ class Jianshu {
         $body = ToolUtil::reCode($body);
         $body = ToolUtil::replaceHref($body);
         $body = self::replaceImg($body);
-        // $body = self::removeSpaces($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time= $time."\r\n\r\n";
@@ -31,6 +30,8 @@ class Jianshu {
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
+
+        $body = ToolUtil::removeSpaces($body);
         $content = $title . $time . $source . $body;
         return $content;
     }
@@ -49,12 +50,6 @@ class Jianshu {
             $i++;
         }
         $html = $html . $src;
-        return $html;
-    }
-    // 去除多余的空行 
-    private static function removeSpaces($html){
-        # $html = preg_replace("/[(\r\n)|(\s+\r\n)]{2,}/i", "\r\n\r\n", $html);
-        $html = preg_replace("/[\r\n]{2,}/i", "\r\n\r\n", $html);
         return $html;
     }
 }

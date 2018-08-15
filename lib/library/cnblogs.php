@@ -26,6 +26,8 @@ class Cnblogs {
         // echo $body;
         $body = self::replaceImg($body);
         $body = self::replaceHref($body);
+        // $body = ToolUtil::removeTableSpaces($body);
+        // $body = ToolUtil::dealTable($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
@@ -34,6 +36,7 @@ class Cnblogs {
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
+        $body = ToolUtil::removeSpaces($body);
         $content = $title . $source . $time . $body;
         return $content;
     }
