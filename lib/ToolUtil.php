@@ -69,17 +69,22 @@ class ToolUtil {
             $count = count($te);
             $tt = str_pad('', $count * 10, "<td>-</td>");
             $tstr = $ht . "\r\n<tr>" . $tt . "</tr>";
-            echo $ht,"\r\n";
-            echo $count,"\r\n";
-            echo $tstr,"\r\n";
+            // echo $ht,"\r\n";
+            // echo $count,"\r\n";
+            // echo $tstr,"\r\n";
             // echo $tt,"\r\n";
-            
-            $html = str_replace($ht, $tstr, $html);
+            // pq($table)->before("<br/><br/>");
+            // $doc["table:eq($ke) tr:eq(0)"]->after("<tr></tr>");
+            // $doc["table:eq($ke)  tr:eq(1)"]->html($tt);
+            // $t_table = $doc["table:eq($ke)"]->html();
+
+            $html = str_replace($ht, $tstr, $html); // 相同的表头 会多次替换 
         }
+        // $html = $doc->html(); // 整体 html 化 会导致代码中的标签消失 
         return $html;
     }
-    // 去除表格部分多余的空行
-    public static function removeTableSpaces($html){
+    // 去除表格部分多余的空行  已无用 
+    public static function removeTableSpaces($html){ // 正则部分除了问题
         $doc = phpQuery::newDocumentHTML($html);
         $tables = pq($doc)->find("table");
         foreach ($tables as $ke => $table) {
@@ -94,7 +99,7 @@ class ToolUtil {
     // 去除多余的空行 
     public static function removeSpaces($html){
         # $html = preg_replace("/[(\r\n)|(\s+\r\n)]{2,}/i", "\r\n\r\n", $html);
-        $html = preg_replace("/([\r\n]){2,}/", "\r\n\r\n", $html); // \r\n 的问题？ (\r\n) 不行 ([\r\n]) 可以
+        $html = preg_replace("/(\r\n)[(\r\n)\s ]{0,}(\r\n)/", "\r\n\r\n", $html); // \r\n 的问题？  一个特殊的空格
         return $html;
     }
 }

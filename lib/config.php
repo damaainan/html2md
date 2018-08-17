@@ -72,9 +72,10 @@ class Config{
                 "body" => array(".show-content", 'html'),
             ),
             "zcfy" => array( 
-                "title" => array("h1", 'text'),
-                "time" => array(".publish-time", 'text'),
-                "body" => array(".show-content", 'html'),
+                "title" => array(".detail-title", 'text'),
+                "time" => array("time", 'text'),
+                "from" => array(".orginal-source-url", 'href'),
+                "body" => array(".markdown-body", 'html'),
             ),
         ];
         return $config[$str];

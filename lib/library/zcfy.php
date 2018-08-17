@@ -15,6 +15,7 @@ class Zcfy {
         $title = $ret[0]['title'];
         // $source = $ret[0]['source'];
         $time = $ret[0]['time'];
+        $from = $ret[0]['from'];
         $body = $ret[0]['body'];
         // var_dump($body);
 
@@ -23,14 +24,17 @@ class Zcfy {
         $body = ToolUtil::replaceHref($body);
         $body = ToolUtil::replaceImg($body);
 
+        $body = ToolUtil::dealTable($body);
+
         $title = "## " . $title . "\r\n\r\n";
         $time= $time."\r\n\r\n";
         $source = "来源：[" . $url . "](" . $url . ")" . "\r\n\r\n";
-        // file_put_contents("../data/cont.html",$body);
+        $from = "原文：[" . $from . "](" . $from . ")\r\n\r\n";
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
-        $content = $title . $source . $body;
+        $body = ToolUtil::removeSpaces($body);
+        $content = $title . $source . $from . $body;
         return $content;
     }
 }

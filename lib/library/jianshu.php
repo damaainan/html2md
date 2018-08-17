@@ -22,6 +22,7 @@ class Jianshu {
         $body = ToolUtil::reCode($body);
         $body = ToolUtil::replaceHref($body);
         $body = self::replaceImg($body);
+        $body = ToolUtil::dealTable($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time= $time."\r\n\r\n";

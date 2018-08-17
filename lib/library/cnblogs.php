@@ -11,9 +11,10 @@ class Cnblogs {
 
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
-// var_dump($html);
-// var_dump($ret);
-// die();
+        // echo $html;
+        // var_dump($html);
+        // var_dump($ret);
+        // die();
         $title = $ret[0]['title'];
         $source = $ret[0]['source'];
         $time = isset($ret[0]['time']) ? $ret[0]['time'] : '';
@@ -26,8 +27,8 @@ class Cnblogs {
         // echo $body;
         $body = self::replaceImg($body);
         $body = self::replaceHref($body);
-        // $body = ToolUtil::removeTableSpaces($body);
-        // $body = ToolUtil::dealTable($body);
+        $body = ToolUtil::dealTable($body);
+        // echo $body;
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
