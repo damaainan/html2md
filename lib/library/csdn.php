@@ -3,6 +3,7 @@ namespace Tools\lib;
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
+use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
 class Csdn {
@@ -15,7 +16,7 @@ class Csdn {
         $time = isset($ret[0]['time']) ? $ret[0]['time'] : '';
         $body = $ret[0]['body'];
 
-        $body = self::reCode($body);
+        $body = ToolUtil::reCode($body);
         $body = self::dealTable($body);
         $body = self::replaceHref($body);
         $body = self::replaceImg($body);
@@ -29,7 +30,7 @@ class Csdn {
         $body = $replaceElement->doReplace($body);
 
         $body = self::replaceMathjax($body);
-
+        $body = ToolUtil::removeSpaces($body);
         $content = $title . $source . $time . $body;
         return $content;
     }

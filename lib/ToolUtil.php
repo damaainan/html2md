@@ -59,9 +59,9 @@ class ToolUtil {
             // $ht = pq($table)->find("tr:eq(0)");
             $ht = $doc["table:eq($ke) tr:eq(0)"];
 
-            $te = pq($table)->find("tr:eq(0)")->find("td");
+            $te = pq($table)->find("tr:eq(0)")->find("th");
             if(!$te){
-                $te = pq($table)->find("tr:eq(0)")->find("th");
+                $te = pq($table)->find("tr:eq(0)")->find("td");
             }
             if(!$te){
                 continue;

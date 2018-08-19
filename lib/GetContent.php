@@ -169,6 +169,7 @@ class GetContent {
             'github' => 'https://github.com',
             'zhihu' => '',
             'csdn' => '',
+            'jianshu' => '',
         ];
         $prefix = $prefixs[$keyword];
 
@@ -189,7 +190,7 @@ class GetContent {
     }
 
     public static function getKeyWord($url){
-        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github'];
+        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu'];
         $res = array_filter(array_map(function($val) use ($url){
                                 $rr = strpos($url, $val);
                                 if($rr!==false)

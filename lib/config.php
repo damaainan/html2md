@@ -63,7 +63,7 @@ class Config{
                 // "time" => array("#post-date", 'text'),
                 "body" => array(".content", 'html'),
             ),
-            "souyun" => array(
+            "souyun" => array( // 未完成
                 "body" => array(".tab-page:eq(0)", "html")
             ),
             "jianshu" => array( 
@@ -77,6 +77,7 @@ class Config{
                 "from" => array(".orginal-source-url", 'href'),
                 "body" => array(".markdown-body", 'html'),
             ),
+            // https://wdxtub.com/interview/14520597062776.html  小土刀面试
         ];
         return $config[$str];
     }
@@ -112,6 +113,9 @@ class Config{
             ),
             "zhihu" => array( // issue
                 "url" => array(".js-issue-title", 'text')
+            ),
+            "jianshu" => array(
+                "url" => array("", '')
             ),
         ];
         return $config[$name];

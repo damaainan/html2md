@@ -31,6 +31,7 @@ class Tuicool {
         $body = ToolUtil::reCode($body);
         $body = ToolUtil::replaceHref($body);
         $body = ToolUtil::replaceImg($body);
+        $body = ToolUtil::dealTable($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
@@ -39,6 +40,9 @@ class Tuicool {
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
+
+        $body = ToolUtil::removeSpaces($body);
+
         $content = $title . $source . $time . $body;
         return $content;
 
