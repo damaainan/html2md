@@ -22,6 +22,7 @@ use Tools\lib\souyun;
 use Tools\lib\Weixin;
 use Tools\lib\Jianshu;
 use Tools\lib\Zcfy;
+use Tools\lib\Laravel;
 
 /**
  * 获取最后内容
@@ -101,6 +102,10 @@ class GetContent {
             $rules = Config::getConfig('zcfy');
             $content = Zcfy::getZCFY($html,$rules,$url);
             $flag = 'zcfy';
+        } else if (strpos($url, "laravel")) {
+            $rules = Config::getConfig('laravel');
+            $content = Laravel::getLaravel($html,$rules,$url);
+            $flag = 'laravel';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);
@@ -170,6 +175,7 @@ class GetContent {
             'zhihu' => '',
             'csdn' => '',
             'jianshu' => '',
+            'laravel' => '',
         ];
         $prefix = $prefixs[$keyword];
 
@@ -190,7 +196,7 @@ class GetContent {
     }
 
     public static function getKeyWord($url){
-        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu'];
+        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu', 'laravel'];
         $res = array_filter(array_map(function($val) use ($url){
                                 $rr = strpos($url, $val);
                                 if($rr!==false)

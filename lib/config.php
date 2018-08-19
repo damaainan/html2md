@@ -77,6 +77,11 @@ class Config{
                 "from" => array(".orginal-source-url", 'href'),
                 "body" => array(".markdown-body", 'html'),
             ),
+            "laravel" => array( // https://laravel-china.org
+                "title" => array("h1", 'text'),
+                "time" => array(".timeago", 'title'),
+                "body" => array("#emojify", 'html'),
+            ),
             // https://wdxtub.com/interview/14520597062776.html  小土刀面试
         ];
         return $config[$str];
@@ -116,6 +121,9 @@ class Config{
             ),
             "jianshu" => array(
                 "url" => array("", '')
+            ),
+            "laravel" => array(
+                "url" => array(".rm-link-color", 'href')
             ),
         ];
         return $config[$name];
