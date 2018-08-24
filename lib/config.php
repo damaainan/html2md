@@ -39,6 +39,12 @@ class Config{
             "mengzhidu" => array( // https://www.mengzhidu.com/online/item/4/49
 
             ),
+            "githubio" => array( // issue
+                "title" => array("h1", 'text'),
+                // "source" => array(".article_meta .source a", 'text'),
+                "time" => array("time", 'datetime'),
+                "body" => array(".post section", 'html'),
+            ),
             "github" => array( // issue
                 "title" => array(".js-issue-title", 'text'),
                 // "source" => array(".article_meta .source a", 'text'),
@@ -82,6 +88,9 @@ class Config{
                 "time" => array(".timeago", 'title'),
                 "body" => array("#emojify", 'html'),
             ),
+            "tianya" => array(
+                "title" => array(),
+            )
             // https://wdxtub.com/interview/14520597062776.html  小土刀面试
         ];
         return $config[$str];

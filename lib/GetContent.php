@@ -23,6 +23,7 @@ use Tools\lib\Weixin;
 use Tools\lib\Jianshu;
 use Tools\lib\Zcfy;
 use Tools\lib\Laravel;
+use Tools\lib\GithubIO;
 
 /**
  * 获取最后内容
@@ -73,6 +74,10 @@ class GetContent {
             $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
+        } else if (strpos($url, "github.io")) {
+            $rules = Config::getConfig('githubio');
+            $content = GithubIO::getGithubIO($html,$rules, $url);
+            $flag = 'githubio';
         } else if (strpos($url, "github")) {
             $rules = Config::getConfig('github');
             $content = Github::getGithub($html,$rules, $url);
