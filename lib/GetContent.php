@@ -53,6 +53,9 @@ class GetContent {
         // var_dump($configs);die();
         $arr = explode('/', $url);
         $name = $arr[count($arr) - 1];
+        if($name == ''){
+            $name = $arr[count($arr) - 2];
+        }
         // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
         $html = GetHtml::getUrl($url); // 可以优化为专门的 curl 方法
         // $configs = $this->configs;

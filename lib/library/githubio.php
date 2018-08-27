@@ -42,10 +42,10 @@ class GithubIO{ // issues
         $src='';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("src");
-            // $ht = $doc["img:eq($ke)"];
-            $pahtml = pq($doc)->find("img:eq($ke)")->parent("a")->parent("p")->html();
+            $ht = $doc["img:eq($ke)"];
+            // $pahtml = pq($doc)->find("img:eq($ke)")->html();
             $src .= "\n[$i]: $te";
-            $html = str_replace($pahtml, "\r\n\r\n![][$i]", $html);
+            $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
             $i++;
         }
         $html = $html.$src;
@@ -62,6 +62,10 @@ class GithubIO{ // issues
             $href = pq($va)->attr("href");
             $te = pq($va)->text();
             $ht = $doc["a:eq($ke)"];
+            if(!$href){
+                $html = str_replace($ht, "", $html);
+                continue;
+            }
             $src .= "\n[$i]: $href";
             $html = str_replace($ht, "[$te][$i]", $html);
             $i++;

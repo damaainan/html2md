@@ -90,7 +90,7 @@ class replaceElement {
     }
 
     private static function dealOthers($str){
-        $str = preg_replace('/<br[\/]{0,1}>/', "\r\n", $str);
+        $str = preg_replace('/<br[\sa-zA-Z\'\"\.\(\),=_:;#\d-]{0,}[\/]{0,1}>/', "\r\n", $str);
         $str = preg_replace('/<hr[\/]{0,1}>/', "\r\n-----\r\n", $str);
 
 
@@ -143,20 +143,20 @@ class replaceElement {
     }
     // 处理列表
     private static function dealList($str){
-        $str = preg_replace('/\s{0,2}<ol[\sa-zA-Z\'\"\d=_:-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/\s{0,2}<ol[\sa-zA-Z\'\"\d=_:;,-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/ol>/', "\r\n", $str);
 
-        $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"=_:-]{0,}>/', "\r\n", $str);
+        $str = preg_replace('/\s{0,2}<ul[\d\sa-zA-Z\'\"\(\)=_:;,-]{0,}>/', "\r\n", $str);
         $str = preg_replace('/<\/ul>/', "\r\n", $str);
 
-        $str = preg_replace('/[ ]{0,}<li[\sa-zA-Z\'\"=_:-]{0,}>\s{0,}\n{0,}/', "* ", $str);
+        $str = preg_replace('/[ ]{0,}<li[\sa-zA-Z\d\'\"=_:;-]{0,}>\s{0,}\n{0,}/', "* ", $str);
         $str = preg_replace('/<\/li>/', "", $str);
         return $str;
     }
     // 处理标题
     private static function dealHead($str){
         $hbase_p = '/\s{0,2}<';
-        $hbase_s = '[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.=_;:-]{0,}>\s{0,}/u'; // 拼接 h1 - h6 
+        $hbase_s = '[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.\(\),=_;:-]{0,}>\s{0,}/u'; // 拼接 h1 - h6 
         for ($i = 1; $i < 7; $i++) {
             $head = "\n" . str_pad("", $i, "#");
             if($i==1){

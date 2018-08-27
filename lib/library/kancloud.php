@@ -46,6 +46,8 @@ class Kancloud {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
         $body = $ret[0]['body'];
+        $body = str_replace("&lt;", '<', $body);
+        $body = str_replace("&gt;", '>', $body);
         return $body;
     }
 }
