@@ -115,6 +115,10 @@ class Cnblogs {
             $pahtml = pq($doc)->find("img:eq($ke)")->parent("a")->html();
             $pahtmlstr = pq($doc)->find("img:eq($ke)")->parent("a")->parent()->html();
             // 获取 a 标签的 html
+            if(strpos($te, "file:///") !== false){ // 处理 file:/// 不合格的图片引用
+                $html = str_replace($ht, "\r\n", $html);
+                continue;
+            }
             $src .= "\n[$i]: $te";
             if(trim($pahtml) == trim($ht)){
                 // echo "\n*****\n";

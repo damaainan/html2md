@@ -77,7 +77,7 @@ class GetContent {
             $content = Cnblogs::getCnblogs($html,$rules);
             $flag = 'cnblogs';
             $name = explode(".", $name)[0];
-        } else if (strpos($url, "github.io")) {
+        } else if (strpos($url, "github.io") && strpos($url, "github.io") == strpos($url, "github")) {
             $rules = Config::getConfig('githubio');
             $content = GithubIO::getGithubIO($html,$rules, $url);
             $flag = 'githubio';

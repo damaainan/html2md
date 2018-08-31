@@ -99,7 +99,7 @@ class ToolUtil {
     // 去除多余的空行 
     public static function removeSpaces($html){
         # $html = preg_replace("/[(\r\n)|(\s+\r\n)]{2,}/i", "\r\n\r\n", $html);
-        $html = preg_replace("/(\r\n)[(\r\n)\s ]{0,}(\r\n)/", "\r\n\r\n", $html); // \r\n 的问题？  一个特殊的空格
+        $html = preg_replace("/[\r\n][\r\n\s ]{0,}[\r\n]/", "\r\n\r\n", $html); // \r\n 的问题？  一个特殊的空格
         return $html;
     }
 }

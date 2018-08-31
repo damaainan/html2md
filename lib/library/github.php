@@ -20,8 +20,10 @@ class Github{ // issues
         $labels = self::getLabels($html);
 
         $body = ToolUtil::reCode($body);
-        $body = self::replaceImg($body);
-        $body = self::replaceHref($body); // 处理链接和图片的顺序
+        $body = ToolUtil::dealTable($body);
+        $body = self::dealSrcAndHref($body);
+        // $body = self::replaceImg($body);
+        // $body = self::replaceHref($body); // 处理链接和图片的顺序
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
@@ -29,13 +31,40 @@ class Github{ // issues
         // file_put_contents("../data/cont.html",$body);
         $replaceElement = new replaceElement();
 
-        $lstr = "Labels: " . implode(' , ', $labels) . "\r\n\r\n";
+        $lstr = "Labels: `" . implode('` , `', $labels) . "`\r\n\r\n";
 
         $body = $replaceElement->doReplace($body);
         $content = $title  . $time . $source . $lstr . $body;
         return $content;
 	}
-
+    private static function dealSrcAndHref($html){
+        $doc = phpQuery::newDocumentHTML($html);
+        $ch = pq($doc)->find("a");
+        $i=0;
+        $src='';
+        foreach ($ch as $ke => $va) {
+            $img = pq($va)->find("img")->attr("src");
+            $ht = $doc["a:eq($ke)"];
+            if(!$img){ // 不是图片
+                $href = pq($va)->attr("href");
+                $te = pq($va)->text();
+                if(!$href){
+                    $html = str_replace($ht, "", $html); // 会将相同元素全部替换
+                    continue;
+                }
+                $src .= "\n[$i]: $href";
+                $html = str_replace($ht, "[$te][$i]", $html);
+            }else{ // 包含图片
+                $te = pq($va)->find("img")->attr("src");
+                // $pahtml = pq($doc)->find("img:eq($ke)")->html();
+                $src .= "\n[$i]: $te";
+                $html = str_replace($ht, "\r\n\r\n![][$i]", $html);
+            }
+            $i++;
+        }
+        $html = $html.$src;
+        return $html;
+    }
     // 获取标签
     private static function getLabels($html){
         $doc = phpQuery::newDocumentHTML($html);
