@@ -60,13 +60,14 @@ class ToolUtil {
             $ht = $doc["table:eq($ke) tr:eq(0)"];
 
             $te = pq($table)->find("tr:eq(0)")->find("th");
-            if(!$te){
+            $count = count($te);
+            if(!$count){
                 $te = pq($table)->find("tr:eq(0)")->find("td");
+                $count = count($te);
             }
-            if(!$te){
+            if(!$count){
                 continue;
             }
-            $count = count($te);
             $tt = str_pad('', $count * 10, "<td>-</td>");
             $tstr = $ht . "\r\n<tr>" . $tt . "</tr>";
             // echo $ht,"\r\n";
@@ -99,7 +100,7 @@ class ToolUtil {
     // 去除多余的空行 
     public static function removeSpaces($html){
         # $html = preg_replace("/[(\r\n)|(\s+\r\n)]{2,}/i", "\r\n\r\n", $html);
-        $html = preg_replace("/[\r\n][\r\n\s ]{0,}[\r\n]/", "\r\n\r\n", $html); // \r\n 的问题？  一个特殊的空格
+        $html = preg_replace("/(\r\n)[\r\n\s ]{0,}(\r\n)/", "\r\n\r\n", $html); // \r\n 的问题？  一个特殊的空格
         return $html;
     }
 }

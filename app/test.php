@@ -9,7 +9,7 @@ use Tools\GetContent;
 // require "../lib/getContent.class.php";
 
 $urls = [];
-$urls[] = "https://www.cnblogs.com/penghuwan/p/7883076.html";
+$urls[] = "https://www.cnblogs.com/hongshijie/p/9545765.html";
 // 遍历数组全部采集
 $Mark = new GetContent();
 
