@@ -43,7 +43,7 @@ class Config{
                 "title" => array("h1", 'text'),
                 // "source" => array(".article_meta .source a", 'text'),
                 // "time" => array("time", 'datetime'),
-                // "body" => array(".post section", 'html'),
+                // "body" => array(".post>section", 'html'),
                 "time" => array(".post-time", 'text'),
                 "body" => array(".post-content", 'html'),
             ),

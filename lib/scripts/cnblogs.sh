@@ -17,3 +17,7 @@ ls *.md | xargs -I[ awk 'NR==5{print $0"**["}' [ | sort -d | awk -F'**' '{print 
 ls cn*.md | xargs -I[ awk -F'## ' 'NR==1{system("mv [ \""$2".md\"")}' [
 
 # 查找 MathJax 公式的正则 
+
+\$(.*?)\$
+
+\$(.*?)\$
