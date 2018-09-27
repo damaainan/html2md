@@ -18,22 +18,20 @@ file_put_contents("../out/other/yue.md", $body);
 
 
 public function replaceHref($html) {
-        $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("a");
-        $dh = pq($doc)->find("img");
-        $count = count($dh);
-        $i = $count;
-        $src = '';
-        foreach ($ch as $ke => $va) {
-            $href = pq($va)->attr("href");
-            $te = pq($va)->text();
-            $ht = $doc["a:eq($ke)"];
-            $src .= "\n[$i]: $href";
-            $html = str_replace($ht, "[$te][$i]", $html);
-            $i++;
-        }
-        $html = $html . $src;
-        return $html;
+    $doc = phpQuery::newDocumentHTML($html);
+    $ch = pq($doc)->find(".calibre3");
+    $count = count($ch);
+    $i = 1;
+    // $i = $count;
+    $src = '';
+    foreach ($ch as $ke => $va) {
+        $ht = $doc[".calibre3:eq($ke)"];
+        // $src .= "\n[$i]: $href";
+        // $html = str_replace($ht, "[$te][$i]", $html);
+        $i++;
     }
+    // $html = $html . $src;
+    // return $html;
+}
 
 

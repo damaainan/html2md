@@ -76,7 +76,11 @@ class Segmentfault {
             if(strpos($te, "?src=http")){ // 处理来自其他网站的图片
                 $te = explode('&', explode("?src=", $te)[1])[0];
             }else{
-                $te = "https://segmentfault.com" . explode("?", $te)[0];
+                if(strpos($te, "http") !== false){
+                    $te = explode("?", $te)[0];
+                }else{
+                    $te = "https://segmentfault.com" . explode("?", $te)[0];
+                }
             }
             $ht = $doc["img:eq($ke)"];
             $src .= "\n[$i]: $te";

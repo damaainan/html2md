@@ -41,11 +41,11 @@ class Config{
             ),
             "githubio" => array( // 有新旧两种样式 
                 "title" => array("h1", 'text'),
-                // "source" => array(".article_meta .source a", 'text'),
-                // "time" => array("time", 'datetime'),
-                // "body" => array(".post>section", 'html'),
-                "time" => array(".post-time", 'text'),
-                "body" => array(".post-content", 'html'),
+                "source" => array(".article_meta .source a", 'text'),
+                "time" => array("time", 'datetime'),
+                "body" => array(".article-entry", 'html'),
+                // "time" => array(".post-time", 'text'),
+                // "body" => array(".post-content", 'html'),
             ),
             "github" => array( // issue
                 "title" => array(".js-issue-title", 'text'),
