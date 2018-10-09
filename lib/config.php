@@ -90,6 +90,11 @@ class Config{
                 "time" => array(".timeago", 'title'),
                 "body" => array("#emojify", 'html'),
             ),
+            "51cto" => array( // http://blog.51cto.com
+                "title" => array(".artical-title", 'text'),
+                "time" => array(".artical-title-list .time", 'text'),
+                "body" => array(".main-content", 'html'),
+            ),
             "tianya" => array(
                 "title" => array(),
             )

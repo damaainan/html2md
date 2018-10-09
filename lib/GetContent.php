@@ -24,6 +24,7 @@ use Tools\lib\Jianshu;
 use Tools\lib\Zcfy;
 use Tools\lib\Laravel;
 use Tools\lib\GithubIO;
+use Tools\lib\Cto;
 
 /**
  * 获取最后内容
@@ -114,6 +115,10 @@ class GetContent {
             $rules = Config::getConfig('laravel');
             $content = Laravel::getLaravel($html,$rules,$url);
             $flag = 'laravel';
+        } else if (strpos($url, "51cto")) {
+            $rules = Config::getConfig('51cto');
+            $content = Cto::getCto($html,$rules,$url);
+            $flag = '51cto';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);
