@@ -19,7 +19,7 @@ class replaceElement {
         $str = preg_replace('/<\/div>/', "\r\n", $str);
 
         $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.\(\),=_:;#\d-]{0,}>/u', '', $str);
-        $str = preg_replace("/<\/span>\n{0,}/", " ", $str);
+        $str = preg_replace("/[ ]{0,}<\/span>\n{0,}/", " ", $str);
 
         $str = preg_replace("/[ ]{0,}<p[\sa-zA-Z\'\"\d=_\.;:,\!\(\)-]{0,}>\s{0,10}[\r|\n]{0,1}/", "", $str);
         $str = preg_replace("/[\s\r\n]{0,10}<\/p>/", "\r\n", $str);
@@ -94,8 +94,8 @@ class replaceElement {
         $str = preg_replace('/<hr[\/]{0,1}>/', "\r\n-----\r\n", $str);
 
 
-        $str = preg_replace("/\n{0,}[ ]{0,}<strong[\d\sa-zA-Z\'\"\#=_:;%-]{0,}>/", ' **`', $str);
-        $str = preg_replace('/<\/strong>\n{0,}/', "`** ", $str);
+        $str = preg_replace("/\n{0,}[ ]{0,}<strong[\d\sa-zA-Z\'\"\#=_:;%-]{0,}>\s{0,}\n{0,}/", ' **`', $str);
+        $str = preg_replace('/\s{0,}\n{0,}<\/strong>\n{0,}/', "`** ", $str);
 
         $str = preg_replace('/<b>/', ' **', $str);
         $str = preg_replace('/<\/b>/', "** ", $str);
@@ -121,6 +121,12 @@ class replaceElement {
         $str = preg_replace("/<\/{0,1}article>/", "", $str);
         
         $str = preg_replace("/<\/{0,1}font[\d\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\#=_:;%-]{0,}>\n{0,}/u", "", $str);
+        return $str;
+    }
+
+    public static function dealHrefSpaces($str){
+        $str = preg_replace('/\s{0,}<a[ ]{1}/', '<a ', $str);
+        $str = preg_replace("/<\/a>\n{0,}/", "</a>", $str);
         return $str;
     }
 

@@ -27,6 +27,9 @@ class Tuicool {
         $source = $ret[0]['source'];
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
+
+        $replaceElement = new replaceElement();
+        $body = $replaceElement::dealHrefSpaces($body);
         
         $body = ToolUtil::reCode($body);
         $body = ToolUtil::replaceHref($body);
@@ -37,7 +40,6 @@ class Tuicool {
         $time = $time . "\r\n\r\n";
         $source = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
         // file_put_contents("../data/cont.html",$body);
-        $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
 

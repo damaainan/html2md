@@ -44,7 +44,7 @@ class ToolUtil {
             $te = pq($va)->text();
             $ht = $doc["a:eq($ke)"];
             $src .= "\n[$i]: $href";
-            $html = str_replace($ht, "[$te][$i]", $html);
+            $html = str_replace($ht, "[$te][$i]", $html); // a 标签前后有 换行 空格
             $i++;
         }
         $html = $html . $src;

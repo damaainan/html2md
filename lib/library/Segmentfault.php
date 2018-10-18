@@ -76,10 +76,15 @@ class Segmentfault {
             if(strpos($te, "?src=http")){ // 处理来自其他网站的图片
                 $te = explode('&', explode("?src=", $te)[1])[0];
             }else{
+                if(strpos($te, "?")){
+                    $te = str_replace("?" , "/view?", $te);
+                }
                 if(strpos($te, "http") !== false){
-                    $te = explode("?", $te)[0];
+                    // $te = explode("?", $te)[0];
+                    $te = $te;
                 }else{
-                    $te = "https://segmentfault.com" . explode("?", $te)[0];
+                    // $te = "https://segmentfault.com" . explode("?", $te)[0];
+                    $te = "https://segmentfault.com" . $te;
                 }
             }
             $ht = $doc["img:eq($ke)"];

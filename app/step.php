@@ -29,7 +29,7 @@ function deal($argc, $argv){
 
     // 遍历数组全部采集
     $Mark = new GetContent();
-
+    $num = 0;
     for ($i = 0, $len = count($urls); $i < $len; $i++) {
         $url = $urls[$i];
         $ret = $Mark->doMark($url);
@@ -37,7 +37,11 @@ function deal($argc, $argv){
             sleep(1);
         }
         echo $ret;
+        if($ret == '1'){
+            $num++;
+        }
     }
+    echo "\r\n总共 " . $num . " 篇\r\n";
 }
 
 deal($argc, $argv);
