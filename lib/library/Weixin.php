@@ -2,7 +2,7 @@
 namespace Tools\lib;
 use phpQuery;
 use QL\QueryList;
-use Tools\replaceElement;
+use Tools\{replaceElement, ToolUtil};
 class Weixin{
 	public static function getWeixin($html, $rules, $url) {
         
@@ -15,8 +15,10 @@ class Weixin{
         $body = $ret[0]['body'];
 
         // $body =  self::replaceOther($body);
+        $body = ToolUtil::reCode($body);
         $body = self::replaceHref($body);
         $body = self::replaceImg($body);
+        $body = ToolUtil::dealTable($body);
 
         $title = "## " . $title . "\r\n\r\n";
         $time = $time . "\r\n\r\n";
@@ -37,6 +39,9 @@ class Weixin{
         $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-original");
+            if($te == ''){
+                $te = pq($va)->attr("data-src");
+            }
             $ht = $doc["img:eq($ke)"];
             $src .= "\n[$i]: $te";
             $html = str_replace($ht, "\r\n\r\n![][$i]", $html);

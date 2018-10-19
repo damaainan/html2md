@@ -21,6 +21,9 @@ class replaceElement {
         $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.\(\),=_:;#\d-]{0,}>/u', '', $str);
         $str = preg_replace("/[ ]{0,}<\/span>\n{0,}/", " ", $str);
 
+        $str = preg_replace('/[ ]{0,}<section[\sa-zA-Z\x{4e00}-\x{9fa5}\'\?\"\.\(\),=_:;#\d-]{0,}>/u', '', $str);
+        $str = preg_replace("/[ ]{0,}<\/section>\n{0,}/", " ", $str);
+
         $str = preg_replace("/[ ]{0,}<p[\sa-zA-Z\'\"\d=_\.;:,\!\(\)-]{0,}>\s{0,10}[\r|\n]{0,1}/", "", $str);
         $str = preg_replace("/[\s\r\n]{0,10}<\/p>/", "\r\n", $str);
 

@@ -12,19 +12,24 @@ use QL\QueryList;
 //use Tools\replaceElement;
 //use Tools\GetHtml;
 //use Tools\Config; // 同一命名空间下 会自动寻找
-use Tools\lib\Tuicool;
-use Tools\lib\Segmentfault;
-use Tools\lib\Cnblogs;
-use Tools\lib\github;
-use Tools\lib\zhihu;
-use Tools\lib\csdn;
-use Tools\lib\souyun;
-use Tools\lib\Weixin;
-use Tools\lib\Jianshu;
-use Tools\lib\Zcfy;
-use Tools\lib\Laravel;
-use Tools\lib\GithubIO;
-use Tools\lib\Cto;
+
+// php7 新特性 use方法 批量导入
+use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun};
+
+// use Tools\lib\Segmentfault;
+// use Tools\lib\Cnblogs;
+// use Tools\lib\github;
+// use Tools\lib\zhihu;
+// use Tools\lib\csdn;
+// use Tools\lib\souyun;
+// use Tools\lib\Weixin;
+// use Tools\lib\Jianshu;
+// use Tools\lib\Zcfy;
+// use Tools\lib\Laravel;
+// use Tools\lib\GithubIO;
+// use Tools\lib\Cto;
+// use Tools\lib\Ruan;
+// use Tools\lib\Aliyun;
 
 /**
  * 获取最后内容
@@ -119,6 +124,10 @@ class GetContent {
             $rules = Config::getConfig('51cto');
             $content = Cto::getCto($html,$rules,$url);
             $flag = '51cto';
+        } else if (strpos($url, "aliyun")) {
+            $rules = Config::getConfig('aliyun');
+            $content = Aliyun::getAliyun($html,$rules,$url);
+            $flag = 'aliyun';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);

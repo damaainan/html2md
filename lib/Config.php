@@ -62,7 +62,7 @@ class Config{
             "weixin" => array( 
                 "title" => array("#activity-name", 'text'),
                 // "source" => array(".article_meta .source a", 'text'),
-                "time" => array("#post-date", 'text'),
+                "time" => array("#publish_time", 'text'),
                 "body" => array("#js_content", 'html'),
             ),
             "kancloud" => array( 
@@ -94,6 +94,12 @@ class Config{
                 "title" => array(".artical-title", 'text'),
                 "time" => array(".artical-title-list .time", 'text'),
                 "body" => array(".main-content", 'html'),
+            ),
+            "aliyun" => array( // https://yq.aliyun.com
+                "title" => array(".blog-title", 'text'),
+                "summary" => array(".blog-summary", "text"),
+                "time" => array(".blog-o-info .b-time", 'text'),
+                "body" => array(".content-detail", 'html'),
             ),
             "tianya" => array(
                 "title" => array(),
