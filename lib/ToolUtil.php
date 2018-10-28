@@ -1,12 +1,14 @@
-<?php 
+<?php
 namespace Tools;
 
 require "../vendor/autoload.php";
 use phpQuery;
 
-class ToolUtil {
+class ToolUtil
+{
     // 代码部分特殊处理 多种代码形式 正常形式的代码可以了
-    public static function reCode($html) {
+    public static function reCode($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("pre");
         foreach ($ch as $va) {
@@ -17,7 +19,8 @@ class ToolUtil {
         }
         return $html;
     }
-    public static function replaceImg($html) {
+    public static function replaceImg($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         $i = 0;
@@ -32,7 +35,8 @@ class ToolUtil {
         $html = $html . $src;
         return $html;
     }
-    public static function replaceHref($html) {
+    public static function replaceHref($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("a");
         $dh = pq($doc)->find("img");
@@ -50,8 +54,9 @@ class ToolUtil {
         $html = $html . $src;
         return $html;
     }
-    // 在每个 table 第一行后 加 |-|-|-| 
-    public static function dealTable($html){
+    // 在每个 table 第一行后 加 |-|-|-|
+    public static function dealTable($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
         $tables = pq($doc)->find("table");
         foreach ($tables as $ke => $table) {
@@ -61,11 +66,11 @@ class ToolUtil {
 
             $te = pq($table)->find("tr:eq(0)")->find("th");
             $count = count($te);
-            if(!$count){
+            if (!$count) {
                 $te = pq($table)->find("tr:eq(0)")->find("td");
                 $count = count($te);
             }
-            if(!$count){
+            if (!$count) {
                 continue;
             }
             $tt = str_pad('', $count * 10, "<td>-</td>");
@@ -79,17 +84,19 @@ class ToolUtil {
             // $doc["table:eq($ke)  tr:eq(1)"]->html($tt);
             // $t_table = $doc["table:eq($ke)"]->html();
 
-            $html = str_replace($ht, $tstr, $html); // 相同的表头 会多次替换 
+            $html = str_replace($ht, $tstr, $html); // 相同的表头 会多次替换
         }
-        // $html = $doc->html(); // 整体 html 化 会导致代码中的标签消失 
+        // $html = $doc->html(); // 整体 html 化 会导致代码中的标签消失
         return $html;
     }
-    // 去除表格部分多余的空行  已无用 
-    public static function removeTableSpaces($html){ // 正则部分除了问题
+    // 去除表格部分多余的空行  已无用
+    public static function removeTableSpaces($html)
+    {
+        // 正则部分除了问题
         $doc = phpQuery::newDocumentHTML($html);
         $tables = pq($doc)->find("table");
         foreach ($tables as $ke => $table) {
-            $tastr = $doc["table:eq($ke)"]; 
+            $tastr = $doc["table:eq($ke)"];
             // 需要取出表格部分多余的空行
             $retastr = preg_replace("/([\r\n]){1,}/", "\r\n", $tastr);
             $html = str_replace($tastr, $retastr, $html);
@@ -97,8 +104,9 @@ class ToolUtil {
         return $html;
     }
 
-    // 去除多余的空行 
-    public static function removeSpaces($html){
+    // 去除多余的空行
+    public static function removeSpaces($html)
+    {
         # $html = preg_replace("/[(\r\n)|(\s+\r\n)]{2,}/i", "\r\n\r\n", $html);
         $html = preg_replace("/(\r\n)[\r\n\s ]{0,}(\r\n)/", "\r\n\r\n", $html); // \r\n 的问题？  一个特殊的空格
         return $html;

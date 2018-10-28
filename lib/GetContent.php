@@ -14,7 +14,7 @@ use QL\QueryList;
 //use Tools\Config; // 同一命名空间下 会自动寻找
 
 // php7 新特性 use方法 批量导入
-use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun};
+use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun, Juejin};
 
 // use Tools\lib\Segmentfault;
 // use Tools\lib\Cnblogs;
@@ -128,6 +128,15 @@ class GetContent {
             $rules = Config::getConfig('aliyun');
             $content = Aliyun::getAliyun($html,$rules,$url);
             $flag = 'aliyun';
+        } else if (strpos($url, "juejin")) {
+            if (strpos($url, "post")){
+                $rules = Config::getConfig('juejin');
+                $content = Juejin::getJuejin($html,$rules,$url);
+            }else if (strpos($url, "entry")){
+                $rules = Config::getConfig('juejin-entry');
+                $content = Juejin::getJuejin($html,$rules,$url);
+            }
+            $flag = 'juejin';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);

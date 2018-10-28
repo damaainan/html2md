@@ -12,19 +12,19 @@ class replaceElement {
     public function doReplace($str) {
         // 这个替换放在最前面就可以 在最后就失败 有一个干扰项
         // 可以加个标记在前部  再次编辑的时候方便改动
-        $str = preg_replace("/\n{0,}[ ]{0,10}<pre[\sa-zA-Z\'\"\+=_:;#\(\)\.\,\d-]{0,}>/", "\r\n```LANG\r\n", $str);
+        $str = preg_replace("/\n{0,}[ ]{0,10}<pre[\sa-zA-Z\'\"\+=_:;#\(\)\.\,\%\d-]{0,}>/", "\r\n```LANG\r\n", $str);
         $str = preg_replace('/<\/pre>/', "\r\n```\r\n", $str);
 
         $str = preg_replace('/<div[\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\/\+=_:%;#\(\)\!,\?\.\d-]{0,}>/u', '', $str);
         $str = preg_replace('/<\/div>/', "\r\n", $str);
 
-        $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.\(\),=_:;#\d-]{0,}>/u', '', $str);
+        $str = preg_replace('/[ ]{0,}<span[\sa-zA-Z\x{4e00}-\x{9fa5}\'\"\.\(\),=_:;#\%\d-]{0,}>/u', '', $str);
         $str = preg_replace("/[ ]{0,}<\/span>\n{0,}/", " ", $str);
 
-        $str = preg_replace('/[ ]{0,}<section[\sa-zA-Z\x{4e00}-\x{9fa5}\'\?\"\.\(\),=_:;#\d-]{0,}>/u', '', $str);
+        $str = preg_replace('/[ ]{0,}<section[\sa-zA-Z\x{4e00}-\x{9fa5}\'\?\"\.\(\)\%,=_:;#\d-]{0,}>/u', '', $str);
         $str = preg_replace("/[ ]{0,}<\/section>\n{0,}/", " ", $str);
 
-        $str = preg_replace("/[ ]{0,}<p[\sa-zA-Z\'\"\d=_\.;:,\!\(\)-]{0,}>\s{0,10}[\r|\n]{0,1}/", "", $str);
+        $str = preg_replace("/[ ]{0,}<p[\sa-zA-Z\'\"\d\%=_\.;:,\!\(\)-]{0,}>\s{0,10}[\r|\n]{0,1}/", "", $str);
         $str = preg_replace("/[\s\r\n]{0,10}<\/p>/", "\r\n", $str);
 
         $str = self::dealHead($str);

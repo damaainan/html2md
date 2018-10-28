@@ -101,6 +101,16 @@ class Config{
                 "time" => array(".blog-o-info .b-time", 'text'),
                 "body" => array(".content-detail", 'html'),
             ),
+            "juejin" => array( // https://juejin.im
+                "title" => array("h1", 'text'),
+                "time" => array("time", 'text'),
+                "body" => array(".article-content", 'html'),
+            ),
+            "juejin-entry" => array( // https://juejin.im 转载的文章
+                "title" => array("h1", 'text'),
+                "time" => array(".entry-public-info div:eq(2)", 'text'),
+                "body" => array(".article-content", 'html'),
+            ),
             "tianya" => array(
                 "title" => array(),
             )
