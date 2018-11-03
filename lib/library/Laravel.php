@@ -1,16 +1,18 @@
 <?php
 namespace Tools\lib;
-use phpQuery;
+
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
-class Laravel {
+class Laravel
+{
 
-    public static function getLaravel($html, $rules, $url) {
+    public static function getLaravel($html, $rules, $url)
+    {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
-        $ret = $data->all();
+        $ret  = $data->all();
 
         $title = trim($ret[0]['title']);
         // $source = $ret[0]['source'];
@@ -24,15 +26,15 @@ class Laravel {
         $body = ToolUtil::replaceImg($body);
         $body = ToolUtil::dealTable($body);
 
-        $title = "## " . $title . "\r\n\r\n";
-        $time= "时间：" . $time."\r\n\r\n";
+        $title  = "## " . $title . "\r\n\r\n";
+        $time   = "时间：" . $time . "\r\n\r\n";
         $source = "来源：[" . $url . "](" . $url . ")" . "\r\n\r\n";
         // file_put_contents("../data/cont.html",$body);
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
 
-        $body = ToolUtil::removeSpaces($body);
+        $body    = ToolUtil::removeSpaces($body);
         $content = $title . $time . $source . $body;
         return $content;
     }

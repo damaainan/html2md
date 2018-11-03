@@ -1,16 +1,20 @@
 <?php
 namespace Tools\lib;
+
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\ToolUtil;
+
 // http://www.ruanyifeng.com/blog/ 阮一峰博客
 // header("Content-type:text/html; Charset=utf-8");
-class Ruan {
+class Ruan
+{
 
-    public static function getRuan($html, $rules, $url) {
+    public static function getRuan($html, $rules, $url)
+    {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
-        $ret = $data->all();
+        $ret  = $data->all();
 
         // 获取分类 文件放入对应文件夹
 
@@ -26,27 +30,28 @@ class Ruan {
         $body = self::replaceImg($body);
         $body = ToolUtil::dealTable($body);
 
-        $title = "## " . $title . "\r\n\r\n";
-        $time= $time."\r\n\r\n";
+        $title  = "## " . $title . "\r\n\r\n";
+        $time   = $time . "\r\n\r\n";
         $source = "来源：[" . $url . "](" . $url . ")" . "\r\n\r\n";
         // file_put_contents("../data/cont.html",$body);
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
 
-        $body = ToolUtil::removeSpaces($body);
+        $body    = ToolUtil::removeSpaces($body);
         $content = $title . $time . $source . $body;
         return $content;
     }
 
-    private static function replaceImg($html){
+    private static function replaceImg($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("img");
-        $i = 0;
+        $ch  = pq($doc)->find("img");
+        $i   = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-original-src");
-            if(strpos($te, "http") === false){
+            if (strpos($te, "http") === false) {
                 $te = "https:" . $te;
             }
             $ht = $doc["img:eq($ke)"];

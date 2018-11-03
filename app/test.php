@@ -9,7 +9,7 @@ use Tools\GetContent;
 // require "../lib/getContent.class.php";
 
 $urls = [];
-$urls[] = "https://cpury.github.io/learning-where-you-are-looking-at/";
+$urls[] = "https://zhuanlan.zhihu.com/p/48076652";
 // 遍历数组全部采集
 $Mark = new GetContent();
 

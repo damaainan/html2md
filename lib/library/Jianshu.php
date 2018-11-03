@@ -1,16 +1,19 @@
 <?php
 namespace Tools\lib;
+
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
-class Jianshu {
+class Jianshu
+{
 
-    public static function getJianShu($html, $rules, $url) {
+    public static function getJianShu($html, $rules, $url)
+    {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
-        $ret = $data->all();
+        $ret  = $data->all();
 
         $title = $ret[0]['title'];
         // $source = $ret[0]['source'];
@@ -24,27 +27,28 @@ class Jianshu {
         $body = self::replaceImg($body);
         $body = ToolUtil::dealTable($body);
 
-        $title = "## " . $title . "\r\n\r\n";
-        $time= $time."\r\n\r\n";
+        $title  = "## " . $title . "\r\n\r\n";
+        $time   = $time . "\r\n\r\n";
         $source = "来源：[" . $url . "](" . $url . ")" . "\r\n\r\n";
         // file_put_contents("../data/cont.html",$body);
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
 
-        $body = ToolUtil::removeSpaces($body);
+        $body    = ToolUtil::removeSpaces($body);
         $content = $title . $time . $source . $body;
         return $content;
     }
 
-    private static function replaceImg($html){
+    private static function replaceImg($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("img");
-        $i = 0;
+        $ch  = pq($doc)->find("img");
+        $i   = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-original-src");
-            if(strpos($te, "http") === false){
+            if (strpos($te, "http") === false) {
                 $te = "https:" . $te;
             }
             $ht = $doc["img:eq($ke)"];

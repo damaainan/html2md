@@ -3,19 +3,21 @@ namespace Tools;
 
 require "../vendor/autoload.php";
 
-class GetHtml {
-    public static function getUrl($url) {
+class GetHtml
+{
+    public static function getUrl($url)
+    {
         if (strpos($url, 'tuicool')) {
             $cookie = file_get_contents(dirname(__FILE__) . '/../data/cookie');
             $header = "https://www.tuicool.com/topics";
             $ret = self::curlHttps($url, $cookie, $header);
             return $ret;
-        } else if (strpos($url, 'segmentfault')) {
+        } elseif (strpos($url, 'segmentfault')) {
             $cookie = file_get_contents(dirname(__FILE__) . '/../data/cookie_seg');
             $header = "https://segmentfault.com/";
             $ret = self::curlHttps($url, $cookie, $header);
             return $ret;
-        } else if (strpos($url, 'cnblogs')) {
+        } elseif (strpos($url, 'cnblogs')) {
             $cookie = file_get_contents(dirname(__FILE__) . '/../data/cookie_cnblogs');
             $header = "https://www.cnblogs.com/";
             $ret = self::curlHttps($url, $cookie, $header);
@@ -26,7 +28,8 @@ class GetHtml {
         }
     }
 
-    private static function curlHttps($url, $cookie, $header) {
+    private static function curlHttps($url, $cookie, $header)
+    {
         $ch = curl_init();
         // 2. 设置选项，包括URL
         curl_setopt($ch, CURLOPT_URL, $url);

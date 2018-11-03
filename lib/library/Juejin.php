@@ -1,20 +1,23 @@
 <?php
 namespace Tools\lib;
+
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
-class Juejin {
+class Juejin
+{
 
-    public static function getJuejin($html, $rules, $url) {
+    public static function getJuejin($html, $rules, $url)
+    {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
-        $ret = $data->all();
+        $ret  = $data->all();
 
         $title = $ret[0]['title'];
-        $time = $ret[0]['time'];
-        $body = $ret[0]['body'];
+        $time  = $ret[0]['time'];
+        $body  = $ret[0]['body'];
 
         // pre 中的 code 需要 去除  pre code .html replacewith .text
         $body = ToolUtil::reCode($body);
@@ -23,22 +26,23 @@ class Juejin {
         $body = ToolUtil::dealTable($body);
 
         $title = "## " . $title . "\r\n\r\n";
-        $time= "时间：".$time."\r\n\r\n";
+        $time  = "时间：" . $time . "\r\n\r\n";
 
-        $source = "来源：<" . $url . ">";
+        $source         = "来源：<" . $url . ">\r\n\r\n";
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
 
         $body = ToolUtil::removeSpaces($body);
-        
+
         $content = $title . $time . $source . $body;
         return $content;
     }
-    private static function replaceImg($html){
+    private static function replaceImg($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("img");
-        $i = 0;
+        $ch  = pq($doc)->find("img");
+        $i   = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-src");
@@ -50,5 +54,4 @@ class Juejin {
         $html = $html . $src;
         return $html;
     }
-
 }

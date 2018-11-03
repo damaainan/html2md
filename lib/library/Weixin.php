@@ -1,10 +1,15 @@
-<?php 
+<?php
 namespace Tools\lib;
+
 use phpQuery;
 use QL\QueryList;
-use Tools\{replaceElement, ToolUtil};
-class Weixin{
-	public static function getWeixin($html, $rules, $url) {
+use Tools\replaceElement;
+use Tools\ToolUtil;
+
+class Weixin
+{
+    public static function getWeixin($html, $rules, $url)
+    {
         
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
@@ -29,17 +34,17 @@ class Weixin{
         $body = preg_replace("/[\r\n]{2,}/", "\n\n", $body); // 替换多余的换行
         $content = $title . $source . $time . $body;
         return $content;
-
     }
 
-    public static function replaceImg($html) {
+    public static function replaceImg($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("img");
         $i = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("data-original");
-            if($te == ''){
+            if ($te == '') {
                 $te = pq($va)->attr("data-src");
             }
             $ht = $doc["img:eq($ke)"];
@@ -50,7 +55,8 @@ class Weixin{
         $html = $html . $src;
         return $html;
     }
-    private static function replaceHref($html) {
+    private static function replaceHref($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
         $ch = pq($doc)->find("a");
         $dh = pq($doc)->find("img");

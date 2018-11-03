@@ -1,12 +1,14 @@
 <?php
 namespace Tools\lib;
+
 use phpQuery;
-use QL\QueryList;
 use Tools\replaceElement;
 
 // header("Content-type:text/html; Charset=utf-8");
-class Souyun {
-    public static function getYun($html) {
+class Souyun
+{
+    public static function getYun($html)
+    {
         // $data = QueryList::html($html)->rules($rules)->query()->getData();
         // $ret = $data->all();
 
@@ -16,15 +18,15 @@ class Souyun {
         $body = self::getCiDes($body);
         // echo $body;
         die;
-        
+
         $body = self::dealTable($body);
         $body = self::replaceHref($body);
         $body = self::replaceImg($body);
         $body = self::dealMathjax($body);
 
-        $title = "## " . trim($title) . "\r\n\r\n";
-        $time = "时间：" . $time . "\r\n\r\n";
-        $source = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
+        $title          = "## " . trim($title) . "\r\n\r\n";
+        $time           = "时间：" . $time . "\r\n\r\n";
+        $source         = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
         $replaceElement = new replaceElement();
 
         $body = $replaceElement->doReplace($body);
@@ -35,63 +37,64 @@ class Souyun {
         return $content;
     }
 
-    private static function getCiDes($html){
+    private static function getCiDes($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find(".ciTuneDesc");
-        $dh = pq($doc)->find(".ciTuneFormat");
-        foreach ($ch as $ke=>$va) {
+        $ch  = pq($doc)->find(".ciTuneDesc");
+        $dh  = pq($doc)->find(".ciTuneFormat");
+        foreach ($ch as $ke => $va) {
             // 描述
-            $flag=0;
-            $map =[];
-            if(pq($va)->find('span')->hasClass('ciTuneName')){
+            $flag = 0;
+            $map  = [];
+            if (pq($va)->find('span')->hasClass('ciTuneName')) {
                 $map['title'] = $title = pq($va)->find('.ciTuneName')->html();
                 $flag++;
             }
-            if(pq($va)->find('span')->hasClass('comment')){
+            if (pq($va)->find('span')->hasClass('comment')) {
                 $map['comment'] = $comment = pq($va)->find('.comment')->html();
                 $flag++;
             }
-            if($flag==0){
+            if ($flag == 0) {
                 $map['desc'] = $desc = pq($va)->html();
             }
             $ret1[] = $map;
         }
 
-        foreach ($dh as $key=>$val) {
+        foreach ($dh as $key => $val) {
             // 描述
-            $flag=0;
-            $map1 =[];
-            if(pq($val)->find('span')->hasClass('rightIndentLabel')){
+            $flag = 0;
+            $map1 = [];
+            if (pq($val)->find('span')->hasClass('rightIndentLabel')) {
                 $map1['name'] = pq($val)->find('.rightIndentLabel')->html();
                 $flag++;
             }
-            if(pq($val)->find('span')->hasClass('tuneFormatDesc')){
-                $map1['diao']  = pq($val)->find('.tuneFormatDesc')->html();
+            if (pq($val)->find('span')->hasClass('tuneFormatDesc')) {
+                $map1['diao'] = pq($val)->find('.tuneFormatDesc')->html();
                 $flag++;
             }
-            if(pq($val)->find('span')->hasClass('indentLabel')){
-                $map1['author']  = pq($val)->find('.indentLabel')->html();
+            if (pq($val)->find('span')->hasClass('indentLabel')) {
+                $map1['author'] = pq($val)->find('.indentLabel')->html();
                 $flag++;
             }
-            if(pq($val)->find('p')->hasClass('mSize')){
-                $map1['cont']  = pq($val)->find('.mSize')->html();
+            if (pq($val)->find('p')->hasClass('mSize')) {
+                $map1['cont'] = pq($val)->find('.mSize')->html();
                 $flag++;
             }
-            
+
             $ret2[] = $map1;
         }
         print_r($ret1);
         print_r($ret2);
     }
 
-
-    private static function replaceHref($html) {
-        $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("a");
-        $dh = pq($doc)->find("img");
+    private static function replaceHref($html)
+    {
+        $doc   = phpQuery::newDocumentHTML($html);
+        $ch    = pq($doc)->find("a");
+        $dh    = pq($doc)->find("img");
         $count = count($dh);
-        $i = $count;
-        $src = '';
+        $i     = $count;
+        $src   = '';
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
             if (!$href) {
@@ -107,5 +110,4 @@ class Souyun {
         $html = $html . $src;
         return $html;
     }
-
 }

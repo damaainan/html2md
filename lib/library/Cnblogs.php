@@ -1,24 +1,27 @@
 <?php
 namespace Tools\lib;
+
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
-class Cnblogs {
-    public static function getCnblogs($html, $rules) {
+class Cnblogs
+{
+    public static function getCnblogs($html, $rules)
+    {
 
         $data = QueryList::html($html)->rules($rules)->query()->getData();
-        $ret = $data->all();
+        $ret  = $data->all();
         // echo $html;
         // var_dump($html);
         // var_dump($ret);
         // die();
-        $title = $ret[0]['title'];
+        $title  = $ret[0]['title'];
         $source = $ret[0]['source'];
-        $time = isset($ret[0]['time']) ? $ret[0]['time'] : '';
-        $body = $ret[0]['body'];
+        $time   = isset($ret[0]['time']) ? $ret[0]['time'] : '';
+        $body   = $ret[0]['body'];
 
         // 代码部分 view code 需要单独处理
         // 需要先清理代码部分
@@ -30,22 +33,23 @@ class Cnblogs {
         $body = ToolUtil::dealTable($body);
         // echo $body;
 
-        $title = "## " . $title . "\r\n\r\n";
-        $time = $time . "\r\n\r\n";
+        $title  = "## " . $title . "\r\n\r\n";
+        $time   = $time . "\r\n\r\n";
         $source = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
         // file_put_contents("../data/cont.html",$body);
         $replaceElement = new replaceElement();
 
-        $body = $replaceElement->doReplace($body);
-        $body = ToolUtil::removeSpaces($body);
+        $body    = $replaceElement->doReplace($body);
+        $body    = ToolUtil::removeSpaces($body);
         $content = $title . $source . $time . $body;
         return $content;
     }
 
-    private static function replaceHref($html) {
+    private static function replaceHref($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("a");
-        $i = 100;
+        $ch  = pq($doc)->find("a");
+        $i   = 100;
         $src = '';
         foreach ($ch as $ke => $va) {
             $href = pq($va)->attr("href");
@@ -74,14 +78,15 @@ class Cnblogs {
     //     return $html;
     // }
     // 处理图片第一步
-    private static function dealImg($html) {
+    private static function dealImg($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("img");
+        $ch  = pq($doc)->find("img");
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("src");
             $ht = pq($va)->parent('a')->attr('href');
             if ($ht == $te) {
-                $img = pq($va)->parent('a')->html();
+                $img  = pq($va)->parent('a')->html();
                 $href = $doc["img:eq($ke)"]->parent('a')->parent()->html();
                 var_dump($img);
                 var_dump($href);
@@ -103,24 +108,26 @@ class Cnblogs {
     //     }
     //     return $html;
     // }
-    private static function replaceImg($html) {
+    private static function replaceImg($html)
+    {
         $doc = phpQuery::newDocumentHTML($html);
-        $ch = pq($doc)->find("img");
-        $i = 0;
+        $ch  = pq($doc)->find("img");
+        $i   = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
             $te = pq($va)->attr("src");
             $ht = $doc["img:eq($ke)"];
 
-            $pahtml = pq($doc)->find("img:eq($ke)")->parent("a")->html();
+            $pahtml    = pq($doc)->find("img:eq($ke)")->parent("a")->html();
             $pahtmlstr = pq($doc)->find("img:eq($ke)")->parent("a")->parent()->html();
             // 获取 a 标签的 html
-            if(strpos($te, "file:///") !== false){ // 处理 file:/// 不合格的图片引用
+            if (strpos($te, "file:///") !== false) {
+                // 处理 file:/// 不合格的图片引用
                 $html = str_replace($ht, "\r\n", $html);
                 continue;
             }
             $src .= "\n[$i]: $te";
-            if(trim($pahtml) == trim($ht)){
+            if (trim($pahtml) == trim($ht)) {
                 // echo "\n*****\n";
                 // echo $pahtml;
                 // echo "\n*****\n";
@@ -129,7 +136,7 @@ class Cnblogs {
                 // echo $ht;
                 // echo "\n*****\n";   // pahtmlstr 需要去除两边换行  str-replace 是字符串替换，多行替换可以
                 $html = str_replace(trim($pahtmlstr), "\r\n![][$i]", $html);
-            }else{
+            } else {
                 $html = str_replace($ht, "\r\n![][$i]", $html);
             }
             $i++;

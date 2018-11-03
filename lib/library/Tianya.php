@@ -1,16 +1,18 @@
-<?php 
+<?php
 namespace Tools\lib;
-
 
 use QL\QueryList;
 use Tools\replaceElement;
 use phpQuery;
 use Tools\ToolUtil;
 
-class Tianya{ // issues
+class Tianya
+{
+ // issues
     // 逻辑不一样 需要判断每个块是否是楼主所发 否则舍弃
-    public static function getTianya($html, $rules, $url) {
-		$data = QueryList::html($html)->rules($rules)->query()->getData();
+    public static function getTianya($html, $rules, $url)
+    {
+        $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 
         $title = $ret[0]['title'];
@@ -34,7 +36,6 @@ class Tianya{ // issues
         return $content;
     }
     // 分析body 部分每个块
-    private static function($html){
-        
+    private static function ($html) {
     }
 }

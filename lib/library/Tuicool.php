@@ -9,13 +9,15 @@ use Tools\replaceElement;
 use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
-class Tuicool {
+class Tuicool
+{
     /**
      * @param  string $html
      * @param string $rules
      * @return string $content
      */
-    public static function getTuiku($html, $rules) {
+    public static function getTuiku($html, $rules)
+    {
         // var_dump($html);
         // file_put_contents("../data/in.html", $html);
         // $html = file_get_contents("../data/in.html");
@@ -47,7 +49,6 @@ class Tuicool {
 
         $content = $title . $source . $time . $body;
         return $content;
-
     }
 
 /*    public static function replaceImgTui($html) {

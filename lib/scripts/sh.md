@@ -24,5 +24,8 @@
 
     ls jue*.md | xargs -I[ awk -F': ' '/imageView2/{print $2}' [ | awk -F'[/?]' '{system("aria2c -o "$7".png "$0)}'
     
+    # 替换图片路径  
+    ls jue*.md | xargs -I[ awk -F': ' '/imageView2/{print $2}' [ | awk -F'[/?]' '{system("sed -i \"s@"$0"@./img/"$7".png@\" jue*.md")}'
+    
     imageslim # 动图  
     ls jue*.md | xargs -I[ awk -F': ' '/imageslim/{print $2}' [ | awk -F'[/?]' '{system("aria2c -o "$7".gif "$0)}'

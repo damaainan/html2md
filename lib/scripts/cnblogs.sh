@@ -8,6 +8,7 @@ sed -i 's@```LANG@```java@' *.md
 awk -F': ' '/https:\/\/images20/{print $2}' *.md | awk -F'-' '{system("aria2c -o ./img/"$NF" "$0)}'
 awk -F': ' '/https:\/\/img20/{print $2}' *.md | awk -F'-' '{system("aria2c -o ./img/"$NF" "$0)}'
 
+
 sed -i 's@https://images[0-9]\{4\}.cnblogs.com/blog/[0-9]\{7\}/[0-9]\{6\}/[0-9]\{7\}-[0-9]\{17\}-@./img/@' *.md
 sed -i 's@https://img[0-9]\{4\}.cnblogs.com/blog/[0-9]\{7\}/[0-9]\{6\}/[0-9]\{7\}-[0-9]\{17\}-@./img/@' *.md
 
@@ -23,3 +24,7 @@ ls cn*.md | xargs -I[ awk -F'## ' 'NR==1{system("mv [ \""$2".md\"")}' [
 \$(.*?)\$
 
 \$(.*?)\$
+
+
+awk -F': ' '/watermark/{print $2}' cs*.md | awk -F'[/?]' '{system("aria2c -o "$4".png "$0)}'
+awk -F': ' '/user-gold-cdn/{print $2}' cs*.md | awk -F'[/?]' '{system("aria2c -o "$7".png "$0)}'

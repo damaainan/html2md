@@ -1,14 +1,17 @@
 <?php
 namespace Tools\lib;
+
 use phpQuery;
 use QL\QueryList;
 use Tools\replaceElement;
 use Tools\ToolUtil;
 
 // header("Content-type:text/html; Charset=utf-8");
-class Zcfy {
+class Zcfy
+{
 
-    public static function getZCFY($html, $rules, $url) {
+    public static function getZCFY($html, $rules, $url)
+    {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret = $data->all();
 
