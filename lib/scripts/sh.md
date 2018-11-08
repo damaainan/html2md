@@ -29,3 +29,10 @@
     
     imageslim # 动图  
     ls jue*.md | xargs -I[ awk -F': ' '/imageslim/{print $2}' [ | awk -F'[/?]' '{system("aria2c -o "$7".gif "$0)}'
+    
+    ls jue*.md | xargs -I[ awk -F'## ' 'NR==1{system("mv [ \""$2".md\"")}' [
+
+
+知乎图片下载 
+
+    awk -F': ' '/zhimg/{system("aria2c "$2)}' zhihu*.md
