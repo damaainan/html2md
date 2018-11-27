@@ -113,7 +113,13 @@ class Config{
             ),
             "tianya" => array(
                 "title" => array(),
-            )
+            ),
+            "pythoncaff" => array( // https://pythoncaff.com/docs/
+                "title" => array("h1 span", 'text'),
+                "book" => array(".book-article-meta a:eq(0)", 'text'),
+                "chapter" => array(".book-article-meta a:eq(1)", 'text'),
+                "body" => array(".markdown-body", 'html'),
+            ),
             // https://wdxtub.com/interview/14520597062776.html  小土刀面试
         ];
         return $config[$str];
@@ -156,6 +162,9 @@ class Config{
             ),
             "laravel" => array(
                 "url" => array(".rm-link-color", 'href')
+            ),
+            "pythoncaff" => array(
+                "url" => array(".sorted_table .chapter-container:eq(1) li a", 'href')
             ),
         ];
         return $config[$name];

@@ -14,7 +14,7 @@ use QL\QueryList;
 //use Tools\Config; // 同一命名空间下 会自动寻找
 
 // php7 新特性 use方法 批量导入
-use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun, Juejin};
+use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun, Juejin, Pycaff};
 
 // use Tools\lib\Segmentfault;
 // use Tools\lib\Cnblogs;
@@ -137,6 +137,10 @@ class GetContent {
                 $content = Juejin::getJuejin($html,$rules,$url);
             }
             $flag = 'juejin';
+        } else if (strpos($url, "pythoncaff")) {
+            $rules = Config::getConfig('pythoncaff');
+            $content = Pycaff::getPycaff($html,$rules,$url);
+            $flag = 'pythoncaff';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);
@@ -207,6 +211,7 @@ class GetContent {
             'csdn' => '',
             'jianshu' => '',
             'laravel' => '',
+            'pythoncaff' => '',
         ];
         $prefix = $prefixs[$keyword];
 
@@ -227,7 +232,7 @@ class GetContent {
     }
 
     public static function getKeyWord($url){
-        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu', 'laravel'];
+        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu', 'laravel', 'pythoncaff'];
         $res = array_filter(array_map(function($val) use ($url){
                                 $rr = strpos($url, $val);
                                 if($rr!==false)
