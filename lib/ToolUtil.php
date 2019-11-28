@@ -51,7 +51,7 @@ class ToolUtil
             $html = str_replace($ht, "[$te][$i]", $html); // a 标签前后有 换行 空格
             $i++;
         }
-        $html = $html . $src;
+        $html = $html . "\r\n\r\n" . $src;
         return $html;
     }
     // 在每个 table 第一行后 加 |-|-|-|

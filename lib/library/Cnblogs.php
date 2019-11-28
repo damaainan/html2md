@@ -34,8 +34,8 @@ class Cnblogs
         // echo $body;
 
         $title  = "## " . $title . "\r\n\r\n";
-        $time   = $time . "\r\n\r\n";
-        $source = "来源：[" . $source . "](" . $source . ")" . "\r\n\r\n";
+        $time   = "时间：" . $time . "\r\n\r\n";
+        $source = "来源：<" . $source . ">\r\n\r\n";
         // file_put_contents("../data/cont.html",$body);
         $replaceElement = new replaceElement();
 

@@ -121,6 +121,11 @@ class Config{
                 "body" => array(".markdown-body", 'html'),
             ),
             // https://wdxtub.com/interview/14520597062776.html  小土刀面试
+            
+            "xiaowu" => array( // https://www.cxyxiaowu.com
+                "title" => array("h1", 'text'),
+                "body" => array(".bpp-post-content", 'html'),
+            ),
         ];
         return $config[$str];
     }
@@ -166,6 +171,9 @@ class Config{
             "pythoncaff" => array(
                 "url" => array(".sorted_table .chapter-container:eq(1) li a", 'href')
             ),
+            "xiaowu" => array( // https://www.cxyxiaowu.com
+                "url" => array(".site-main .posts-wrapper div .entry-wrapper .grid_author_avt", 'href')
+            )
         ];
         return $config[$name];
     }

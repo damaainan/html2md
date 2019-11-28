@@ -14,7 +14,7 @@ use QL\QueryList;
 //use Tools\Config; // 同一命名空间下 会自动寻找
 
 // php7 新特性 use方法 批量导入
-use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun, Juejin, Pycaff};
+use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun, Juejin, Pycaff, Xiaowu};
 
 // use Tools\lib\Segmentfault;
 // use Tools\lib\Cnblogs;
@@ -120,6 +120,10 @@ class GetContent {
             $rules = Config::getConfig('laravel');
             $content = Laravel::getLaravel($html,$rules,$url);
             $flag = 'laravel';
+        } else if (strpos($url, "xiaowu")) {
+            $rules = Config::getConfig('xiaowu');
+            $content = Xiaowu::getWu($html,$rules,$url);
+            $flag = 'xiaowu';
         } else if (strpos($url, "51cto")) {
             $rules = Config::getConfig('51cto');
             $content = Cto::getCto($html,$rules,$url);
@@ -173,18 +177,21 @@ class GetContent {
         $urls = [];
         if (strpos($url, "zhuanlan.zhihu")) { // 知乎 特殊处理 直接抓取 json  &offset=20
             $prefix = "https://zhuanlan.zhihu.com";
+            $zurl = explode(".com/", $url);
+            $api = "https://zhuanlan.zhihu.com/api/columns/" . $zurl[count($zurl) - 1];
             for($i=0;;$i++){
                 $offset = 20 * $i;
-                $newurl = $url . "?offset=" . $offset . "&limit=20";
+                $newurl = $api . '/articles' . "?offset=" . $offset . "&limit=20";
                 $data = GetHtml::getUrl($newurl);
                 $data = json_decode($data,true);
-                if(!$data){
+                if(!$data['data']){
                     break;
                 }
-                foreach ($data as $val) {
-                    $urls[] = $prefix . $val['url'];
+                foreach ($data['data'] as $val) {
+                    $urls[] = $val['url'];
                 }
             }
+            // var_dump($urls);die;
             return $urls;
         }
         
@@ -212,6 +219,7 @@ class GetContent {
             'jianshu' => '',
             'laravel' => '',
             'pythoncaff' => '',
+            'xiaowu' => '',
         ];
         $prefix = $prefixs[$keyword];
 
@@ -232,7 +240,7 @@ class GetContent {
     }
 
     public static function getKeyWord($url){
-        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu', 'laravel', 'pythoncaff'];
+        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu', 'laravel', 'pythoncaff', 'xiaowu'];
         $res = array_filter(array_map(function($val) use ($url){
                                 $rr = strpos($url, $val);
                                 if($rr!==false)

@@ -14,12 +14,13 @@ class Zhihu
         $ret = $data->all();
 
         $title = $ret[0]['title'];
-        $titleimg = $ret[0]['titleimg'];
         $time = $ret[0]['time'];
         $body = $ret[0]['body'];
-
-        $titleimg = "\r\n<img src=\"" . $titleimg . "\">\r\n\r\n"; // 内部必须用双引号
-        $body = $titleimg . $body;
+        if(isset($ret[0]['titleimg'])){
+            $titleimg = $ret[0]['titleimg'];
+            $titleimg = "\r\n<img src=\"" . $titleimg . "\">\r\n\r\n"; // 内部必须用双引号
+            $body = $titleimg . $body;
+        }
         $body =  self::reCode($body);
         // echo $body;die();
         // figure中的图片 替换
@@ -82,9 +83,9 @@ class Zhihu
         $i = 0;
         $src = '';
         foreach ($ch as $ke => $va) {
-            $te = pq($va)->attr("data-actualsrc");
+            $te = pq($va)->attr("data-original");
             if (!$te) {
-                $te = pq($va)->attr("data-original");
+                $te = pq($va)->attr("data-actualsrc");
             }
             if (!$te) {
                 $te = pq($va)->attr("src");

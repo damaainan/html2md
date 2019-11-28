@@ -15,6 +15,8 @@
     ls tui*.md | xargs -I[ awk -F': ' '/img[0-9]{1}\.tuicool/{print $2}' [ # 这种正则无效
     ls tui*.md | xargs -I[ awk -F': ' '/:\/\/img/{print $2}/{print $2}' [  # 这种正则可以
     ls tui*.md | xargs -I[ awk -F': ' '/img/{print $2}' [ # 不包含正则有效
+
+    ls tui*.md | xargs -I[ sed -i "s@https://img[0-9]\{1\}.tuicool.com@./img@" [
 ```
 
     ^[ ]{0,2}\d{1,3}[ ]
