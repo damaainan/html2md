@@ -102,7 +102,7 @@ class Config{
                 "body" => array(".content-detail", 'html'),
             ),
             "juejin" => array( // https://juejin.im
-                "title" => array("h1", 'text'),
+                "title" => array(".article-title", 'text'),
                 "time" => array("time", 'text'),
                 "body" => array(".article-content", 'html'),
             ),
