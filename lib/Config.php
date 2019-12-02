@@ -124,7 +124,7 @@ class Config{
             
             "xiaowu" => array( // https://www.cxyxiaowu.com
                 "title" => array("h1", 'text'),
-                "body" => array(".bpp-post-content", 'html'),
+                "body" => array(".entry-content", 'html'),
             ),
         ];
         return $config[$str];
