@@ -1,11 +1,11 @@
 {
     "type": "project",
-    "autoload": {  
-        "psr-4": {  
+    "autoload": {
+        "psr-4": {
             "Tools\\": "lib/",
             "Tools\\lib\\": "lib/library/",
             "Tools\\DBUtil\\": "lib/db/"
-        }  
+        }
     },
     "require": {
         "jaeger/querylist": "^4.0",
