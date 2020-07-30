@@ -14,7 +14,7 @@ use QL\QueryList;
 //use Tools\Config; // 同一命名空间下 会自动寻找
 
 // php7 新特性 use方法 批量导入
-use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun, Juejin, Pycaff, Xiaowu};
+use Tools\lib\{Tuicool, Segmentfault, Cnblogs, github, zhihu, csdn, souyun, Weixin, Jianshu, Zcfy, Laravel, GithubIO, Cto, Ruan, Aliyun, Juejin, Pycaff, Xiaowu, Mysql};
 
 // use Tools\lib\Segmentfault;
 // use Tools\lib\Cnblogs;
@@ -145,6 +145,23 @@ class GetContent {
             $rules = Config::getConfig('pythoncaff');
             $content = Pycaff::getPycaff($html,$rules,$url);
             $flag = 'pythoncaff';
+        } else if (strpos($url, "monthly")) {
+            $tarr = explode("/", $url);
+            foreach ($tarr as $tke => $tva) {
+                if($tva == "monthly"){
+                    $title = $tarr[$tke + 1] . "-" . $tarr[$tke + 2];
+                    $name = $tarr[$tke + 1] . "-" . $tarr[$tke + 2] . "-" . $tarr[$tke + 3];
+                    $fdir = "../out/mysql/" . $title; 
+                    if (!is_dir($fdir)) {
+                        mkdir($fdir);
+                    }
+                    $name = "mysql/" . $title . "/" . $name;
+                    break;
+                }
+            }
+            $rules = Config::getConfig('mysql');
+            $content = Mysql::getMysql($html,$rules,$url);
+            $flag = '';
         } 
         if ($content) {
             self::putContent($name, $content, $flag);

@@ -120,6 +120,11 @@ class Config{
                 "chapter" => array(".book-article-meta a:eq(1)", 'text'),
                 "body" => array(".markdown-body", 'html'),
             ),
+
+            "mysql" => array( // http://mysql.taobao.org/monthly/2020/06/05/
+                "title" => array(".title h2", 'text'),
+                "body" => array(".content", 'html'),
+            ),
             // https://wdxtub.com/interview/14520597062776.html  小土刀面试
             
             "xiaowu" => array( // https://www.cxyxiaowu.com
