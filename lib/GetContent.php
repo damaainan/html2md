@@ -9,6 +9,7 @@ require "../vendor/autoload.php";
 // require "config.php"; // 能不能不用引入的方式？
 
 use QL\QueryList;
+use QL\Ext\PhantomJs;
 //use Tools\replaceElement;
 //use Tools\GetHtml;
 //use Tools\Config; // 同一命名空间下 会自动寻找
@@ -62,9 +63,15 @@ class GetContent {
         if($name == ''){
             $name = $arr[count($arr) - 2];
         }
-        // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
-        $html = GetHtml::getUrl($url); // 可以优化为专门的 curl 方法
-        // $configs = $this->configs;
+        if (strpos($url, "monthly")) {
+            $ql = QueryList::getInstance();
+            $ql->use(PhantomJs::class,'F:\bin\phantomjs\bin\phantomjs.exe');
+            $html = $ql->browser($url)->getHtml();
+        }else{
+            // $html = file_get_contents($url); // 可以优化为专门的 curl 方法
+            $html = GetHtml::getUrl($url); // 可以优化为专门的 curl 方法
+            // $configs = $this->configs;
+        }
 
         // array_search 
         // 判断 url 选择方法

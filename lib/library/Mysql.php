@@ -14,6 +14,7 @@ class Mysql
     {
         $data = QueryList::html($html)->rules($rules)->query()->getData();
         $ret  = $data->all();
+        echo "\r\n",$url,"\r\n";
 
         $title = $ret[0]['title'];
         $body  = $ret[0]['body'];
@@ -61,16 +62,17 @@ class Mysql
         $ch = pq($doc)->find("pre");
         foreach ($ch as $ke => $va) {
             // $ht = pq($va);
-            // $ht = $doc["pre:eq($ke)"];
+            $ht = $doc["pre:eq($ke)"];
+            $lang="LANG";
 
-            // $langstr = substr($ht, 0, 32);
+            $langstr = substr($ht, 0, 40);
             // echo $langstr;
             // $lang="LANG";
-            // if(strpos($langstr, 'cpp') !== false){
-            //     $lang="cpp";
-            // }else if(strpos($langstr, 'bash') !== false){
-            //     $lang="bash";
-            // }
+            if(strpos($langstr, 'cpp') !== false || strpos($langstr, 'php') !== false || strpos($langstr, 'script') !== false){
+                $lang="cpp";
+            }else if(strpos($langstr, 'bash') !== false){
+                $lang="bash";
+            }
             // <pre><code class="hljs objectivec">
             // if(!$lang){
                 // $lang="LANG";
@@ -78,7 +80,7 @@ class Mysql
             $te = pq($va)->text();
             // $ht = pq($va)->html();
             // $te = str_replace("复制代码", '', $te);
-            $ht = $doc["pre:eq($ke)"];
+            // $ht = $doc["pre:eq($ke)"];
             // $ht = trim($ht); // html 代码 两侧有换行符
             $html = str_replace($ht, "\r\n\r\n```".$lang."\r\n".$te."\r\n```\r\n", $html);
         }
