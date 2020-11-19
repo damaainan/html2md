@@ -244,6 +244,7 @@ class GetContent {
             'laravel' => '',
             'pythoncaff' => '',
             'xiaowu' => '',
+            'weixin' => '',
         ];
         $prefix = $prefixs[$keyword];
 
@@ -264,7 +265,7 @@ class GetContent {
     }
 
     public static function getKeyWord($url){
-        $arr = ['cnblogs', 'tuicool', 'segmentfault', 'github', 'jianshu', 'laravel', 'pythoncaff', 'xiaowu'];
+        $arr = ['cnblogs', 'tuicool', 'weixin', 'segmentfault', 'github', 'jianshu', 'laravel', 'pythoncaff', 'xiaowu'];
         $res = array_filter(array_map(function($val) use ($url){
                                 $rr = strpos($url, $val);
                                 if($rr!==false)

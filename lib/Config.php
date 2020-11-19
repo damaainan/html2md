@@ -178,6 +178,9 @@ class Config{
             ),
             "xiaowu" => array( // https://www.cxyxiaowu.com
                 "url" => array(".site-main .posts-wrapper div .entry-wrapper .grid_author_avt", 'href')
+            ),
+            "weixin" => array( // https://mp.weixin.qq.com
+                "url" => array(".list-paddingleft-2 li p a", 'href')
             )
         ];
         return $config[$name];
