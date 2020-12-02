@@ -5,3 +5,5 @@ composer.lock
 out/*
 data/*
 urls.txt
+*.db
+*/__pycache__
