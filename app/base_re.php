@@ -17,7 +17,7 @@ file_put_contents("../out/other/yue.md", $body);
 
 
 
-public function replaceHref($html) {
+function replaceHref($html) {
     $doc = phpQuery::newDocumentHTML($html);
     $ch = pq($doc)->find(".calibre3");
     $count = count($ch);
