@@ -14,32 +14,53 @@ data=[{"url": "http://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247484852&i
 #     print(title)
 #     pdf.deal(val["url"], title, '')
 
-sql = simpleToolSql("url")
-# f = sql.execute("create table test (id int not null,name text not null,age int);")
-# print("ok")
-# sql.execute("insert into test (id,name,age) values (?,?,?);",[(1,'abc',15),(2,'bca',16)])
-res = sql.query("select * from test;")
-print(res)
-res = sql.query("select * from test where id=?;",(3,))
-print(res)
-sql.close()
+# sql = simpleToolSql("url")
+# # sql.execute("insert into wx_article (id,name,age) values (?,?,?);",[(1,'abc',15),(2,'bca',16)])
+# res = sql.query("select * from wx_article;")
+# print(res)
+# res = sql.query("select * from wx_article where id=?;",(3,))
+# print(res)
+# sql.close()
+
+# 从 db 获取需要生成的url
+def getListByTitle(title:str):
+    sql = simpleToolSql("url")
+    res = sql.query("select * from wx_article where title="+title+";")
+    print(res)
+    sql.close()
+    return res
 
 # 从 db 获取需要生成的url
 def getListFromSql():
     sql = simpleToolSql("url")
-    res = sql.query("select * from test;")
+    # res = sql.query("select * from wx_article where state=0;")
+    res = sql.query("select * from wx_article;")
     print(res)
     sql.close()
     return res
 
 # 更新 db
-def updateUrl():
+def updateUrl(id:int):
     sql = simpleToolSql("url")
-    res = sql.query("update test set satte=1 where id in (" + ");")
+    res = sql.execute("update wx_article set state=1 where id = ?;",(id,)) 
+    # 需要加逗号 https://blog.csdn.net/yimaoyingbi/article/details/104323701
     print(res)
     sql.close()
     return 
 
-def addUrl():    
+def addUrl():
+    sql = simpleToolSql("url")
+    sql.execute(
+        "insert into wx_article (url,folder,title,state,turn,create_at,update_at) values (?,?,?,?,?,?);",
+        [("http",'test',"01",0,1,"2020-12-03 09:38:25","2020-12-03 09:38:25")]
+    )
+    res = sql.query("select * from wx_article;")
+    print(res)
+    sql.close()
     return 
 
+# addUrl()
+
+updateUrl(1)
+res = getListFromSql()
+print(res)
