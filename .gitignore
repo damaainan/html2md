@@ -6,4 +6,6 @@ out/*
 data/*
 urls.txt
 *.db
-*/__pycache__/*
+*/__pycache__
+./pdf/db/__pycache__
+*.pyc
