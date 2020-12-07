@@ -1,0 +1,37 @@
+from store import StoreData
+import time
+from mypdf import GenPdf
+
+def getPdf():
+    store = StoreData()
+    # 查数据库
+    toPdfList, columns = store.getListFromParam('state=0')
+    
+    # print(toPdfList)
+    # print(columns)
+    # print(type(toPdfList))
+    # 修改状态 
+    data = []
+    for val in toPdfList:
+        dic = {}
+        for key,name in enumerate(columns):
+            # print(key)
+            # print(name)
+            # print(val[key])
+            dic[name] = val[key]
+        genpdf(dic)
+        data.append(dic)
+        # break
+    # print(data)
+    return 
+
+def genpdf(data):
+    store = StoreData()
+    # 传值生成pdf 
+    pdf = GenPdf()
+    pdf.deal(data['url'],data['title'],data['folder'])
+    store.updateUrlState(data['id'])
+    return
+
+
+getPdf()
