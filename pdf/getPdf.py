@@ -21,7 +21,7 @@ def getPdf():
             dic[name] = val[key]
         genpdf(dic)
         data.append(dic)
-        # break
+    #     break
     # print(data)
     return 
 
@@ -29,7 +29,7 @@ def genpdf(data):
     store = StoreData()
     # 传值生成pdf 
     pdf = GenPdf()
-    pdf.deal(data['url'],data['title'],data['folder'])
+    pdf.deal(data['url'],str(data['turn']) + '-' + data['title'],data['folder'])
     store.updateUrlState(data['id'])
     return
 
