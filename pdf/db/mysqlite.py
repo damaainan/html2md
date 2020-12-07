@@ -65,6 +65,21 @@ class simpleToolSql():
         else:
             self.c.execute(sql,param)
         return self.c.fetchall()
+
+    def queryall(self, sql):
+        """
+        查询所有的数据及对应的列名
+        :param sql:
+        :return:
+        """
+        self.c.execute(sql)
+        # TODO 获取查询结果的列名
+        columns_tuple = self.c.description
+        # columns_tuple示例： (('TACHE_NAME', None, None, None, None, None, None), ('avgtime', None, None, None, None, None, None), ('DATE', None, None, None, None, None, None), ('ANALYSIS_TIME', None, None, None, None, None, None))
+        columns_list = [field_tuple[0] for field_tuple in columns_tuple]
+        # TODO 获取查询结果
+        query_result = self.c.fetchall()
+        return query_result, columns_list
         
     # def set(self,table,field=" * ",where="",isWhere=False):
     #     self.table = table
@@ -73,6 +88,8 @@ class simpleToolSql():
     #         self.where = where
     #         self.isWhere = True
     #     return True
+
+    
 
 if __name__ == "__main__":
     """

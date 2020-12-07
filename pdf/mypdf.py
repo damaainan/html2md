@@ -2,8 +2,9 @@ import pdfkit
 import requests
 import os
 from bs4 import BeautifulSoup
+import platform
 
-class GenPdf(object):
+class GenPdf():
     def deal(self, url, title, path):
         res = requests.get(url)
         # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
@@ -39,6 +40,26 @@ class GenPdf(object):
         #     'load-media-error-handling': 'abort',
             }
 
-        path_wkthmltopdf = r''
+        # path_wkthmltopdf = r''
+        if platform.system() == "Windows":
+            path_wkthmltopdf = r'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
+        elif platform.system() == "Darwin":
+            path_wkthmltopdf = r''
+        
         config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
-        pdfkit.from_string(str(html), os.path.dirname(os.path.abspath(__file__)) + '/../out/' + path +title+'.pdf', configuration=config, options=options)
+        rpath = os.path.dirname(os.path.abspath(__file__)) + '/../out/wx/' + path
+        self.mkdir(rpath)
+        pdfkit.from_string(str(html), rpath+'/' +title+'.pdf', configuration=config, options=options)
+
+    def mkdir(self, path):
+        # 去除首位空格
+        path=path.strip()
+        # 去除尾部 \ 符号
+        path=path.rstrip("\\")
+        isExists=os.path.exists(path)
+        # 判断结果
+        if not isExists:
+            os.makedirs(path) 
+            print(path+' 创建成功')
+        
+        return True

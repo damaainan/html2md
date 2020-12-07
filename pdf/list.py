@@ -3,6 +3,7 @@
 
 import requests
 import os
+import sys
 from bs4 import BeautifulSoup
 import json
 import operator
@@ -195,5 +196,7 @@ def distinct(items,key):
 
 # deal("https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI4MzUxNjI3OA==&action=getalbum&album_id=1506626428400877572&scene=173&from_msgid=2247485899&from_itemidx=1&count=3#wechat_redirect")
 
-deal("https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MjM5NzE2NTY0Ng==&action=getalbum&album_id=1337228928003686401&scene=173&from_msgid=2650679816&from_itemidx=1&count=3#wechat_redirect")
+# deal("https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MjM5NzE2NTY0Ng==&action=getalbum&album_id=1337228928003686401&scene=173&from_msgid=2650679816&from_itemidx=1&count=3#wechat_redirect")
 # getJsonData("",1)
+
+deal(sys.argv[1]) 
