@@ -29,13 +29,15 @@ curl --location --request GET 'https://mp.weixin.qq.com/mp/appmsgalbum?action=ge
 '''
 
 def deal(url):
-    
+    store = StoreData()
     ret1=getFirstPage(url)
     # print(ret1)
     ret = ret1['result']
     author = ret1['author']
     title = ret1['title'].replace("#",'')
     minid = max(ret1['msgid'])
+    # 存储链接
+    store.addAblum(url, author, title)
     # print(minid)
     ret2=getJsonData(url, minid)
     # print("****")
@@ -49,7 +51,7 @@ def deal(url):
     
     sdata=CleanResult(ret,author,title)
     # print(sdata)
-    store = StoreData()
+    
     for val in sdata:
         store.addUrl(val)
     return sdata
@@ -200,3 +202,5 @@ def distinct(items,key):
 # getJsonData("",1)
 
 deal(sys.argv[1]) 
+
+# 把合集链接存储下来  

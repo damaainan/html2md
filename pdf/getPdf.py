@@ -21,8 +21,8 @@ def getPdf():
             dic[name] = val[key]
         genpdf(dic)
         data.append(dic)
-    #     break
-    # print(data)
+        break
+    print(data)
     return 
 
 def genpdf(data):

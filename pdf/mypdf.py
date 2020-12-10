@@ -9,6 +9,7 @@ class GenPdf():
         res = requests.get(url)
         # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
         html = res.text.replace("data-src", "src").replace('style="visibility: hidden;"',"")
+        html = html.replace("font-size: 16px;font-family: 微软雅黑, sans-serif;letter-spacing: 2px;",'font-size: 20px;font-family: 微软雅黑, sans-serif;letter-spacing: 0px;')
 
         soup = BeautifulSoup(html)
         # 选择正文（去除javascrapt等）
@@ -17,10 +18,11 @@ class GenPdf():
         # 可以修改字体
         font = '''
         <style type="text/css">
-                @font-face{font-family: "微软雅黑";src:url("‪C:\\Windows\\Fonts\\msyh.ttc")
+            @font-face{font-family: "微软雅黑";src:url("‪C:\\Windows\\Fonts\\msyh.ttc")
         </style>
-            <style type = "text/css">
-            p { font-size:20px;font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; }
+        <style type = "text/css">
+            p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
+            span{font-size: 20px;font-family: "微软雅黑", sans-serif;letter-spacing: 2px;}
         </style>
         '''
         html = font + str(html)
@@ -28,17 +30,18 @@ class GenPdf():
         # 选项
         options = {
             'page-size': 'A4',
-            'margin-top': '0.75in',
-            'margin-right': '0.75in',
-            'margin-bottom': '0.75in',
-            'margin-left': '0.75in',
+            'margin-top': '0.25in',
+            'margin-right': '0.25in',
+            'margin-bottom': '0.25in',
+            'margin-left': '0.25in',
             'encoding': "UTF-8",
+            'dpi':300,
         #      'custom-header': headers,
         #     'debug-javascript': [''],
             'javascript-delay': 10000,
         #     'no-stop-slow-scripts': "",
         #     'load-media-error-handling': 'abort',
-            }
+        }
 
         # path_wkthmltopdf = r''
         if platform.system() == "Windows":

@@ -60,3 +60,17 @@ class StoreData():
         print(res)
         sql.close()
         return 
+
+    def addAblum(self, url, author, title):
+        sql = simpleToolSql("url")
+        res = self.getListFromSql(title)
+        if len(res)>0:
+            return
+        
+        res=sql.execute(
+            "insert into wx_ablum (url,author,title,create_at,update_at) values (?,?,?,?,?);",
+            [(url,author,title,time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))]
+        )
+        print(res)
+        sql.close()
+        return 
