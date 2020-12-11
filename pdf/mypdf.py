@@ -17,15 +17,22 @@ class GenPdf():
 
         # 可以修改字体
         font = '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>{title}</title>
+        </head>
         <style type="text/css">
-            @font-face{font-family: "微软雅黑";src:url("‪C:\\Windows\\Fonts\\msyh.ttc")
+             @font-face{font-family: "微软雅黑";src:url("‪C:\\Windows\\Fonts\\msyh.ttc")
         </style>
-        <style type = "text/css">
+         <style type = "text/css">
             p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
-            span{font-size: 20px;font-family: "微软雅黑", sans-serif;letter-spacing: 2px;}
+            span{font-size: 20px;font-family: "楷体","微软雅黑", sans-serif;letter-spacing: 0px;}
         </style>
+        <body>
         '''
-        html = font + str(html)
+        html = font + str(html) + '</body></html>'
 
         # 选项
         options = {
@@ -35,20 +42,20 @@ class GenPdf():
             'margin-bottom': '0.25in',
             'margin-left': '0.25in',
             'encoding': "UTF-8",
-            'dpi':300,
-        #      'custom-header': headers,
-        #     'debug-javascript': [''],
+            'dpi':1000,
+            # 'custom-header': headers,
+            # 'debug-javascript': [''],
             'javascript-delay': 10000,
-        #     'no-stop-slow-scripts': "",
-        #     'load-media-error-handling': 'abort',
-        }
+            # 'no-stop-slow-scripts': "",
+            # 'load-media-error-handling': 'abort',
+         }
 
         # path_wkthmltopdf = r''
         if platform.system() == "Windows":
             path_wkthmltopdf = r'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
         elif platform.system() == "Darwin":
             path_wkthmltopdf = r''
-        
+
         config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
         rpath = os.path.dirname(os.path.abspath(__file__)) + '/../out/wx/' + path
         self.mkdir(rpath)
@@ -62,7 +69,7 @@ class GenPdf():
         isExists=os.path.exists(path)
         # 判断结果
         if not isExists:
-            os.makedirs(path) 
+            os.makedirs(path)
             print(path+' 创建成功')
-        
+
         return True
