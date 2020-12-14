@@ -6,11 +6,11 @@ def getPdf():
     store = StoreData()
     # 查数据库
     toPdfList, columns = store.getListFromParam('state=0')
-    
+
     # print(toPdfList)
     # print(columns)
     # print(type(toPdfList))
-    # 修改状态 
+    # 修改状态
     data = []
     for val in toPdfList:
         dic = {}
@@ -21,13 +21,13 @@ def getPdf():
             dic[name] = val[key]
         genpdf(dic)
         data.append(dic)
-    #     break
+        # break
     # print(data)
-    return 
+    return
 
 def genpdf(data):
     store = StoreData()
-    # 传值生成pdf 
+    # 传值生成pdf
     pdf = GenPdf()
     pdf.deal(data['url'],str(data['turn']) + '-' + data['title'],data['folder'])
     store.updateUrlState(data['id'])
