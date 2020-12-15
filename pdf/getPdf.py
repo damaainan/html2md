@@ -1,3 +1,5 @@
+# -*- coding=utf-8 -*-
+
 from store import StoreData
 import time
 from mypdf import GenPdf
@@ -12,6 +14,7 @@ def getPdf():
     # print(type(toPdfList))
     # 修改状态
     data = []
+    i=1
     for val in toPdfList:
         dic = {}
         for key,name in enumerate(columns):
@@ -21,7 +24,9 @@ def getPdf():
             dic[name] = val[key]
         genpdf(dic)
         data.append(dic)
-        # break
+        i+=1
+        if i==20:
+            break
     # print(data)
     return
 

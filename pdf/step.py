@@ -1,3 +1,4 @@
+# -*- coding=utf-8 -*-
 from mypdf import GenPdf
 from db.mysqlite import simpleToolSql
 

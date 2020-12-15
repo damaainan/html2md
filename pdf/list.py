@@ -1,3 +1,5 @@
+# -*- coding=utf-8 -*-
+
 #  获取文章列表 生成指定格式数据
 #  暂时写入文件
 
@@ -41,12 +43,15 @@ def deal(url):
     # print(minid)
     ret2=getJsonData(url, minid)
     # print("****")
-    # print(ret2)
     ret+=ret2['result']
     minid = max(ret2['msgid'])
     while len(ret2['result'])==10:
         ret2=getJsonData(url, minid)
+        if len(ret2['result'])==0:
+            continue
         ret+=ret2['result']
+        # print(ret2)
+        # print(ret2['msgid'])
         minid = max(ret2['msgid'])
     
     sdata=CleanResult(ret,author,title)
@@ -142,17 +147,18 @@ def getJsonData(oldurl: str,msgid: int):
     # print(r.text)
     data = json.loads(r.text)
     # print(data)
-    art =data['getalbum_resp']['article_list'] # 1 个是是dict 多个 list
     link = []
     msgid = []
-    # print(type(art))
-    if isinstance(art, dict):
-        link.append({"link":art['url'],"title":art['title'],"msgid":art['msgid']})
-        msgid.append(art['msgid'])
-    elif isinstance(art, list):
-        for val in art:
-            link.append({"link":val['url'],"title":val['title'],"msgid":val['msgid']})
-            msgid.append(val['msgid'])
+    if "article_list" in data['getalbum_resp'].keys():
+        art =data['getalbum_resp']['article_list'] # 1 个是是dict 多个 list
+        # print(type(art))
+        if isinstance(art, dict):
+            link.append({"link":art['url'],"title":art['title'],"msgid":art['msgid']})
+            msgid.append(art['msgid'])
+        elif isinstance(art, list):
+            for val in art:
+                link.append({"link":val['url'],"title":val['title'],"msgid":val['msgid']})
+                msgid.append(val['msgid'])
     
     # print(art['title'])
     # print(art['url'])

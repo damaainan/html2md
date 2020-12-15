@@ -1,3 +1,5 @@
+# -*- coding=utf-8 -*-
+
 import pdfkit
 import requests
 import os
@@ -6,7 +8,7 @@ import platform
 
 class GenPdf():
     def deal(self, url, title, path):
-        title = title.replace("|", "").replace(' ','')
+        title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？')
         print(title)
         res = requests.get(url)
         # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
@@ -29,9 +31,7 @@ class GenPdf():
 <head>
     <meta charset="UTF-8">
     <title>{title}</title>
-</head>
-
-            '''
+'''
 
         # 可以修改字体
         # font = '''
@@ -54,9 +54,9 @@ class GenPdf():
         font=font.format(title=title)+weui
         for cs in range(len(css)):
             # print(type(css[cs].get_text()))
-            font = font + css[cs].get_text()
+            font = font + "<style>" + css[cs].get_text() + "</style>"
 
-        html = font + "<body>" + str(html) + '</body></html>'
+        html = font + "</head><body>" + str(html) + '</body></html>'
 
         # 增大较小的字体
         html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px")
@@ -67,7 +67,7 @@ class GenPdf():
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(pdf_path)
-        fo=open(html_path +title+'.html',"w+")
+        fo=open(html_path +title+'.html',"w+",encoding="utf-8")
         weui=fo.write(html)
         fo.close()
 
