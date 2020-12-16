@@ -33,11 +33,11 @@ class StoreData():
     # 更新 db
     def updateUrlState(self, id:int):
         sql = simpleToolSql("url")
-        res = sql.execute("update wx_article set state=1 where id = ?;",(id,)) 
+        res = sql.execute("update wx_article set state=1 where id = ?;",(id,))
         # 需要加逗号 https://blog.csdn.net/yimaoyingbi/article/details/104323701
         print(res)
         sql.close()
-        return 
+        return
 
     def dict_factory(self, cursor, row):
         d = {}
@@ -52,25 +52,25 @@ class StoreData():
             return
         # print(res)
         # return
-        
+
         res=sql.execute(
             "insert into wx_article (url,folder,title,state,msgid,turn,create_at,update_at) values (?,?,?,?,?,?,?,?);",
-            [(data['link'],data['folder'],data['title'],0,data['msgid'],data['turn'],time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))]
+            [(data['link'],data['folder'].replace(' ',''),data['title'],0,data['msgid'],data['turn'],time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))]
         )
         print(res)
         sql.close()
-        return 
+        return
 
     def addAblum(self, url, author, title):
         sql = simpleToolSql("url")
         res = self.getListFromSql(title)
         if len(res)>0:
             return
-        
+
         res=sql.execute(
             "insert into wx_ablum (url,author,title,create_at,update_at) values (?,?,?,?,?);",
             [(url,author,title,time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))]
         )
         print(res)
         sql.close()
-        return 
+        return
