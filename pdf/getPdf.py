@@ -2,6 +2,7 @@
 
 from store import StoreData
 import time
+import sys
 from mypdf import GenPdf
 
 def getPdf():
@@ -38,5 +39,21 @@ def genpdf(data):
     store.updateUrlState(data['id'])
     return
 
+if len(sys.argv)>1:
+    print("******")
+    url=sys.argv[1]
+    print(url)
+    # 传值生成pdf
+    pdf = GenPdf()
+    title=pdf.deal(url,"","集锦")
+    store = StoreData()
+    store.addUrl({'link':url,'folder':'集锦','title':title,'msgid':'0','turn':0})
+    store.updateUrlStateByMsg()
+else:
+    getPdf()
+    # print(sys.argv[0])
 
-getPdf()
+
+
+
+

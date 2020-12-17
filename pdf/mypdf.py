@@ -18,6 +18,14 @@ class GenPdf():
         soup = BeautifulSoup(html, features="lxml")
         # 选择正文（去除javascrapt等）
         html = soup.select('div#img-content')[0]
+        if title == "":
+            title = soup.select('#activity-name')[0].get_text()
+            # print(title)
+            title = title.replace("|", "").replace("/", "-").replace(' ','').replace('｜','').replace('?','？').replace("\n",'').replace("\r",'')
+            # print("****")
+            # print(title)
+            # return
+
         imgs = soup.select('img')
         # print(imgs)
 
@@ -126,6 +134,8 @@ class GenPdf():
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
         weui=fo.write(html)
         fo.close()
+
+        return title
 
         # pdfkit 格式不好
         # path_wkthmltopdf = r''
