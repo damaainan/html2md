@@ -14,7 +14,7 @@ def getPdf():
     # print(type(toPdfList))
     # 修改状态
     data = []
-    i=1
+    i=0
     for val in toPdfList:
         dic = {}
         for key,name in enumerate(columns):
@@ -24,9 +24,9 @@ def getPdf():
             dic[name] = val[key]
         genpdf(dic)
         data.append(dic)
-        # i+=1
-        # if i==20:
-        # break
+        i+=1
+        if i==100:
+            break
     # print(data)
     return
 
