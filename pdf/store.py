@@ -38,6 +38,14 @@ class StoreData():
         print(res)
         sql.close()
         return
+    # 更新 db
+    def updateUrlStateByMsg(self):
+        sql = simpleToolSql("url")
+        res = sql.execute("update wx_article set state=1 where msgid = ?;",(0,))
+        # 需要加逗号 https://blog.csdn.net/yimaoyingbi/article/details/104323701
+        print(res)
+        sql.close()
+        return
 
     def dict_factory(self, cursor, row):
         d = {}
