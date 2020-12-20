@@ -3,6 +3,7 @@
 import pdfkit
 import requests
 import os
+import re
 from bs4 import BeautifulSoup
 import platform
 
@@ -81,7 +82,9 @@ class GenPdf():
         html = font + "</head><body>" + str(html) + '</body></html>'
 
         # 增大较小的字体
-        html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
+        # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
+
+        html=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',html)
 
 
         rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/wx/' + path
