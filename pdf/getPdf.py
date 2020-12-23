@@ -43,11 +43,14 @@ if len(sys.argv)>1:
     print("******")
     url=sys.argv[1]
     print(url)
+    folder="面试精选"
+    if len(sys.argv) == 3:
+        folder=sys.argv[2]
     # 传值生成pdf
     pdf = GenPdf()
-    title=pdf.deal(url,"","集锦")
+    title=pdf.deal(url,"",folder)
     store = StoreData()
-    store.addUrl({'link':url,'folder':'集锦','title':title,'msgid':'0','turn':0})
+    store.addUrl({'link':url,'folder':folder,'title':title,'msgid':'0','turn':0})
     store.updateUrlStateByMsg()
 else:
     getPdf()

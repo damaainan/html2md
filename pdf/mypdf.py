@@ -107,7 +107,7 @@ class GenPdf():
             font = font + "<style>" + HTMLParser().unescape(html.tostring(css[cs]).decode()) + "</style>"
             # HTMLParser().unescape(str1.decode())
 
-        fhtml = font + "</head><body>" + str(fhtml) + '</body></html>'
+        fhtml = font + '</head><body>' + str(fhtml) + '</body></html>'
 
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
@@ -151,7 +151,9 @@ class GenPdf():
 
         hfile=html_path +ntitle+'.html'
         pfile=pdf_path +ntitle+'.pdf'
-        os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
+        # os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
+        os.system('weasyprint "{}" "{}"'.format(hfile, pfile))
+
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
         for k in imgDict:
@@ -162,6 +164,7 @@ class GenPdf():
 
             fhtml=fhtml.replace(k,"./pic/"+imgDict[k])
 
+        fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
         weui=fo.write(fhtml)
         fo.close()
@@ -173,7 +176,7 @@ class GenPdf():
         title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-')
         print(title)
 
-        ## 方法一  pdf 效果相对较好 
+        ## 方法一  pdf 效果相对较好
         res = requests.get(url)
         # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
         htmlstr = res.text.replace("data-src", "src").replace('style="visibility: hidden;"',"")
@@ -239,7 +242,7 @@ class GenPdf():
             # print(len(html.tostring(css[cs])))
             font = font + "<style>" + css[cs].get_text() + "</style>"
 
-        fhtml = font + "</head><body>" + str(fhtml) + '</body></html>'
+        fhtml = font + '</head><body style="margin:40px;">' + str(fhtml) + '</body></html>'
 
         # 增大较小的字体
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
