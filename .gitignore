@@ -8,3 +8,4 @@ urls.txt
 *.db
 */__pycache__
 *.pyc
+*.log
