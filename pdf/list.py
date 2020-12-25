@@ -8,6 +8,7 @@ import os
 import sys
 from bs4 import BeautifulSoup
 import json
+import time
 import operator
 from itertools import groupby
 from db.mysqlite import simpleToolSql
@@ -180,7 +181,7 @@ def CleanResult(data,author,title):
         # print(i)
         # print(sdata[i]['title'])
         sdata[i]['turn'] = i + 1
-        sdata[i]['folder'] = author + "/" + title
+        sdata[i]['folder'] = author + "-" + title
     
     # print("*****")
     # print(sdata)
@@ -207,6 +208,20 @@ def distinct(items,key):
 # deal("https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MjM5NzE2NTY0Ng==&action=getalbum&album_id=1337228928003686401&scene=173&from_msgid=2650679816&from_itemidx=1&count=3#wechat_redirect")
 # getJsonData("",1)
 
-deal(sys.argv[1]) 
+# deal(sys.argv[1]) 
 
 # 把合集链接存储下来  
+
+if len(sys.argv)>1:
+    deal(sys.argv[1]) 
+else:
+    # 查询已有list 更新 url
+    store = StoreData()
+    li=store.getAblums()
+    # print(type(li))
+    # print(li)
+    for i in li:
+        print(i[2])
+        deal(i[1])
+        time.sleep(2)
+        # break

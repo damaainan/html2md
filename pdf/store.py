@@ -1,6 +1,7 @@
 # -*- coding=utf-8 -*-
 from db.mysqlite import simpleToolSql
 import time
+import datetime
 
 
 class StoreData():
@@ -69,10 +70,29 @@ class StoreData():
         sql.close()
         return
 
+    def getAblumListFromSql(self, url):
+        sql = simpleToolSql("url")
+        # res = sql.query("select * from wx_article where state=0;")
+        res = sql.query("select * from wx_ablum where url='{u}' and update_at<'{t}';".format(u=url,t=(datetime.datetime.now()-datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+        # print(res)
+        sql.close()
+        return res
+    def updateAblum(self, id):
+        sql = simpleToolSql("url")
+        # res = sql.query("select * from wx_article where state=0;")
+        print("-*-*-*-*")
+        res = sql.execute("update wx_ablum set update_at='{t}' where id={id};".format(t=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),id=id))
+        print("更新===",res)
+        sql.close()
+        return res
     def addAblum(self, url, author, title):
         sql = simpleToolSql("url")
-        res = self.getListFromSql(title)
+        res = self.getAblumListFromSql(url)
+        print(res)
+        # return
         if len(res)>0:
+            self.updateAblum(res[0][0])
+            print(res[0][0])
             return
 
         res=sql.execute(
@@ -82,3 +102,10 @@ class StoreData():
         print(res)
         sql.close()
         return
+
+    def getAblums(self):
+        sql = simpleToolSql("url")
+        res = sql.query("select * from wx_ablum where update_at<'{t}';".format(t=(datetime.datetime.now()-datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+        # print(res)
+        sql.close()
+        return res
