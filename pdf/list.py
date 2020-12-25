@@ -44,8 +44,11 @@ def deal(url):
     # print(minid)
     ret2=getJsonData(url, minid)
     # print("****")
-    ret+=ret2['result']
-    minid = max(ret2['msgid'])
+    # print(ret2)
+    if len(ret2['result'])>0:
+        ret+=ret2['result']
+        minid = max(ret2['msgid'])
+    
     while len(ret2['result'])==10:
         ret2=getJsonData(url, minid)
         if len(ret2['result'])==0:
