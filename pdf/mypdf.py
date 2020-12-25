@@ -29,6 +29,7 @@ class GenPdf():
         htmlstr = htmlstr.replace("data-src", "src").replace('style="visibility: hidden;"',"").replace('crossorigin="anonymous"','')
         htmlstr=re.sub(r'height: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
         htmlstr=re.sub(r'width: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
+        htmlstr=htmlstr.replace('visibility: hidden !important;', '')
 
         soup = BeautifulSoup(htmlstr, features="lxml")
         # 选择正文（去除javascrapt等）
