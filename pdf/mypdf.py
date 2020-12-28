@@ -347,8 +347,12 @@ class GenPdf():
 
     def getLocalImg(self,href):
         if href.find('http') > -1:
+            imgformat=href.split('wx_fmt=')[-1]
+            imgsub="png"
+            if len(imgformat)>1:
+                imgsub=imgformat
             name=href.split('/')[-2][32:]
-            return name+".png"
+            return name+"."+imgsub
         return ""
 
     # 此方法 html 效果更好
