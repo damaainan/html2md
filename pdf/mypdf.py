@@ -29,6 +29,7 @@ class GenPdf():
         htmlstr = htmlstr.replace("data-src", "src").replace('style="visibility: hidden;"',"").replace('crossorigin="anonymous"','')
         htmlstr=re.sub(r'height: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
         htmlstr=re.sub(r'width: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
+        htmlstr=htmlstr.replace('visibility: hidden !important;', '')
 
         soup = BeautifulSoup(htmlstr, features="lxml")
         # 选择正文（去除javascrapt等）
@@ -108,7 +109,7 @@ class GenPdf():
             # HTMLParser().unescape(str1.decode())
 
         fhtml = font + '</head><body>' + str(fhtml) + '</body></html>'
-
+        print(title)
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
 
@@ -151,8 +152,8 @@ class GenPdf():
 
         hfile=html_path +ntitle+'.html'
         pfile=pdf_path +ntitle+'.pdf'
-        # os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
-        os.system('weasyprint "{}" "{}"'.format(hfile, pfile))
+        # os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile.replace(".pdf","_wk.pdf")))
+        os.system('weasyprint "{}" "{}"'.format(hfile, pfile)) # 目前效果最好的 
 
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
@@ -254,7 +255,7 @@ class GenPdf():
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
         self.mkdir(pdf_path)
-        fo=open(html_path +title+'.html',"w+",encoding="utf-8")
+        fo=open(html_path +title+'_old.html',"w+",encoding="utf-8")
         weui=fo.write(fhtml)
         fo.close()
 
@@ -282,8 +283,8 @@ class GenPdf():
         # print(pdf_path+title+'.pdf')
         ntitle=title.replace('"','\\"')
 
-        hfile=html_path +ntitle+'.html'
-        pfile=pdf_path +ntitle+'.pdf'
+        hfile=html_path +ntitle+'_old.html'
+        pfile=pdf_path +ntitle+'_old.pdf'
         os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
@@ -295,7 +296,7 @@ class GenPdf():
 
             fhtml=fhtml.replace(k,"./pic/"+imgDict[k])
 
-        fo=open(html_path +title+'.html',"w+",encoding="utf-8")
+        fo=open(html_path +title+'_old.html',"w+",encoding="utf-8")
         weui=fo.write(fhtml)
         fo.close()
 
