@@ -13,6 +13,7 @@ import operator
 from itertools import groupby
 from db.mysqlite import simpleToolSql
 from store import StoreData
+from mypdf import GenPdf
 
 '''
 begin_msgid   页面最后一个
@@ -33,6 +34,10 @@ curl --location --request GET 'https://mp.weixin.qq.com/mp/appmsgalbum?action=ge
 
 def deal(url):
     store = StoreData()
+    # 如果 homepage 采用另外的方法
+    if url.find("homepage") > -1:
+        return dealHome(url)
+
     ret1=getFirstPage(url)
     # print(ret1)
     ret = ret1['result']
@@ -65,6 +70,38 @@ def deal(url):
         store.addUrl(val)
     return sdata
 
+def dealHome(url):
+    store = StoreData()
+    res = requests.get(url)
+    html = res.text.replace("data-src", "src").replace('style="visibility: hidden;"',"")
+    soup = BeautifulSoup(html)
+    title = soup.select('.rich_media_title')[0].string
+    author = soup.select('.account_nickname_inner')[0].string
+
+    ret2=getHomeJsonData(url,0)
+    print("****")
+    print(ret2)
+    ret=[]
+    if len(ret2['result'])>0:
+        ret=ret2['result']
+        # minid = max(ret2['msgid'])
+    
+    while len(ret2['result'])==10:
+        ret2=getHomeJsonData(url, len(ret2['result']))
+        if len(ret2['result'])==0:
+            continue
+        ret+=ret2['result']
+        # print(ret2)
+        # print(ret2['msgid'])
+        minid = max(ret2['msgid'])
+    
+    sdata=CleanResult(ret,author,title)
+    # print(sdata)
+    
+    for val in sdata:
+        store.addUrl(val)
+    return sdata
+
 # 处理 url 获取参数
 def dealUrl(url: str):
     ll = url.split("?")[1]
@@ -73,44 +110,79 @@ def dealUrl(url: str):
     param={}
     for val in ldic:
         wdic = val.split('=')
-        param[wdic[0]] = wdic[1]
+        # print("-*-*-*-")
+        # print(wdic[1:])
+        wdic_=map(lambda x:[x,'='][x==''],wdic[1:])
+        param[wdic[0]] = ''.join(wdic_)
     
     return param
 
 # 获取第一页页面内容
 def getFirstPage(url):
     res = requests.get(url)
-    # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
+    # # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
     html = res.text.replace("data-src", "src").replace('style="visibility: hidden;"',"")
 
+    # pdf = GenPdf()
+    # htmlstr=pdf.getHTMLText(url)
+    # html = htmlstr.replace("data-src", "src").replace('style="visibility: hidden;"',"")
+
     soup = BeautifulSoup(html)
+    # 判断是否完整列表
+    # liarticle=soup.select('#appmsgList')
+    msgid=[]
+    link=[]
+
+    # if len(liarticle)>0:
+    #     # 不需要通过json 列表获取的页面
+    #     title = soup.select('.rich_media_title')[0].string
+    #     author = soup.select('.account_nickname_inner')[0].string
+    #     soup1 = BeautifulSoup(liarticle[0])
+    #     li_ori = soup1.select('.list_item')
+    #     for i in range(len(li_ori)):
+    #         msgid.append(i+1)
+    #         turn = i+1
+    #         # link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"turn":turn,"msgid":li1[i]['data-msgid']})
+    #         link.append({"link":li_ori[i]['href'],"title":li_ori[i].find_all(class_='js_title')[0].string,"msgid":i+1})
+    # else:
+    title = soup.select('.album__label-title')[0].string
+    author = soup.select('.album__author-name')[0].string
+    li1 = soup.select('li')
+    for i in range(len(li1)):
+        msgid.append(li1[i]['data-msgid'])
+        turn =li1[i].find_all(class_='js_article_index')[0].string.replace(' ','')
+        turn = turn.replace('\t','').replace('.','')
+        # link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"turn":turn,"msgid":li1[i]['data-msgid']})
+        link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"msgid":li1[i]['data-msgid']})
+
     # 选择正文（去除javascrapt等）
     # html = soup.select('.album__content')[0]
     # print(html)
     # print("*********")
     # html1 = soup.select('.album__list-item')[-1]
     # print(html1)
-    title = soup.select('.album__label-title')[0].string
-    author = soup.select('.album__author-name')[0].string
+    # title = soup.select('.album__label-title')[0].string
+    # author = soup.select('.album__author-name')[0].string
     # print("****")
     # print(title)
 
-    li1 = soup.select('li')
+    # li1 = soup.select('li')
+
     # print(type(li1))
     # print(len(li1))
-    msgid=[]
-    link=[]
-    for i in range(len(li1)):
-        # print(li1[i]['data-msgid'])
-        msgid.append(li1[i]['data-msgid'])
+    # msgid=[]
+    # link=[]
+    # for i in range(len(li1)):
+    #     # print(li1[i]['data-msgid'])
+    #     msgid.append(li1[i]['data-msgid'])
 
-        # print(li1[i]['data-link'])
-        # print(li1[i]['data-title'])
-        # print(li1[i].find_all(class_='js_article_index')[0].string.replace(' ',''))
-        turn =li1[i].find_all(class_='js_article_index')[0].string.replace(' ','')
-        turn = turn.replace('\t','').replace('.','')
-        # link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"turn":turn,"msgid":li1[i]['data-msgid']})
-        link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"msgid":li1[i]['data-msgid']})
+    #     # print(li1[i]['data-link'])
+    #     # print(li1[i]['data-title'])
+    #     # print(li1[i].find_all(class_='js_article_index')[0].string.replace(' ',''))
+    #     turn =li1[i].find_all(class_='js_article_index')[0].string.replace(' ','')
+    #     turn = turn.replace('\t','').replace('.','')
+    #     # link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"turn":turn,"msgid":li1[i]['data-msgid']})
+    #     link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"msgid":li1[i]['data-msgid']})
         # 获取最小的 msgid 提供给 json 请求使用
     return {"result":link,"msgid":msgid,"author":author,"title":title}
 
@@ -170,6 +242,65 @@ def getJsonData(oldurl: str,msgid: int):
     # print(art['itemidx'])
     # return link
     return {"result":link,"msgid":msgid}
+
+
+# 获取接口内容
+def getHomeJsonData(oldurl: str, mount: int):
+    # // 判断等于10个时继续请求 
+    s = requests.Session()
+    # 登录要请求的地址，
+    url = "http://mp.weixin.qq.com/mp/homepage"
+    # 登录所需要的get参数
+    # 通过抓包的到需要传递的参数
+    param = dealUrl(oldurl)
+    # '__biz':param['__biz'],
+    data = {
+        'action':'appmsg_list',
+        'hid':param['hid'],
+        'sn':param['sn'],
+        'scene':param['scene'],
+        'begin':mount,
+        'count':10,
+        'f':'json',
+        'r':'0.29169203981500247',
+        'appmsg_token':'',
+    }
+    # 通过抓包或chrome开发者工具分析得到登录的请求头信息,
+    headers = {
+        'authority': 'mp.weixin.qq.com',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36',
+        'x-requested-with': 'XMLHttpRequest',
+        'accept': 'application/json',
+        'origin': 'http://mp.weixin.qq.com',
+        'referer': url+'?__biz='+param['__biz']+'&hid='+str(param['hid'])+'&sn='+str(param['sn'])+'&scene='+str(param['scene']),
+        'accept-language': 'zh-CN,zh;q=0.9',
+        'cookie': 'rewardsn=; wxtokenkey=777',
+        'connection': 'keep-alive',
+    }
+    url=url+'?__biz='+param['__biz']
+    for da in data.keys():
+        url=url+'&'+da+'='+str(data[da])
+    # print(url)
+    # 开始登录
+    r = s.post(url=url, params={}, headers=headers)
+    # print(r.text)
+    data = json.loads(r.text)
+    # print(data)
+    link = []
+    msgid = []
+    if len(data['appmsg_list'])>0:
+        art =data['appmsg_list'] # 1 个是是dict 多个 list
+        # print(type(art))
+        if isinstance(art, dict):
+            link.append({"link":art['link'],"title":art['title'],"msgid":art['appmsgid']})
+            msgid.append(art['appmsgid'])
+        elif isinstance(art, list):
+            for val in art:
+                link.append({"link":val['link'],"title":val['title'],"msgid":val['appmsgid']})
+                msgid.append(val['appmsgid'])
+    
+    return {"result":link,"msgid":msgid}
+
 
 # 处理结果
 def CleanResult(data,author,title):
