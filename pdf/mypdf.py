@@ -446,20 +446,20 @@ class GenPdf():
         # html = font + str(html) + '</body></html>'
 
         # 选项
-        options = {
-            'page-size': 'A4',
-            'margin-top': '0.25in',
-            'margin-right': '0.25in',
-            'margin-bottom': '0.25in',
-            'margin-left': '0.25in',
-            'encoding': "UTF-8",
-            'dpi':1000,
-            # 'custom-header': headers,
-            # 'debug-javascript': [''],
-            'javascript-delay': 10000,
-            # 'no-stop-slow-scripts': "",
-            # 'load-media-error-handling': 'abort',
-         }
+        # options = {
+        #     'page-size': 'A4',
+        #     'margin-top': '0.25in',
+        #     'margin-right': '0.25in',
+        #     'margin-bottom': '0.25in',
+        #     'margin-left': '0.25in',
+        #     'encoding': "UTF-8",
+        #     'dpi':1000,
+        #     # 'custom-header': headers,
+        #     # 'debug-javascript': [''],
+        #     'javascript-delay': 10000,
+        #     # 'no-stop-slow-scripts': "",
+        #     # 'load-media-error-handling': 'abort',
+        #  }
 
         # 由 html 生成pdf
         # print(html_path +title+'.html')

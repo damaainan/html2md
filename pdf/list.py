@@ -93,7 +93,7 @@ def dealHome(url):
         ret+=ret2['result']
         # print(ret2)
         # print(ret2['msgid'])
-        minid = max(ret2['msgid'])
+        # minid = max(ret2['msgid'])
     
     sdata=CleanResult(ret,author,title)
     # print(sdata)
