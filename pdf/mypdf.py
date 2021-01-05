@@ -157,6 +157,7 @@ class GenPdf():
 
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
+        # print(imgDict)
         for k in imgDict:
             if imgDict[k] != "":
                 image=requests.get(k).content
@@ -214,7 +215,7 @@ class GenPdf():
                 newsrc=self.getLocalImg(src)
                 imgDict[src]=newsrc
 
-        # print(htmlstr)
+        # print(imgDict)
 
         # 获取页面样式
         css = soup.select('head style')
@@ -288,6 +289,7 @@ class GenPdf():
         os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
+        print(imgDict)
         for k in imgDict:
             if imgDict[k] != "":
                 image=requests.get(k).content
@@ -347,10 +349,13 @@ class GenPdf():
 
     def getLocalImg(self,href):
         if href.find('http') > -1:
-            imgformat=href.split('wx_fmt=')[-1]
             imgsub="png"
-            if len(imgformat)>1:
-                imgsub=imgformat
+            if href.find('wx_fmt=') > -1:
+                imgformat=href.split('wx_fmt=')[-1]
+                # print(imgformat)
+                if len(imgformat)>1:
+                    imgsub=imgformat
+
             name=href.split('/')[-2][32:]
             return name+"."+imgsub
         return ""

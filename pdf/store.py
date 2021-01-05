@@ -77,17 +77,25 @@ class StoreData():
         # print(res)
         sql.close()
         return res
+
+    def getAblumListFromAuthorAndTitle(self, author, title):
+        sql = simpleToolSql("url")
+        # res = sql.query("select * from wx_article where state=0;")
+        res = sql.query("select * from wx_ablum where author='{a}' and title='{ti}' and update_at<'{t}';".format(a=author,ti=title,t=(datetime.datetime.now()-datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+        # print(res)
+        sql.close()
+        return res
     def updateAblum(self, id):
         sql = simpleToolSql("url")
         # res = sql.query("select * from wx_article where state=0;")
-        print("-*-*-*-*")
+        # print("-*-*-*-*")
         res = sql.execute("update wx_ablum set update_at='{t}' where id={id};".format(t=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),id=id))
         print("更新===",res)
         sql.close()
         return res
     def addAblum(self, url, author, title):
         sql = simpleToolSql("url")
-        res = self.getAblumListFromSql(url)
+        res = self.getAblumListFromAuthorAndTitle(author, title)
         print(res)
         # return
         if len(res)>0:
