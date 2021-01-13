@@ -12,9 +12,11 @@ import pdfkit
 import requests
 import os
 import re
+import json
 from bs4 import BeautifulSoup
 import platform
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import time
 from lxml import etree
 from lxml import html
@@ -38,9 +40,11 @@ class ZhiHuGenPdf():
         # htmlstr=re.sub(r'height: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
         # htmlstr=re.sub(r'width: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
         # htmlstr=htmlstr.replace('visibility: hidden !important;', '')
-
+        # print(htmlstr)
+        # return
         soup = BeautifulSoup(htmlstr, features="lxml")
         # 选择正文（去除javascrapt等）
+        fheader = soup.select('header.Post-Header')[0]
         fhtml = soup.select('div.Post-RichTextContainer')[0]
         # if title == "":
         #     title = soup.select('#activity-name')[0].get_text()
@@ -55,14 +59,24 @@ class ZhiHuGenPdf():
 
         imgDict = {}
         for im in range(len(imgs)):
+            # print('-----------------')
             # print(imgs[im])
-            if imgs[im].get('data-actualsrc'):
-                src=imgs[im]['data-actualsrc']
+            # print(imgs[im].decode())
+            # print(imgs[im].extract())
+            # print(dir(imgs[im]))
+            if imgs[im].get('data-original'):
+                # src=imgs[im]['src']
+                src=imgs[im]['data-original']
                 # 处理成本地文件名
-                newsrc=self.getLocalImg(src)
-                imgDict[src]=newsrc
+                # newsrc=self.getLocalImg(src)
+                imgDict[src]=imgs[im].decode()
+                # imgList.append({"img":imgs[im],"src":src})
+            elif imgs[im].get('data-actualsrc'):
+                src=imgs[im]['data-actualsrc']
+                imgDict[src]=imgs[im].decode()
 
         # print(imgDict)
+        # return
 
         # 获取页面样式
         # css = soup.select('head style')
@@ -71,10 +85,11 @@ class ZhiHuGenPdf():
         #     print(len(css[cs].get_text()))
 
 
-        css=self.getHtmlByXpath(htmlstr,"//style")
-        # for i in range(len(css)):
-        #     print(len(html.tostring(css[i])))
-
+        css=self.getHtmlByXpath(htmlstr,"//link/@href")
+        # for it in css:
+        #     print(it)
+        cssret =self.getLocalCss(css)
+        # 集中处理 css 样式 采用公共文件夹管理
 
         # return
         # fo=open("./weui.css","r+")
@@ -103,20 +118,19 @@ class ZhiHuGenPdf():
             p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
             span{font-size: 20px;font-family: "楷体","微软雅黑", sans-serif;letter-spacing: 0px;}
         </style>
-        <body>
         '''
         """
 
         font=font.format(title=title)
-        for cs in range(len(css)):
+        for cs in cssret:
             # print(len(css[cs].get_text()))
             # print(len(html.tostring(css[cs])))
             # print(type(css[cs].get_text()))
             # font = font + "<style>" + css[cs].get_text() + "</style>"
-            font = font + "<style>" + HTMLParser().unescape(html.tostring(css[cs]).decode()) + "</style>"
+            font = font + "<link rel='stylesheet' type='text/css' href='" + cssret[cs] + "'></link>"
             # HTMLParser().unescape(str1.decode())
 
-        fhtml = font + '</head><body>' + str(fhtml) + '</body></html>'
+        fhtml = font + '</head><body style="margin:20px 80px;">' + str(fheader) + str(fhtml) + '</body></html>'
         print(title)
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
@@ -149,79 +163,100 @@ class ZhiHuGenPdf():
 
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
+        imgheaser={
+            'authority': 'pic2.zhimg.com',
+            'cache-control': 'max-age=0',
+            'sec-ch-ua': '"Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"',
+            'sec-ch-ua-mobile': '?0',
+            'upgrade-insecure-requests': '1',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'sec-fetch-site': 'none',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-user': '?1',
+            'sec-fetch-dest': 'document',
+            'accept-language': 'zh-CN,zh;q=0.9'
+        }
         # print(imgDict)
-        for k in imgDict:
-            if imgDict[k] != "":
-                image=requests.get(k).content
-                with open(html_path+"/pic/"+imgDict[k],"wb") as fp:
+        for src in imgDict:
+            if src != "":
+                print('-*-*-*-*-*--*-*-*-*-*-')
+                print(src)
+                if src.find('?') > -1:
+                    imgsrc=src.split('?')[0]
+                else:
+                    imgsrc=src
+                newsrc=self.getLocalImg(imgsrc)
+                image=requests.get(url=imgsrc, headers=imgheaser).content
+                with open(html_path+"/pic/"+newsrc,"wb") as fp:
                     fp.write(image)
 
-            fhtml=fhtml.replace(k,"./pic/"+imgDict[k])
+                fhtml=fhtml.replace(imgDict[src],"<img src='./pic/"+newsrc+"'/>")
 
-        fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
+        # fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
-        weui=fo.write(fhtml)
+        aaa=fo.write(fhtml)
         fo.close()
 
         return title
-
-
-    def oldDeal(self, url, title, path):
+    
+    def dealAns(self, url, title, path):
         title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-')
         print(title)
 
-        ## 方法一  pdf 效果相对较好
-        res = requests.get(url)
-        # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
-        htmlstr = res.text.replace("data-src", "src").replace('style="visibility: hidden;"',"")
 
-        # htmlsr=self.getHTMLText(url)
-
-        htmlstr = htmlstr.replace("data-src", "src").replace('style="visibility: hidden;"',"")
-        htmlstr = htmlstr.replace("font-size: 16px;font-family: 微软雅黑, sans-serif;letter-spacing: 2px;",'font-size: 20px;font-family: 微软雅黑, sans-serif;letter-spacing: 0px;')
-
-        htmlstr = htmlstr.replace("data-src", "src").replace('style="visibility: hidden;"',"").replace('crossorigin="anonymous"','')
-        htmlstr=re.sub(r'height: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
-        htmlstr=re.sub(r'width: [0-9]{1,4}\.{0,1}[0-9]{0,17}px !important;', '', htmlstr)
+        ## 方法二
+        htmlstr=self.getHTMLText(url)
 
         soup = BeautifulSoup(htmlstr, features="lxml")
         # 选择正文（去除javascrapt等）
-        fhtml = soup.select('div#img-content')[0]
-        if title == "":
-            title = soup.select('#activity-name')[0].get_text()
-            # print(title)
-            title = title.replace("|", "").replace("/", "-").replace(' ','').replace('｜','').replace('?','？').replace("\n",'').replace("\r",'')
-            # print("****")
-            # print(title)
-            # return
+        fheader = soup.select('h1.QuestionHeader-title')[0]
+        fhtml = soup.select('div.AnswerCard')[0]
+
+        soup2 = BeautifulSoup(str(fhtml), features="lxml")
+        # 选择正文（去除javascrapt等）
+        zop = soup2.select('div.AnswerItem')[0]['data-zop']
+
+        zopd = json.loads(zop)
+        # {"authorName":"腾讯技术工程","itemId":1458672031,"title":"怎么学习 Golang？","type":"answer"}
+        title=title+ "_" +zopd["authorName"]
+        # print(zop)
+        # print(type(zop))
+        # return
+
 
         imgs = soup.select('img')
-        # print(imgs)
 
         imgDict = {}
         for im in range(len(imgs)):
-            # print(imgs[im])
-            if imgs[im].get('src'):
-                src=imgs[im]['src']
+            if imgs[im].get('data-original'):
+                src=imgs[im]['data-original']
                 # 处理成本地文件名
-                newsrc=self.getLocalImg(src)
-                imgDict[src]=newsrc
+                imgDict[src]=imgs[im].decode()
+            elif imgs[im].get('data-actualsrc'):
+                src=imgs[im]['data-actualsrc']
+                imgDict[src]=imgs[im].decode()
 
         # print(imgDict)
+        # return
 
         # 获取页面样式
-        css = soup.select('head style')
-        # print("*****")
+        # css = soup.select('head style')
         # print(len(css))
-        # print(type(css))
         # for cs in range(len(css)):
-        #     print(css[cs].get_text())
         #     print(len(css[cs].get_text()))
 
+
+        css=self.getHtmlByXpath(htmlstr,"//link/@href")
+        # for it in css:
+        #     print(it)
+        cssret =self.getLocalCss(css)
+        # 集中处理 css 样式 采用公共文件夹管理
+
         # return
-        fo=open("./weui.css","r+")
-        weui=fo.read()
-        fo.close()
+        # fo=open("./weui.css","r+")
+        # weui=fo.read()
+        # fo.close()
 
         font = '''<!DOCTYPE html>
 <html lang="en">
@@ -229,16 +264,36 @@ class ZhiHuGenPdf():
     <meta charset="UTF-8">
     <title>{title}</title>
 '''
+        """
+        # 可以修改字体
+        font = '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>{title}</title>
+        </head>
+        <style type="text/css">
+             @font-face{font-family: "微软雅黑";src:url("‪C:\\Windows\\Fonts\\msyh.ttc")
+        </style>
+         <style type = "text/css">
+            p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
+            span{font-size: 20px;font-family: "楷体","微软雅黑", sans-serif;letter-spacing: 0px;}
+        </style>
+        '''
+        """
 
-        font=font.format(title=title)+weui
-        for cs in range(len(css)):
-            # print(len(css[cs].get_text()))
-            # print(len(html.tostring(css[cs])))
-            font = font + "<style>" + css[cs].get_text() + "</style>"
+        font=font.format(title=title)
+        for cs in cssret:
+            # font = font + "<style>" + css[cs].get_text() + "</style>"
+            font = font + "<link rel='stylesheet' type='text/css' href='" + cssret[cs] + "'></link>"
+            # HTMLParser().unescape(str1.decode())
 
-        fhtml = font + '</head><body style="margin:40px;">' + str(fhtml) + '</body></html>'
-
+        fhtml = font + '</head><body style="margin:20px 80px;">' + str(fheader) + str(fhtml) + '</body></html>'
+        print(title)
         # 增大较小的字体
+        # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
+
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
 
 
@@ -248,65 +303,62 @@ class ZhiHuGenPdf():
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
         self.mkdir(pdf_path)
-        fo=open(html_path +title+'_old.html',"w+",encoding="utf-8")
-        weui=fo.write(fhtml)
+        fo=open(html_path +title+'.html',"w+",encoding="utf-8")
+        fo.write(fhtml)
         fo.close()
 
 
         # html = font + str(html) + '</body></html>'
-
-        # 选项
-        options = {
-            'page-size': 'A4',
-            'margin-top': '0.25in',
-            'margin-right': '0.25in',
-            'margin-bottom': '0.25in',
-            'margin-left': '0.25in',
-            'encoding': "UTF-8",
-            'dpi':1000,
-            # 'custom-header': headers,
-            # 'debug-javascript': [''],
-            'javascript-delay': 10000,
-            # 'no-stop-slow-scripts': "",
-            # 'load-media-error-handling': 'abort',
-         }
 
         # 由 html 生成pdf
         # print(html_path +title+'.html')
         # print(pdf_path+title+'.pdf')
         ntitle=title.replace('"','\\"')
 
-        hfile=html_path +ntitle+'_old.html'
-        pfile=pdf_path +ntitle+'_old.pdf'
-        os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
+        hfile=html_path +ntitle+'.html'
+        pfile=pdf_path +ntitle+'.pdf'
+        # os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile.replace(".pdf","_wk.pdf")))
+        os.system('weasyprint "{}" "{}"'.format(hfile, pfile)) # 目前效果最好的 
+
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
-        print(imgDict)
-        for k in imgDict:
-            if imgDict[k] != "":
-                image=requests.get(k).content
-                with open(html_path+"/pic/"+imgDict[k],"wb") as fp:
+        imgheaser={
+            'authority': 'pic2.zhimg.com',
+            'cache-control': 'max-age=0',
+            'sec-ch-ua': '"Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"',
+            'sec-ch-ua-mobile': '?0',
+            'upgrade-insecure-requests': '1',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'sec-fetch-site': 'none',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-user': '?1',
+            'sec-fetch-dest': 'document',
+            'accept-language': 'zh-CN,zh;q=0.9'
+        }
+        # print(imgDict)
+        for src in imgDict:
+            if src != "":
+                print('-*-*-*-*-*--*-*-*-*-*-')
+                print(src)
+                if src.find('?') > -1:
+                    imgsrc=src.split('?')[0]
+                else:
+                    imgsrc=src
+                newsrc=self.getLocalImg(imgsrc)
+                image=requests.get(url=imgsrc, headers=imgheaser).content
+                with open(html_path+"/pic/"+newsrc,"wb") as fp:
                     fp.write(image)
 
-            fhtml=fhtml.replace(k,"./pic/"+imgDict[k])
+                fhtml=fhtml.replace(imgDict[src],"<img src='./pic/"+newsrc+"'/>")
 
-        fo=open(html_path +title+'_old.html',"w+",encoding="utf-8")
-        weui=fo.write(fhtml)
+        # fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
+        fo=open(html_path +title+'.html',"w+",encoding="utf-8")
+        aaa=fo.write(fhtml)
         fo.close()
 
         return title
 
-        # pdfkit 格式不好
-        # path_wkthmltopdf = r''
-        # if platform.system() == "Windows":
-        #     path_wkthmltopdf = r'C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe'
-        # elif platform.system() == "Darwin":
-        #     path_wkthmltopdf = r''
-
-        # config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
-        # rpath = os.path.dirname(os.path.abspath(__file__)) + '/../out/zh/' + path
-        # self.mkdir(rpath)
-        # pdfkit.from_string(str(html), rpath+'/' +title+'.pdf', configuration=config, options=options)
 
     def mkdir(self, path):
         # 去除首位空格
@@ -324,11 +376,19 @@ class ZhiHuGenPdf():
         return True
 
     def getHTMLText(self, url):
-        if platform.system() == "Windows":
-            path_config = 'F:\\bin\\phantomjs.exe'
-        elif platform.system() == "Darwin":
-            path_config = '/Users/jiachunhui/repo/phantomjs/bin/phantomjs'
-        driver = webdriver.PhantomJS(executable_path=path_config)  # phantomjs的绝对路径
+        # 浏览器驱动
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--disable-gpu')
+        driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', chrome_options=chrome_options)
+        
+        # phantomjs 驱动
+        # if platform.system() == "Windows":
+        #     path_config = 'F:\\bin\\phantomjs.exe'
+        # elif platform.system() == "Darwin":
+        #     path_config = '/Users/jiachunhui/repo/phantomjs/bin/phantomjs'
+        # driver = webdriver.PhantomJS(executable_path=path_config)  # phantomjs的绝对路径
+
         time.sleep(10)
         driver.get(url)  # 获取网页
         time.sleep(2)
@@ -351,6 +411,35 @@ class ZhiHuGenPdf():
             name=href.split('/')[-1]
             return name
         return ""
+
+    def getLocalCss(self, css):
+        cssPath=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/zh/css'
+        print(css)
+        ret={}
+        for cs in css:
+            if cs.find('css') > -1:
+                cssFile=cs.split('/')[-1]
+                for _, _, files in os.walk(cssPath):  
+                    if len(files)>0:
+                        if cssFile in files:
+                            break
+                            # if cssFile==cfile:
+                            #     continue
+                        else:
+                            # 下载文件
+                            image=requests.get(cs).content
+                            with open(cssPath+"/"+cssFile,"wb") as fp:
+                                fp.write(image)
+                    else:
+                        # print('8-8--8-88-8-8-8-')
+                        # 下载文件
+                        image=requests.get(cs).content
+                        with open(cssPath+"/"+cssFile,"wb") as fp:
+                            fp.write(image)
+                # 替换
+                ret[cs]=cssPath+"/"+cssFile
+        
+        return ret
 
     # 此方法 html 效果更好
     def dealHtml(self, url, title, path):

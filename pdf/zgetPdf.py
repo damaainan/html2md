@@ -12,9 +12,6 @@ def getPdf():
     # 查数据库
     toPdfList, columns = store.getListFromParam('state=0')
 
-    # print(toPdfList)
-    # print(columns)
-    # print(type(toPdfList))
     # 修改状态
     data = []
     i=0
@@ -22,7 +19,12 @@ def getPdf():
         dic = {}
         for key,name in enumerate(columns):
             dic[name] = val[key]
-        genpdf(dic)
+        if dic["type"] == "article":
+            # genpdf(dic)
+            dealArticle(dic)
+        elif dic["type"] == "answer":
+            dealAnswer(dic)
+
         data.append(dic)
         i+=1
         if i%2==0:
@@ -55,12 +57,24 @@ def genpdf(data):
 #     getPdf()
     # print(sys.argv[0])
 
-getPdf()
+
 
 # 处理回答
-def dealAnswer():
+def dealAnswer(data):
+    store = ZhihuStoreData()
+    # 传值生成pdf
+    pdf = ZhiHuGenPdf()
+    pdf.dealAns(data['url'],data['title'],data['folder'])
+    store.updateUrlState(data['id'])
     return
 
 # 处理文章
-def dealArticle():
+def dealArticle(data):
+    store = ZhihuStoreData()
+    # 传值生成pdf
+    pdf = ZhiHuGenPdf()
+    pdf.deal(data['url'],data['title'],data['folder'])
+    store.updateUrlState(data['id'])
     return
+
+getPdf()    
