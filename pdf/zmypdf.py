@@ -59,22 +59,28 @@ class ZhiHuGenPdf():
 
         imgDict = {}
         for im in range(len(imgs)):
+            # if imgs[im].get('class') == "ztext-gif":
+                # webp
             # print('-----------------')
             # print(imgs[im])
             # print(imgs[im].decode())
             # print(imgs[im].extract())
             # print(dir(imgs[im]))
+            src=''
             if imgs[im].get('data-original'):
                 # src=imgs[im]['src']
                 src=imgs[im]['data-original']
                 # 处理成本地文件名
                 # newsrc=self.getLocalImg(src)
-                imgDict[src]=imgs[im].decode()
+                # imgDict[src]=imgs[im].decode()
                 # imgList.append({"img":imgs[im],"src":src})
             elif imgs[im].get('data-actualsrc'):
                 src=imgs[im]['data-actualsrc']
-                imgDict[src]=imgs[im].decode()
+            
+            if imgs[im].get('class') == "ztext-gif":
+                src=src.replace('.jpg','.webp').replace('.png','.webp').replace('.jpeg','.webp')
 
+            imgDict[src]=imgs[im].decode()
         # print(imgDict)
         # return
 
