@@ -2,6 +2,7 @@
 
 import time
 import datetime
+import sys
 sys.path.append("..")
 from db.mysqlite import simpleToolSql
 

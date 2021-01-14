@@ -11,9 +11,11 @@ import json
 import time
 import operator
 from itertools import groupby
-from db.mysqlite import simpleToolSql
 from store import StoreData
 from mypdf import GenPdf
+import sys
+sys.path.append("..")
+from db.mysqlite import simpleToolSql
 
 '''
 begin_msgid   页面最后一个
