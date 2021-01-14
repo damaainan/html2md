@@ -66,21 +66,27 @@ class ZhiHuGenPdf():
             # print(imgs[im].decode())
             # print(imgs[im].extract())
             # print(dir(imgs[im]))
-            src=''
-            if imgs[im].get('data-original'):
-                # src=imgs[im]['src']
-                src=imgs[im]['data-original']
-                # 处理成本地文件名
-                # newsrc=self.getLocalImg(src)
-                # imgDict[src]=imgs[im].decode()
-                # imgList.append({"img":imgs[im],"src":src})
-            elif imgs[im].get('data-actualsrc'):
-                src=imgs[im]['data-actualsrc']
-            
-            if imgs[im].get('class') == "ztext-gif":
-                src=src.replace('.jpg','.webp').replace('.png','.webp').replace('.jpeg','.webp')
+            if imgs[im].get('src'):
+                src=''
+                if imgs[im].get('data-original'):
+                    # src=imgs[im]['src']
+                    src=imgs[im]['data-original']
+                    # 处理成本地文件名
+                    # newsrc=self.getLocalImg(src)
+                    # imgDict[src]=imgs[im].decode()
+                    # imgList.append({"img":imgs[im],"src":src})
+                elif imgs[im].get('data-actualsrc'):
+                    src=imgs[im]['data-actualsrc']
+                    # imgList.append({"img":imgs[im],"src":src})
+                elif imgs[im].get('data-thumbnail'):
+                    src=imgs[im]['data-thumbnail']
+                # print(imgs[im].get('class'))
+                # print(src)
+                if "ztext-gif" in imgs[im].get('class'):
+                    src=src.replace('.jpg','.webp').replace('.png','.webp').replace('.jpeg','.webp')
+                # print(src)
 
-            imgDict[src]=imgs[im].decode()
+                imgDict[src]=imgs[im].decode()
         # print(imgDict)
         # return
 
@@ -120,10 +126,6 @@ class ZhiHuGenPdf():
         <style type="text/css">
              @font-face{font-family: "微软雅黑";src:url("‪C:\\Windows\\Fonts\\msyh.ttc")
         </style>
-         <style type = "text/css">
-            p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
-            span{font-size: 20px;font-family: "楷体","微软雅黑", sans-serif;letter-spacing: 0px;}
-        </style>
         '''
         """
 
@@ -135,13 +137,26 @@ class ZhiHuGenPdf():
             # font = font + "<style>" + css[cs].get_text() + "</style>"
             font = font + "<link rel='stylesheet' type='text/css' href='" + cssret[cs] + "'></link>"
             # HTMLParser().unescape(str1.decode())
+        
+        font = font + '''
+         <style type = "text/css">
+            p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
+            span{font-size: 20px;font-family: "楷体","微软雅黑", sans-serif;letter-spacing: 0px;}
+            .highlight pre{background:#e8e3e3;}
+        </style>
 
+        '''
         fhtml = font + '</head><body style="margin:20px 80px;">' + str(fheader) + str(fhtml) + '</body></html>'
         print(title)
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
 
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
+
+        svgicon=soup.select('svg.GifPlayer-icon')
+        for svg in range(len(svgicon)):
+            # print(svgicon[svg].decode())
+            fhtml=fhtml.replace(svgicon[svg].decode(),'')
 
 
         rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/zh/' + path
@@ -165,7 +180,7 @@ class ZhiHuGenPdf():
         hfile=html_path +ntitle+'.html'
         pfile=pdf_path +ntitle+'.pdf'
         # os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile.replace(".pdf","_wk.pdf")))
-        os.system('weasyprint "{}" "{}"'.format(hfile, pfile)) # 目前效果最好的 
+        os.system('weasyprint -q "{}" "{}"'.format(hfile, pfile)) # 目前效果最好的 
 
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
@@ -186,8 +201,8 @@ class ZhiHuGenPdf():
         # print(imgDict)
         for src in imgDict:
             if src != "":
-                print('-*-*-*-*-*--*-*-*-*-*-')
-                print(src)
+                # print('-*-*-*-*-*--*-*-*-*-*-')
+                # print(src)
                 if src.find('?') > -1:
                     imgsrc=src.split('?')[0]
                 else:
@@ -197,7 +212,7 @@ class ZhiHuGenPdf():
                 with open(html_path+"/pic/"+newsrc,"wb") as fp:
                     fp.write(image)
 
-                fhtml=fhtml.replace(imgDict[src],"<img src='./pic/"+newsrc+"'/>")
+                fhtml=fhtml.replace(imgDict[src],"<img style='max-width:100%;' src='./pic/"+newsrc+"'/>")
 
         # fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
@@ -235,14 +250,23 @@ class ZhiHuGenPdf():
 
         imgDict = {}
         for im in range(len(imgs)):
-            if imgs[im].get('data-original'):
-                src=imgs[im]['data-original']
-                # 处理成本地文件名
+            # print(dir(imgs[im]))
+            src=''
+            if imgs[im].has_attr('src'):
+                if imgs[im].get('data-original'):
+                    src=imgs[im]['data-original']
+                    # 处理成本地文件名
+                elif imgs[im].get('data-actualsrc'):
+                    src=imgs[im]['data-actualsrc']
+                    # imgDict[src]=imgs[im].decode()
+                elif imgs[im].get('data-thumbnail'):
+                    src=imgs[im]['data-thumbnail']
+                # print(imgs[im].get('class'))
+                # print(src)
+                if imgs[im].has_attr('class'):
+                    if "ztext-gif" in imgs[im].get('class'):
+                        src=src.replace('.jpg','.webp').replace('.png','.webp').replace('.jpeg','.webp')
                 imgDict[src]=imgs[im].decode()
-            elif imgs[im].get('data-actualsrc'):
-                src=imgs[im]['data-actualsrc']
-                imgDict[src]=imgs[im].decode()
-
         # print(imgDict)
         # return
 
@@ -282,10 +306,6 @@ class ZhiHuGenPdf():
         <style type="text/css">
              @font-face{font-family: "微软雅黑";src:url("‪C:\\Windows\\Fonts\\msyh.ttc")
         </style>
-         <style type = "text/css">
-            p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
-            span{font-size: 20px;font-family: "楷体","微软雅黑", sans-serif;letter-spacing: 0px;}
-        </style>
         '''
         """
 
@@ -294,6 +314,15 @@ class ZhiHuGenPdf():
             # font = font + "<style>" + css[cs].get_text() + "</style>"
             font = font + "<link rel='stylesheet' type='text/css' href='" + cssret[cs] + "'></link>"
             # HTMLParser().unescape(str1.decode())
+
+        font = font + '''
+         <style type = "text/css">
+            p { font-size:20px;font-family: "微软雅黑","Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif, cursive; margin-left: 8px;margin-right: 8px;line-height: 1.2em;}
+            span{font-size: 20px;font-family: "楷体","微软雅黑", sans-serif;letter-spacing: 0px;}
+            .highlight pre{background:#e8e3e3;}
+        </style>
+
+        '''
 
         fhtml = font + '</head><body style="margin:20px 80px;">' + str(fheader) + str(fhtml) + '</body></html>'
         print(title)
@@ -324,7 +353,7 @@ class ZhiHuGenPdf():
         hfile=html_path +ntitle+'.html'
         pfile=pdf_path +ntitle+'.pdf'
         # os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile.replace(".pdf","_wk.pdf")))
-        os.system('weasyprint "{}" "{}"'.format(hfile, pfile)) # 目前效果最好的 
+        os.system('weasyprint -q "{}" "{}"'.format(hfile, pfile)) # 目前效果最好的 
 
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
@@ -345,8 +374,8 @@ class ZhiHuGenPdf():
         # print(imgDict)
         for src in imgDict:
             if src != "":
-                print('-*-*-*-*-*--*-*-*-*-*-')
-                print(src)
+                # print('-*-*-*-*-*--*-*-*-*-*-')
+                # print(src)
                 if src.find('?') > -1:
                     imgsrc=src.split('?')[0]
                 else:
@@ -356,7 +385,7 @@ class ZhiHuGenPdf():
                 with open(html_path+"/pic/"+newsrc,"wb") as fp:
                     fp.write(image)
 
-                fhtml=fhtml.replace(imgDict[src],"<img src='./pic/"+newsrc+"'/>")
+                fhtml=fhtml.replace(imgDict[src],"<img style='max-width:100%;' src='./pic/"+newsrc+"'/>")
 
         # fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
@@ -420,7 +449,7 @@ class ZhiHuGenPdf():
 
     def getLocalCss(self, css):
         cssPath=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/zh/css'
-        print(css)
+        # print(css)
         ret={}
         for cs in css:
             if cs.find('css') > -1:

@@ -26,9 +26,9 @@ def getPdf():
             dealAnswer(dic)
 
         data.append(dic)
-        i+=1
-        if i%2==0:
-            break
+        # i+=1
+        # if i%5==0:
+        #     break
     # print(data)
     return
 

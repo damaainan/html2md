@@ -144,9 +144,9 @@ def dealPublicFav(url):
         nurl=api_url+"&offset="+str(offset)
         data=getFavJsonFromApi(nurl)
         result+=data
-        if p==2:
-            break
-        p+=1
+        # if p==2:
+        #     break
+        # p+=1
         # break
         # if len(data)<20:
         #     break
@@ -243,7 +243,7 @@ def CleanResult(data, title):
     # 去重
     # data = distinct(data,"title")
     # sdata = sorted(data, key=operator.itemgetter("msgid"))
-    print(len(data))
+    # print(len(data))
     for i in range(len(data)):
         data[i]['folder'] = title
         data[i]['archive'] = (data[i]['archive'] if data[i].__contains__('archive') else title)
