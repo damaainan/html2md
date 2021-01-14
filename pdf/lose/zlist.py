@@ -137,7 +137,7 @@ def dealPublicFav(url):
     flag=url.split("/")[-1]
     api_url="https://www.zhihu.com/api/v4/collections/"+flag+"/items?limit=20"
     result=[]
-    p=1
+    # p=1
     for i in range (100):
         time.sleep(1)
         offset = 20*i

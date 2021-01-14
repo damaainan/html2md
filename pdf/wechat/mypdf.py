@@ -12,6 +12,8 @@ from lxml import etree
 from lxml import html
 from html.parser import HTMLParser #导入html解析库
 
+REALPATH=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 class GenPdf():
     # 此方法 html 效果更好
     def deal(self, url, title, path):
@@ -116,7 +118,8 @@ class GenPdf():
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
 
 
-        rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/wx/' + path
+        # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
+        rpath = REALPATH + '/out/wx/' + path
         html_path = rpath + "/html/"
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
@@ -130,20 +133,20 @@ class GenPdf():
         # html = font + str(html) + '</body></html>'
 
         # 选项
-        options = {
-            'page-size': 'A4',
-            'margin-top': '0.25in',
-            'margin-right': '0.25in',
-            'margin-bottom': '0.25in',
-            'margin-left': '0.25in',
-            'encoding': "UTF-8",
-            'dpi':1000,
-            # 'custom-header': headers,
-            # 'debug-javascript': [''],
-            'javascript-delay': 10000,
-            # 'no-stop-slow-scripts': "",
-            # 'load-media-error-handling': 'abort',
-         }
+        # options = {
+        #     'page-size': 'A4',
+        #     'margin-top': '0.25in',
+        #     'margin-right': '0.25in',
+        #     'margin-bottom': '0.25in',
+        #     'margin-left': '0.25in',
+        #     'encoding': "UTF-8",
+        #     'dpi':1000,
+        #     # 'custom-header': headers,
+        #     # 'debug-javascript': [''],
+        #     'javascript-delay': 10000,
+        #     # 'no-stop-slow-scripts': "",
+        #     # 'load-media-error-handling': 'abort',
+        #  }
 
         # 由 html 生成pdf
         # print(html_path +title+'.html')
@@ -250,7 +253,8 @@ class GenPdf():
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
 
 
-        rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/wx/' + path
+        # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
+        rpath = REALPATH + '/out/wx/' + path
         html_path = rpath + "/html/"
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
@@ -264,20 +268,20 @@ class GenPdf():
         # html = font + str(html) + '</body></html>'
 
         # 选项
-        options = {
-            'page-size': 'A4',
-            'margin-top': '0.25in',
-            'margin-right': '0.25in',
-            'margin-bottom': '0.25in',
-            'margin-left': '0.25in',
-            'encoding': "UTF-8",
-            'dpi':1000,
-            # 'custom-header': headers,
-            # 'debug-javascript': [''],
-            'javascript-delay': 10000,
-            # 'no-stop-slow-scripts': "",
-            # 'load-media-error-handling': 'abort',
-         }
+        # options = {
+        #     'page-size': 'A4',
+        #     'margin-top': '0.25in',
+        #     'margin-right': '0.25in',
+        #     'margin-bottom': '0.25in',
+        #     'margin-left': '0.25in',
+        #     'encoding': "UTF-8",
+        #     'dpi':1000,
+        #     # 'custom-header': headers,
+        #     # 'debug-javascript': [''],
+        #     'javascript-delay': 10000,
+        #     # 'no-stop-slow-scripts': "",
+        #     # 'load-media-error-handling': 'abort',
+        #  }
 
         # 由 html 生成pdf
         # print(html_path +title+'.html')
@@ -312,7 +316,7 @@ class GenPdf():
         #     path_wkthmltopdf = r''
 
         # config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
-        # rpath = os.path.dirname(os.path.abspath(__file__)) + '/../out/wx/' + path
+        # rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)) + '/../out)/wx/' + path
         # self.mkdir(rpath)
         # pdfkit.from_string(str(html), rpath+'/' +title+'.pdf', configuration=config, options=options)
 
@@ -437,7 +441,8 @@ class GenPdf():
         # 增大较小的字体
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
 
-        rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/wx/' + path
+        # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
+        rpath = REALPATH + '/out/wx/' + path
         html_path = rpath + "/html/"
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)

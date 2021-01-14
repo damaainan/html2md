@@ -1,7 +1,9 @@
 # -*- coding=utf-8 -*-
-from db.mysqlite import simpleToolSql
+
 import time
 import datetime
+sys.path.append("..")
+from db.mysqlite import simpleToolSql
 
 
 class StoreData():

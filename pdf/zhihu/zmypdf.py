@@ -22,6 +22,10 @@ from lxml import etree
 from lxml import html
 from html.parser import HTMLParser #导入html解析库
 
+
+REALPATH=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
 class ZhiHuGenPdf():
     # 此方法 html 效果更好
     def deal(self, url, title, path):
@@ -159,7 +163,8 @@ class ZhiHuGenPdf():
             fhtml=fhtml.replace(svgicon[svg].decode(),'')
 
 
-        rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/zh/' + path
+        # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/zh/' + path
+        rpath = REALPATH + '/out/zh/' + path
         html_path = rpath + "/html/"
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
@@ -216,7 +221,7 @@ class ZhiHuGenPdf():
 
         # fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
-        aaa=fo.write(fhtml)
+        fo.write(fhtml)
         fo.close()
 
         return title
@@ -332,7 +337,8 @@ class ZhiHuGenPdf():
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
 
 
-        rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/zh/' + path
+        # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/zh/' + path
+        rpath = REALPATH + '/out/zh/' + path
         html_path = rpath + "/html/"
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
@@ -389,7 +395,7 @@ class ZhiHuGenPdf():
 
         # fhtml=fhtml.replace('<body>','<body style="margin:40px;">')
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
-        aaa=fo.write(fhtml)
+        fo.write(fhtml)
         fo.close()
 
         return title
@@ -448,7 +454,8 @@ class ZhiHuGenPdf():
         return ""
 
     def getLocalCss(self, css):
-        cssPath=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/zh/css'
+        # cssPath=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/zh/css'
+        cssPath=REALPATH + '/out/zh/css'
         # print(css)
         ret={}
         for cs in css:

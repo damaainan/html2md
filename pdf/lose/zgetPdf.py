@@ -14,7 +14,7 @@ def getPdf():
 
     # 修改状态
     data = []
-    i=0
+    # i=0
     for val in toPdfList:
         dic = {}
         for key,name in enumerate(columns):
