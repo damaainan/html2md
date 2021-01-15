@@ -421,7 +421,11 @@ class ZhiHuGenPdf():
         chrome_options = Options()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
-        driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', chrome_options=chrome_options)
+        if platform.system() == "Windows":
+            path_config = 'F:\\bin\\phantomjs.exe'
+        elif platform.system() == "Darwin":
+            path_config = '/usr/local/bin/chromedriver'
+        driver = webdriver.Chrome(executable_path=path_config, chrome_options=chrome_options)
         
         # phantomjs 驱动
         # if platform.system() == "Windows":

@@ -4,7 +4,7 @@ import json
 import time
 import sys
 from bs4 import BeautifulSoup
-from zstore import ZhihuStoreData
+from zhihu.zstore import ZhihuStoreData
 import operator
 from itertools import groupby
 
@@ -17,9 +17,11 @@ def deal(url):
     # column 专栏
     # collections 某人所有收藏夹
     # collection 某个收藏夹 分为公开的和私有的 
+    ret={}
     if url.find("column") > -1:
         ret = dealList(url)
-    if url.find("collection") > -1:
+    # if url.find("collection") > -1:
+    else:
         ret = dealPublicFav(url)
     # 存储链接
     store.addAblum(url, "", ret['title'])
@@ -148,11 +150,11 @@ def dealPublicFav(url):
         #     break
         # p+=1
         # break
-        # if len(data)<20:
-        #     break
+        if len(data)<20:
+            break
     
     # print(result)
-    return {"title":"my"+title,"result":result}
+    return {"title":"my-"+title,"result":result}
 
 # 获取第一页页面内容
 def getFavPageName(url):
@@ -258,4 +260,4 @@ def distinct(items,key):
 
 # dealPublicFav("https://www.zhihu.com/collection/195406199")
 
-deal(sys.argv[1]) 
+# deal(sys.argv[1]) 

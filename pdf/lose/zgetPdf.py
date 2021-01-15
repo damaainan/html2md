@@ -77,4 +77,4 @@ def dealArticle(data):
     store.updateUrlState(data['id'])
     return
 
-getPdf()    
+# getPdf()    

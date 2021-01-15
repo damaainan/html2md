@@ -1,3 +1,7 @@
 
-py list.py "url"  获取连接并存储   
-py getPdf.py 生成PDF并修改状态
+`py to_pdf.py` 更新所有集合，采集新的连接（仅落库）   
+`py to_pdf.py zhihu` 采集所有知乎库中新的连接（生成文件）   
+`py to_pdf.py weixin` 采集所有微信库中新的连接 （生成文件）  
+`py to_pdf.py weixin文章url` 采集该连接（生成文件）   
+`py to_pdf.py weixin合集url` 采集该合集所有连接（仅落库）   
+`py to_pdf.py zhihu合集url` 采集该合集所有连接（仅落库）   

@@ -1,5 +1,5 @@
 # -*- coding=utf-8 -*-
-from mypdf import GenPdf
+from zwechathihu.mypdf import GenPdf
 from db.mysqlite import simpleToolSql
 
 

@@ -2,10 +2,10 @@
 
 # 知乎文章下载
 
-from zstore import ZhihuStoreData
+from zhihu.zstore import ZhihuStoreData
 import time
 import sys
-from zmypdf import ZhiHuGenPdf
+from zhihu.zmypdf import ZhiHuGenPdf
 
 def getPdf():
     store = ZhihuStoreData()
@@ -77,4 +77,19 @@ def dealArticle(data):
     store.updateUrlState(data['id'])
     return
 
-getPdf()    
+# getPdf()    
+
+
+def zhPdf(**kwargs):
+    # print(kwargs)
+    # print(kwargs['url'])
+    # return
+    if len(kwargs)>0:
+        print("******")
+        url=kwargs['url']
+        print(url)
+        if url=="zhihu":
+            getPdf()
+    else:
+        getPdf()
+        # print(sys.argv[0])
