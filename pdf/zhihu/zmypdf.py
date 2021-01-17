@@ -50,6 +50,15 @@ class ZhiHuGenPdf():
         # 选择正文（去除javascrapt等）
         fheader = soup.select('header.Post-Header')[0]
         fhtml = soup.select('div.Post-RichTextContainer')[0]
+
+        title_img = soup.select('.TitleImage')
+        title_img_str = ''
+        if len(title_img) > 0:
+            # 处理下载 
+            title_img_str = title_img[0]
+            self.getTitleImg(title_img_str)
+            # sys.exit(0)
+
         # if title == "":
         #     title = soup.select('#activity-name')[0].get_text()
         #     # print(title)
@@ -150,7 +159,7 @@ class ZhiHuGenPdf():
         </style>
 
         '''
-        fhtml = font + '</head><body style="margin:20px 80px;">' + str(fheader) + str(fhtml) + '</body></html>'
+        fhtml = font + '</head><body style="margin:20px 80px;">' + str(title_img_str) + str(fheader) + str(fhtml) + '</body></html>'
         print(title)
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
@@ -294,11 +303,11 @@ class ZhiHuGenPdf():
         # fo.close()
 
         font = '''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{title}</title>
-'''
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>{title}</title>
+                '''
         """
         # 可以修改字体
         font = '''
@@ -443,6 +452,33 @@ class ZhiHuGenPdf():
         strhtml = etree.HTML(html_str)
         strResult = strhtml.xpath(xpath)
         return strResult
+
+    def getTitleImg(self, img_str):
+        imgheaser={
+            'authority': 'pic2.zhimg.com',
+            'cache-control': 'max-age=0',
+            'sec-ch-ua': '"Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"',
+            'sec-ch-ua-mobile': '?0',
+            'upgrade-insecure-requests': '1',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'sec-fetch-site': 'none',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-user': '?1',
+            'sec-fetch-dest': 'document',
+            'accept-language': 'zh-CN,zh;q=0.9'
+        }
+        pat = '(https?://[^\s]*?(jpge|jpg|png|PNG|JPG))'
+        url = re.findall(pat, img_str.decode())
+        for i in url:
+            for j in range(len(i)):
+                if len(i[j]) > 20:
+                    # print(i[j])
+                    newsrc=self.getLocalImg(i[j])
+                    image=requests.get(url = i[j], headers = imgheaser).content
+                    with open(REALPATH + "/out/zh/pic/"+newsrc,"wb") as fp:
+                        fp.write(image)
+        # print(url)
 
     def getLocalImg(self,href):
         if href.find('http') > -1:
