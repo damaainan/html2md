@@ -5,6 +5,9 @@ from zhihu import zstore
 from wechat import getPdf
 from wechat import store
 from wechat import list as wList
+from juejin import jgetPdf
+from juejin import jlist
+from juejin import jstore
 import sys
 
 
@@ -27,6 +30,11 @@ def dealAll(**kwargs):
                 getPdf.wxPdf(url=url, folder=folder)
             else:
                 getPdf.wxPdf(url=url)
+    elif url.find("juejin") > -1:
+        if url.find("collection") > 1 or url.find('posts') > -1:
+            jlist.deal(url)
+        else:
+            jgetPdf.jjPdf(url=url)
     return
 
 
@@ -51,3 +59,12 @@ else:
         print(i[2])
         zlist.deal(i[1])
         time.sleep(2)
+
+    
+    jStore = jstore.JuejinStoreData()
+    li = jStore.getAblums()
+    for i in li:
+        print(i[2])
+        jlist.deal(i[1])
+        time.sleep(2)
+

@@ -61,3 +61,34 @@ CREATE UNIQUE INDEX "idx_url_copy1"
 ON "zh_ablum" (
   "url" ASC
 );
+
+
+CREATE TABLE "jj_ablum" (
+  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "url" TEXT NOT NULL,
+  "author" TEXT NOT NULL,
+  "title" TEXT NOT NULL,
+  "create_at" DATE NOT NULL,
+  "update_at" DATE NOT NULL
+);
+
+CREATE UNIQUE INDEX "idx_url_copy1_copy1"
+ON "jj_ablum" (
+  "url" ASC
+);
+
+
+CREATE TABLE "jj_article" (
+  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "url" TEXT NOT NULL,
+  "title" TEXT NOT NULL,
+  "archive" TEXT NOT NULL,
+  "type" TEXT NOT NULL DEFAULT '',
+  "folder" TEXT NOT NULL,
+  "msgid" INTEGER NOT NULL DEFAULT 0,
+  "created" INTEGER NOT NULL DEFAULT 1,
+  "updated" INTEGER NOT NULL,
+  "state" INTEGER NOT NULL DEFAULT 0,
+  "create_at" DATE NOT NULL,
+  "update_at" DATE NOT NULL
+);
