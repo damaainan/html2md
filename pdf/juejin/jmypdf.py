@@ -89,7 +89,7 @@ class JuejinGenPdf():
                 else:
                     # src=imgs[im]['src']
                     continue
-                if src.find('raw.githubusercontent.com') > -1 or src.find('github.com') > -1  :
+                if src.find('githubusercontent.com') > -1 or src.find('github.com') > -1 or src.find('data:image') > -1 :
                     continue
                 # print(imgs[im].get('class'))
                 # print(src)
@@ -210,14 +210,17 @@ class JuejinGenPdf():
         # print(imgDict)
         for src in imgDict:
             if src != "":
-                # print('-*-*-*-*-*--*-*-*-*-*-')
+                print('-*-*-*-*-*--*-*-*-*-*-')
                 # print(src)
                 if src.find('?') > -1:
                     imgsrc=src.split('?')[0]
                 else:
                     imgsrc=src
+                if imgsrc.startswith('//'):
+                    imgsrc="https:"+imgsrc
                 newsrc=self.getLocalImg(imgsrc)
-                # print(imgsrc)
+                print(imgsrc)
+                print(newsrc)
                 image=requests.get(url=imgsrc).content
                 with open(html_path+"/pic/"+newsrc,"wb") as fp:
                     fp.write(image)

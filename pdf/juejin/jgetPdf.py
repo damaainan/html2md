@@ -14,7 +14,7 @@ def getPdf():
 
     # 修改状态
     data = []
-    i=0
+    # i=0
     for val in toPdfList:
         dic = {}
         for key,name in enumerate(columns):
@@ -22,9 +22,9 @@ def getPdf():
 
         genpdf(dic)
         data.append(dic)
-        i+=1
-        if i%5==0:
-            break
+        # i+=1
+        # if i%5==0:
+        #     break
     # print(data)
     return
 

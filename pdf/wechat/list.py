@@ -158,8 +158,7 @@ def getFirstPage(url):
     li1 = soup.select('li')
     for i in range(len(li1)):
         msgid.append(li1[i]['data-msgid'])
-        turn = li1[i].find_all(class_='js_article_index')[
-            0].string.replace(' ', '')
+        turn = li1[i].find_all(class_='js_article_index')[0].string.replace(' ', '')
         turn = turn.replace('\t', '').replace('.', '')
         # link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"turn":turn,"msgid":li1[i]['data-msgid']})
         link.append({"link": li1[i]['data-link'], "title": li1[i]

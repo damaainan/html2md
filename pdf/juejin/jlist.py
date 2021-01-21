@@ -126,7 +126,7 @@ def dealPublicFav(url):
     
     # print(result)
     # sys.exit(0)
-    return {"title": result[0]['user'], "result":result}
+    return {"title": result[0]['co_folder_pre'], "result":result}
 
 
 def getFavJsonFromApi(url):
@@ -164,8 +164,9 @@ def getFavJsonFromApi(url):
             ret.append({"url":"https://juejin.cn/post/"+dlist[j]['article_info']['article_id'], 
                 "title":dlist[j]['article_info']['title'], 
                 "msgid":dlist[j]['article_info']['article_id'], 
+                "archive":tag_user, 
                 "user":dlist[j]['author_user_info']['user_name'], 
-                "type":dlist[j]['category']['category_name'], 
+                "type":tag, 
                 "created":dlist[j]['article_info']['ctime'], 
                 "updated":dlist[j]['article_info']['mtime'],
                 "co_folder_pre": tag_user + "-" + tag

@@ -233,6 +233,11 @@ class GenPdf():
 
         # print(imgDict)
 
+        # 处理视频
+        # videos = soup.select("iframe.video_iframe")
+        # videoret = self.getLocalVideo(videos)
+
+
         # 获取页面样式
         css = soup.select('head style')
         # print("*****")
@@ -386,6 +391,19 @@ class GenPdf():
     def getLocalImg(self, href):
         if href.find('http') > -1:
             imgsub = "png"
+            if href.find('wx_fmt=') > -1:
+                imgformat = href.split('wx_fmt=')[-1]
+                # print(imgformat)
+                if len(imgformat) > 1:
+                    imgsub = imgformat
+
+            name = href.split('/')[-2][32:]
+            return name+"."+imgsub
+        return ""
+
+    def getLocalVideo(self, video):
+        if video.find('http') > -1:
+            imgsub = "mp4"
             if href.find('wx_fmt=') > -1:
                 imgformat = href.split('wx_fmt=')[-1]
                 # print(imgformat)
