@@ -7,6 +7,7 @@ import time
 import sys
 from zhihu.zmypdf import ZhiHuGenPdf
 
+
 def getPdf():
     store = ZhihuStoreData()
     # 查数据库
@@ -17,7 +18,7 @@ def getPdf():
     # i=0
     for val in toPdfList:
         dic = {}
-        for key,name in enumerate(columns):
+        for key, name in enumerate(columns):
             dic[name] = val[key]
         if dic["type"] == "article":
             # genpdf(dic)
@@ -32,13 +33,15 @@ def getPdf():
     # print(data)
     return
 
+
 def genpdf(data):
     store = ZhihuStoreData()
     # 传值生成pdf
     pdf = ZhiHuGenPdf()
-    pdf.deal(data['url'],data['title'],data['folder'])
+    pdf.deal(data['url'], data['title'], data['folder'])
     store.updateUrlState(data['id'])
     return
+
 
 # if len(sys.argv)>1:
 #     print("******")
@@ -55,8 +58,7 @@ def genpdf(data):
 #     store.updateUrlStateByMsg()
 # else:
 #     getPdf()
-    # print(sys.argv[0])
-
+# print(sys.argv[0])
 
 
 # 处理回答
@@ -64,31 +66,33 @@ def dealAnswer(data):
     store = ZhihuStoreData()
     # 传值生成pdf
     pdf = ZhiHuGenPdf()
-    pdf.dealAns(data['url'],data['title'],data['folder'])
+    pdf.dealAns(data['url'], data['title'], data['folder'])
     store.updateUrlState(data['id'])
     return
+
 
 # 处理文章
 def dealArticle(data):
     store = ZhihuStoreData()
     # 传值生成pdf
     pdf = ZhiHuGenPdf()
-    pdf.deal(data['url'],data['title'],data['folder'])
+    pdf.deal(data['url'], data['title'], data['folder'])
     store.updateUrlState(data['id'])
     return
 
-# getPdf()    
+
+# getPdf()
 
 
 def zhPdf(**kwargs):
     # print(kwargs)
     # print(kwargs['url'])
     # return
-    if len(kwargs)>0:
+    if len(kwargs) > 0:
         print("******")
-        url=kwargs['url']
+        url = kwargs['url']
         print(url)
-        if url=="zhihu":
+        if url == "zhihu":
             getPdf()
     else:
         getPdf()

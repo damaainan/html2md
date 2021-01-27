@@ -10,3 +10,4 @@ urls.txt
 */__pycache__
 *.pyc
 *.log
+*/ji.sh

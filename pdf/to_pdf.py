@@ -10,11 +10,11 @@ from juejin import jlist
 from juejin import jstore
 import sys
 
-
 # zgetPdf.getPdf()
 
+
 def dealAll(**kwargs):
-    url=kwargs['url']
+    url = kwargs['url']
     if url.find("zhihu") > -1:
         if url.find("collection") > 1 or url.find("column") > 1:
             zlist.deal(url)
@@ -26,7 +26,7 @@ def dealAll(**kwargs):
         else:
             # getPdf.wxPdf(url=url)
             if len(kwargs) > 1:
-                folder=kwargs['folder']
+                folder = kwargs['folder']
                 getPdf.wxPdf(url=url, folder=folder)
             else:
                 getPdf.wxPdf(url=url)
@@ -34,7 +34,12 @@ def dealAll(**kwargs):
         if url.find("collection") > 1 or url.find('posts') > -1:
             jlist.deal(url)
         else:
-            jgetPdf.jjPdf(url=url)
+            # jgetPdf.jjPdf(url=url)
+            if len(kwargs) > 1:
+                folder = kwargs['folder']
+                jgetPdf.jjPdf(url=url, folder=folder)
+            else:
+                jgetPdf.jjPdf(url=url)
     return
 
 
@@ -60,11 +65,9 @@ else:
         zlist.deal(i[1])
         time.sleep(2)
 
-    
     jStore = jstore.JuejinStoreData()
     li = jStore.getAblums()
     for i in li:
         print(i[2])
         jlist.deal(i[1])
         time.sleep(2)
-

@@ -2,10 +2,9 @@
 
 # 知乎文章下载
 
-import time
-import sys
 from juejin.jmypdf import JuejinGenPdf
 from juejin.jstore import JuejinStoreData
+
 
 def getPdf():
     store = JuejinStoreData()
@@ -17,7 +16,7 @@ def getPdf():
     # i=0
     for val in toPdfList:
         dic = {}
-        for key,name in enumerate(columns):
+        for key, name in enumerate(columns):
             dic[name] = val[key]
 
         genpdf(dic)
@@ -28,13 +27,15 @@ def getPdf():
     # print(data)
     return
 
+
 def genpdf(data):
     store = JuejinStoreData()
     # 传值生成pdf
     pdf = JuejinGenPdf()
-    pdf.deal(data['url'],data['title'],data['folder'])
+    pdf.deal(data['url'], data['title'], data['folder'])
     store.updateUrlState(data['id'])
     return
+
 
 # if len(sys.argv)>1:
 #     print("******")
@@ -51,24 +52,41 @@ def genpdf(data):
 #     store.updateUrlStateByMsg()
 # else:
 #     getPdf()
-    # print(sys.argv[0])
+# print(sys.argv[0])
 
-
-# getPdf()    
+# getPdf()
 
 
 def jjPdf(**kwargs):
     # print(kwargs)
     # print(kwargs['url'])
     # return
-    if len(kwargs)>0:
+    if len(kwargs) > 0:
         print("******")
-        url=kwargs['url']
+        url = kwargs['url']
         print(url)
-        if url=="juejin":
+        if url == "juejin":
             getPdf()
-        # else:
-        #     getPdf()
+        else:
+            #     print(url)
+            folder = "面试精选"
+            if len(kwargs) == 2:
+                folder = kwargs['folder']
+            # 传值生成pdf
+            pdf = JuejinGenPdf()
+            title = pdf.deal(url, "", folder)
+            store = JuejinStoreData()
+            store.addUrl({
+                'url': url,
+                'folder': folder,
+                'title': title,
+                'msgid': '0',
+                'archive': folder,
+                "type": '单篇文章',
+                'created':0,
+                'updated':0
+            })
+            store.updateUrlStateByMsg()
     else:
         getPdf()
         # print(sys.argv[0])
