@@ -344,6 +344,7 @@ class ZhiHuGenPdf():
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
 
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
+        # fhtml=re.sub(r"<svg class=\"GifPlayer-icon\" .*</svg></g></svg>",'',fhtml)
 
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/zh/' + path

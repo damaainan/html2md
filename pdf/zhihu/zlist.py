@@ -102,6 +102,7 @@ def getJsonFromApi(url):
         'sec-fetch-mode': 'navigate',
         'sec-fetch-dest': 'document',
         'accept-language': 'zh-CN,zh;q=0.9',
+        "content-type": 'application/json; charset=utf-8',
     }
     print(url)
     # 开始登录
@@ -211,27 +212,28 @@ def getFavJsonFromApi(url):
     data = json.loads(r.text)
     if len(data['data'])>0:
         for j in range(len(data['data'])):
+            content = data['data'][j]['content']
             # 获取 archive
-            if data['data'][j]['content'].__contains__('column'):
-                archive=data['data'][j]['content']['column']['title']  # TODO 乱码问题
-            elif data['data'][j]['content'].__contains__('question'):
-                archive=data['data'][j]['content']['question']['title']
+            if content.__contains__('column'):
+                archive=content['column']['title']  # TODO 乱码问题
+            elif content.__contains__('question'):
+                archive=content['question']['title']
             else:
                 archive="单文章"
 
-            if data['data'][j]['content']['title'] == "":
+            if content['title'] == "":
                 title=archive
             else:
-                title=data['data'][j]['content']['title']
+                title=content['title']
             # print("*****")
             # print(data['data'][j]['url'])
             # print(data['data'][j]['title'])
-            ret.append({"url":data['data'][j]['content']['url'], 
+            ret.append({"url":content['url'], 
                 "title":title, 
-                "msgid":data['data'][j]['content']['id'], 
-                "type":data['data'][j]['content']['type'], 
-                "created":(data['data'][j]['content']['created'] if data['data'][j]['content'].__contains__('created') else data['data'][j]['content']['created_time']), 
-                "updated":(data['data'][j]['content']['updated'] if data['data'][j]['content'].__contains__('updated') else data['data'][j]['content']['updated_time']),  
+                "msgid":content['id'], 
+                "type":content['type'], 
+                "created":(content['created'] if content.__contains__('created') else content['created_at'] if content.__contains__('created_at') else content['created_time']), 
+                "updated":(content['updated'] if content.__contains__('updated') else content['updated_at'] if content.__contains__('updated_at') else content['updated_time']),  
                 "archive":archive
             })
 
