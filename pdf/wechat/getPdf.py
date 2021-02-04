@@ -10,7 +10,7 @@ def getPdf():
     toPdfList, columns = store.getListFromParam('state=0')
 
     print("weixin*-*-*-*-*---*---*--*-*-*weixin")
-    print(toPdfList)
+    # print(toPdfList)
     # print(columns)
     # print(type(toPdfList))
     # 修改状态

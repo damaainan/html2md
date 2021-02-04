@@ -37,10 +37,18 @@ def deal(url):
 
     ret1 = getFirstPage(url)
     # print(ret1)
+    # sys.exit(0)
+    # print('][][][][][[][[][][]')
     ret = ret1['result']
+    flag = ret1['flag']
     author = ret1['author']
     title = ret1['title'].replace("#", '')
-    minid = max(ret1['msgid'])
+
+    if flag == 'max':
+        minid = max(ret1['msgid'])
+    elif flag == 'min':
+        minid = min(ret1['msgid'])
+        
     # 存储链接
     store.addAblum(url, author, title)
     # print(minid)
@@ -49,16 +57,26 @@ def deal(url):
     # print(ret2)
     if len(ret2['result']) > 0:
         ret += ret2['result']
-        minid = max(ret2['msgid'])
+        # minid = min(ret2['msgid'])
+        if flag == 'max':
+            minid = max(ret2['msgid'])
+        elif flag == 'min':
+            minid = min(ret2['msgid'])
 
-    while len(ret2['result']) == 10:
+    # while len(ret2['result']) == 10:
+    while ret2['continue'] == "1":
         ret2 = getJsonData(url, minid)
         if len(ret2['result']) == 0:
             continue
         ret += ret2['result']
+        print("==============================")
         # print(ret2)
         # print(ret2['msgid'])
-        minid = max(ret2['msgid'])
+        # minid = min(ret2['msgid'])
+        if flag == 'max':
+            minid = max(ret2['msgid'])
+        elif flag == 'min':
+            minid = min(ret2['msgid'])
 
     sdata = CleanResult(ret, author, title)
     # print(sdata)
@@ -164,6 +182,19 @@ def getFirstPage(url):
         link.append({"link": li1[i]['data-link'], "title": li1[i]
                      ['data-title'], "msgid": li1[i]['data-msgid']})
 
+    # 比较一下大小
+    init_msg = msgid[0]
+    flag = 'max'
+    for msg in msgid:
+        if int(msg) < int(init_msg):
+            flag = 'min'
+            break
+        elif int(msg) > int(init_msg):
+            flag = 'max'
+            break
+        else:
+            continue
+
     # 选择正文（去除javascrapt等）
     # html = soup.select('.album__content')[0]
     # print(html)
@@ -193,7 +224,7 @@ def getFirstPage(url):
     #     # link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"turn":turn,"msgid":li1[i]['data-msgid']})
     #     link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"msgid":li1[i]['data-msgid']})
         # 获取最小的 msgid 提供给 json 请求使用
-    return {"result": link, "msgid": msgid, "author": author, "title": title}
+    return {"result": link, "msgid": msgid, "author": author, "title": title, 'flag': flag, 'continue':'1'}
 
 
 # 获取接口内容
@@ -229,9 +260,9 @@ def getJsonData(oldurl: str, msgid: int):
     }
     # 开始登录
     r = s.get(url=url, params=data, headers=headers)
+    # print(data)
     # print(r.text)
     data = json.loads(r.text)
-    # print(data)
     link = []
     msgid = []
     if "article_list" in data['getalbum_resp'].keys():
@@ -250,9 +281,9 @@ def getJsonData(oldurl: str, msgid: int):
     # print(art['title'])
     # print(art['url'])
     # print(art['msgid'])
-    # print(art['itemidx'])
+    # print(data['getalbum_resp'])
     # return link
-    return {"result": link, "msgid": msgid}
+    return {"result": link, "msgid": msgid, "continue": data['getalbum_resp']['continue_flag'] if data['getalbum_resp'].__contains__('continue_flag') else '0'}
 
 
 # 获取接口内容

@@ -93,13 +93,13 @@ class StoreData():
         # res = sql.query("select * from wx_article where state=0;")
         # print("-*-*-*-*")
         res = sql.execute("update wx_ablum set update_at='{t}' where id={id};".format(t=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),id=id))
-        print("更新===",res)
+        print("更新集合===",res)
         sql.close()
         return res
     def addAblum(self, url, author, title):
         sql = simpleToolSql("url")
-        res = self.getAblumListFromAuthorAndTitle(author, title)
-        print(res)
+        res = self.getAblumListFromSql(url)
+        # print(res)
         # return
         if len(res)>0:
             self.updateAblum(res[0][0])
@@ -110,7 +110,7 @@ class StoreData():
             "insert into wx_ablum (url,author,title,create_at,update_at) values (?,?,?,?,?);",
             [(url,author,title,time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))]
         )
-        print(res)
+        print("写入集合=====")
         sql.close()
         return
 
