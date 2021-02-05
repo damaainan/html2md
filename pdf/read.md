@@ -4,5 +4,6 @@
 `py to_pdf.py weixin` 采集所有微信库中新的连接 （生成文件）  
 `py to_pdf.py weixin文章url` 采集该连接（生成文件）   
 `py to_pdf.py weixin文章url folder` 采集该连接并制定文件夹（生成文件）   
+`py to_pdf.py zhihu文章url folder` 采集该连接并制定文件夹（生成文件）   
 `py to_pdf.py weixin合集url` 采集该合集所有连接（仅落库）   
 `py to_pdf.py zhihu合集url` 采集该合集所有连接（仅落库）   

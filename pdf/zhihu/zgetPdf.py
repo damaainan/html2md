@@ -66,8 +66,14 @@ def dealAnswer(data):
     store = ZhihuStoreData()
     # 传值生成pdf
     pdf = ZhiHuGenPdf()
-    pdf.dealAns(data['url'], data['title'], data['folder'])
-    store.updateUrlState(data['id'])
+    # 接收返回完整数据
+    ret = pdf.dealAns(data['url'], data['title'], data['folder'])
+    # 判断 没有 id 直接写入
+    if data.__contains__('id'):
+        store.updateUrlState(data['id'])
+    else:
+        # 无数据
+        store.addUrl(ret)
     return
 
 
@@ -76,8 +82,13 @@ def dealArticle(data):
     store = ZhihuStoreData()
     # 传值生成pdf
     pdf = ZhiHuGenPdf()
-    pdf.deal(data['url'], data['title'], data['folder'])
-    store.updateUrlState(data['id'])
+    ret = pdf.deal(data['url'], data['title'], data['folder'])
+    # 判断 没有 id 直接写入
+    if data.__contains__('id'):
+        store.updateUrlState(data['id'])
+    else:
+        # 无数据
+        store.addUrl(ret)
     return
 
 
@@ -94,6 +105,11 @@ def zhPdf(**kwargs):
         print(url)
         if url == "zhihu":
             getPdf()
+        else:
+            if url.find('answer') > -1:
+                dealAnswer({"url":url,"title":'', 'folder':kwargs['folder']})
+            else:
+                dealArticle({"url":url,"title":'', 'folder':kwargs['folder']})
     else:
         getPdf()
         # print(sys.argv[0])

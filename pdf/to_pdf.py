@@ -19,7 +19,12 @@ def dealAll(**kwargs):
         if url.find("collection") > 1 or url.find("column") > 1:
             zlist.deal(url)
         else:
-            zgetPdf.zhPdf(url=url)
+            # zgetPdf.zhPdf(url=url)
+            if len(kwargs) > 1:
+                folder = kwargs['folder']
+                zgetPdf.zhPdf(url=url, folder=folder)
+            else:
+                zgetPdf.zhPdf(url=url)
     elif url.find("weixin") > -1:
         if url.find('appmsgalbum') > -1:
             wList.deal(url)
@@ -46,8 +51,10 @@ def dealAll(**kwargs):
 if len(sys.argv) > 1:
     if len(sys.argv) == 3:
         dealAll(url=sys.argv[1], folder=sys.argv[2])
-    else:
+    elif len(sys.argv) == 2:
         dealAll(url=sys.argv[1])
+    # else:
+    #     dealAll(url=sys.argv[1], folder=sys.argv[2], title=sys.argv[3])
 else:
     print(sys.argv)
     # 查询已有list 更新 url 微信 知乎

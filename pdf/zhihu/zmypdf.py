@@ -59,13 +59,15 @@ class ZhiHuGenPdf():
             self.getTitleImg(title_img_str)
             # sys.exit(0)
 
-        # if title == "":
-        #     title = soup.select('#activity-name')[0].get_text()
+        if title == "":
+            title = soup.select('h1.Post-Title')[0].get_text()
         #     # print(title)
-        #     title = title.replace("|", "").replace("/", "-").replace(' ','').replace('｜','').replace('?','？').replace("\n",'').replace("\r",'')
+            title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-')
             # print("****")
             # print(title)
             # return
+
+        otitle = title
 
         imgs = soup.select('img')
         # print(imgs)
@@ -233,7 +235,8 @@ class ZhiHuGenPdf():
         fo.write(fhtml)
         fo.close()
 
-        return title
+        otype = "article"
+        return {'url':url,'title':otitle,'archive':otitle,'folder':path,'type':otype,'msgid':0,'created':0,'updated':0,'state':1}
     
     def dealAns(self, url, title, path):
         title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-')
@@ -252,7 +255,14 @@ class ZhiHuGenPdf():
         # 选择正文（去除javascrapt等）
         zop = soup2.select('div.AnswerItem')[0]['data-zop']
 
+
+        if title == "":
+            title = soup.select('h1.QuestionHeader-title')[0].get_text()
+            # print(title)
+            title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-')
+
         zopd = json.loads(zop)
+        otitle = title
         # {"authorName":"腾讯技术工程","itemId":1458672031,"title":"怎么学习 Golang？","type":"answer"}
         title=title+ "_" +zopd["authorName"]
         # print(zop)
@@ -408,7 +418,17 @@ class ZhiHuGenPdf():
         fo.write(fhtml)
         fo.close()
 
-        return title
+        # data['url'],
+        #         data['title'],
+        #         data['archive'],
+        #         data['folder'],
+        #         data['type'],
+        #         data['msgid'],
+        #         data['created'],
+        #         data['updated'],
+        
+        otype = "article"
+        return {'url':url,'title':otitle,'archive':otitle,'folder':path,'type':otype,'msgid':0,'created':0,'updated':0,'state':1}
 
 
     def mkdir(self, path):

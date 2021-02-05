@@ -80,7 +80,7 @@ class ZhihuStoreData():
                 data['msgid'],
                 data['created'],
                 data['updated'],
-                0,
+                data['state'] if data.__contains__('state') else 0,
                 time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),
                 time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             )]
