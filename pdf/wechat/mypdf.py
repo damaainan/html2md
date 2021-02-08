@@ -13,8 +13,7 @@ from lxml import etree
 from lxml import html
 from html.parser import HTMLParser  # 导入html解析库
 
-REALPATH = os.path.dirname(os.path.dirname(
-    os.path.dirname(os.path.abspath(__file__))))
+REALPATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 class GenPdf():
@@ -123,12 +122,11 @@ class GenPdf():
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
 
-        fhtml = re.sub(
-            r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;", 'font-size: 16px;', fhtml)
+        fhtml = re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;", 'font-size: 16px;', fhtml)
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
         rpath = REALPATH + '/out/wx/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/" + title + "/"
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
@@ -281,7 +279,7 @@ class GenPdf():
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
         rpath = REALPATH + '/out/wx/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/" + title+'/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
@@ -499,7 +497,7 @@ class GenPdf():
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
         rpath = REALPATH + '/out/wx/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/" + title+ '/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")

@@ -176,7 +176,7 @@ class ZhiHuGenPdf():
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/zh/' + path
         rpath = REALPATH + '/out/zh/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/"+title+'/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
@@ -359,7 +359,7 @@ class ZhiHuGenPdf():
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/zh/' + path
         rpath = REALPATH + '/out/zh/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/" + title + '/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
@@ -622,7 +622,7 @@ class ZhiHuGenPdf():
         fhtml=re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;",'font-size: 16px;',fhtml)
 
         rpath = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/out/zh/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/" + title + '/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")

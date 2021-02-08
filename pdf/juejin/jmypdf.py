@@ -186,7 +186,7 @@ class JuejinGenPdf():
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/' + path
         rpath = REALPATH + '/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/" + title + '/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path + "pic/")
@@ -355,7 +355,7 @@ class JuejinGenPdf():
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/' + path
         rpath = REALPATH + '/' + path
-        html_path = rpath + "/html/"
+        html_path = rpath + "/html/" + title + '/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path + "pic/")
