@@ -223,8 +223,8 @@ class JuejinGenPdf():
                 if imgsrc.startswith('//'):
                     imgsrc = "https:" + imgsrc
                 newsrc = self.getLocalImg(imgsrc)
-                print(imgsrc)
-                print(newsrc)
+                # print(imgsrc)
+                # print(newsrc)
                 image = requests.get(url=imgsrc).content
                 with open(html_path + "/pic/" + newsrc, "wb") as fp:
                     fp.write(image)
@@ -331,6 +331,8 @@ class JuejinGenPdf():
         font = font.format(title=title)
         for cs in cssret:
             # font = font + "<style>" + css[cs].get_text() + "</style>"
+            # TODO 计算一个相对路径使用 
+
             font = font + "<link rel='stylesheet' type='text/css' href='" + cssret[
                 cs] + "'></link>"
             # HTMLParser().unescape(str1.decode())
@@ -360,6 +362,16 @@ class JuejinGenPdf():
         self.mkdir(html_path)
         self.mkdir(html_path + "pic/")
         self.mkdir(pdf_path)
+
+        for cs in cssret:
+            # TODO 计算相对路径
+            rel_path = os.path.relpath(cssret[cs], html_path +title+'.html')
+            # print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
+            # print(rel_path)
+            # print(cssret[cs])
+            nrp = re.sub(r'^\.', '', rel_path)
+            fhtml = fhtml.replace(cssret[cs], nrp)
+                
         fo = open(html_path + title + '.html', "w+", encoding="utf-8")
         fo.write(fhtml)
         fo.close()
@@ -465,7 +477,7 @@ class JuejinGenPdf():
         with open(REALPATH + "/pic/" + newsrc, "wb") as fp:
             fp.write(image)
 
-        return "../../pic/" + newsrc
+        return "../../../pic/" + newsrc
         # print(url)
 
     def getLocalImg(self, href):

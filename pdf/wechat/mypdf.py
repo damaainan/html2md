@@ -402,13 +402,13 @@ class GenPdf():
     def getLocalVideo(self, video):
         if video.find('http') > -1:
             imgsub = "mp4"
-            if href.find('wx_fmt=') > -1:
-                imgformat = href.split('wx_fmt=')[-1]
+            if video.find('wx_fmt=') > -1:
+                imgformat = video.split('wx_fmt=')[-1]
                 # print(imgformat)
                 if len(imgformat) > 1:
                     imgsub = imgformat
 
-            name = href.split('/')[-2][32:]
+            name = video.split('/')[-2][32:]
             return name+"."+imgsub
         return ""
 

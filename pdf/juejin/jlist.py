@@ -84,7 +84,7 @@ def getJsonFromApi(url, param):
     data = json.loads(r.text)
     # print(data)
     # print(type(data['data']))
-    if len(data['data']) > 0:
+    if data['data'] != None and len(data['data']) > 0:
         for j in range(len(data['data'])):
             # print("*****")
             # print(data)
@@ -100,7 +100,7 @@ def getJsonFromApi(url, param):
                 "user":
                 data['data'][j]['author_user_info']['user_name'],
                 "type":
-                data['data'][j]['category']['category_name'],
+                data['data'][j]['tags'][0]['tag_name'] if len(data['data'][j]['tags']) > 0 else data['data'][j]['category']['category_name'],
                 "created":
                 data['data'][j]['article_info']['ctime'],
                 "updated":

@@ -29,7 +29,7 @@ REALPATH=os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 class ZhiHuGenPdf():
     # 此方法 html 效果更好
     def deal(self, url, title, path):
-        title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-')
+        title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-').replace('"', '')
         print(title)
 
         ## 方法一
@@ -62,7 +62,7 @@ class ZhiHuGenPdf():
         if title == "":
             title = soup.select('h1.Post-Title')[0].get_text()
         #     # print(title)
-            title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-')
+            title = title.replace("|", "").replace(' ','').replace('｜','').replace('?','？').replace('/','-').replace('"', '')
             # print("****")
             # print(title)
             # return
@@ -150,6 +150,8 @@ class ZhiHuGenPdf():
             # print(len(html.tostring(css[cs])))
             # print(type(css[cs].get_text()))
             # font = font + "<style>" + css[cs].get_text() + "</style>"
+            # TODO 计算相对路径
+            rel_path = os.path.relpath(REALPATH, cssret[cs])
             font = font + "<link rel='stylesheet' type='text/css' href='" + cssret[cs] + "'></link>"
             # HTMLParser().unescape(str1.decode())
         
@@ -181,6 +183,17 @@ class ZhiHuGenPdf():
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
         self.mkdir(pdf_path)
+
+        for cs in cssret:
+            # TODO 计算相对路径
+            rel_path = os.path.relpath(cssret[cs], html_path +title+'.html')
+            # print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
+            # print(rel_path)
+            # print(cssret[cs])
+            nrp = re.sub(r'^\.', '', rel_path)
+            fhtml = fhtml.replace(cssret[cs], nrp)
+            
+
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
         fo.write(fhtml)
         fo.close()
@@ -364,6 +377,16 @@ class ZhiHuGenPdf():
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")
         self.mkdir(pdf_path)
+
+        for cs in cssret:
+            # TODO 计算相对路径
+            rel_path = os.path.relpath(cssret[cs], html_path +title+'.html')
+            # print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
+            # print(rel_path)
+            # print(cssret[cs])
+            nrp = re.sub(r'^\.', '', rel_path)
+            fhtml = fhtml.replace(cssret[cs], nrp)
+
         fo=open(html_path +title+'.html',"w+",encoding="utf-8")
         fo.write(fhtml)
         fo.close()
