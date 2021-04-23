@@ -37,7 +37,7 @@ class StoreData():
     # 更新 db
     def updateUrlState(self, id:int):
         sql = simpleToolSql("url")
-        res = sql.execute("update wx_article set state=1 where id = ?;",(id,))
+        res = sql.execute("update wx_article set state=1,update_at=? where id = ?;",(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),id,))
         # 需要加逗号 https://blog.csdn.net/yimaoyingbi/article/details/104323701
         print(res)
         sql.close()
