@@ -26,7 +26,7 @@ def dealAll(**kwargs):
             else:
                 zgetPdf.zhPdf(url=url)
     elif url.find("weixin") > -1:
-        if url.find('appmsgalbum') > -1:
+        if url.find('appmsgalbum') > -1 or url.find("homepage") > -1:
             wList.deal(url)
         else:
             # getPdf.wxPdf(url=url)
