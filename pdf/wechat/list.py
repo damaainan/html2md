@@ -9,7 +9,7 @@ import json
 import operator
 from itertools import groupby
 from wechat.store import StoreData
-
+from termcolor import colored, cprint
 
 '''
 begin_msgid   页面最后一个
@@ -69,14 +69,19 @@ def deal(url):
         if len(ret2['result']) == 0:
             continue
         ret += ret2['result']
-        print("==============================")
+        print(colored("==============================","cyan"))
         # print(ret2)
         # print(ret2['msgid'])
         # minid = min(ret2['msgid'])
-        if flag == 'max':
-            minid = max(ret2['msgid'])
-        elif flag == 'min':
-            minid = min(ret2['msgid'])
+
+
+        # if flag == 'max':
+        #     minid = max(ret2['msgid'])
+        # elif flag == 'min':
+        #     minid = min(ret2['msgid'])
+
+
+        minid = ret2['msgid'][-1]
 
     sdata = CleanResult(ret, author, title)
     # print(sdata)
@@ -97,7 +102,7 @@ def dealHome(url):
 
     ret2 = getHomeJsonData(url, 0)
     print("****")
-    print(ret2)
+    # print(ret2)
     ret = []
     if len(ret2['result']) > 0:
         ret = ret2['result']
@@ -187,7 +192,7 @@ def getFirstPage(url):
     init_msg = msgid[0]
     flag = 'max'
     for msg in msgid:
-        if int(msg) < int(init_msg):
+        if int(msg) <= int(init_msg):
             flag = 'min'
             break
         elif int(msg) > int(init_msg):
@@ -283,7 +288,7 @@ def getJsonData(oldurl: str, msgid: int):
     # print(art['url'])
     # print(art['msgid'])
     # print(data['getalbum_resp'])
-    # return link
+    # return link pos_num
     return {"result": link, "msgid": msgid, "continue": data['getalbum_resp']['continue_flag'] if data['getalbum_resp'].__contains__('continue_flag') else '0'}
 
 

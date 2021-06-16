@@ -5,6 +5,7 @@ import datetime
 import sys
 sys.path.append("..")
 from db.mysqlite import simpleToolSql
+from termcolor import colored, cprint
 
 
 class StoreData():
@@ -20,8 +21,13 @@ class StoreData():
     def getListFromSql(self, title):
         sql = simpleToolSql("url")
         # res = sql.query("select * from wx_article where state=0;")
-        print("++--+++---", title)
-        res = sql.query('''select * from wx_article where title="''' + title + '''";''')
+        print(colored("++--+++---++","yellow"), title)
+        if title.find("'") > -1:
+            str = 'select * from wx_article where title="' + title + '";'
+        else:
+            str = "select * from wx_article where title='" + title + "';"
+        # res = sql.query("select * from wx_article where title='" + title + "';")
+        res = sql.query(str)
         sql.close()
         return res
 
@@ -69,7 +75,7 @@ class StoreData():
             "insert into wx_article (url,folder,title,state,msgid,turn,create_at,update_at) values (?,?,?,?,?,?,?,?);",
             [(data['link'],data['folder'].replace(' ',''),data['title'],0,data['msgid'],data['turn'],time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))]
         )
-        print(res)
+        print(colored("--->---->--->","red"),colored(data['title'],"red","on_white"),res)
         sql.close()
         return
 
@@ -93,7 +99,7 @@ class StoreData():
         # res = sql.query("select * from wx_article where state=0;")
         # print("-*-*-*-*")
         res = sql.execute("update wx_ablum set update_at='{t}' where id={id};".format(t=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),id=id))
-        print("更新集合===",res)
+        print(colored("更新集合===", "blue"),colored(res,"green"))
         sql.close()
         return res
     def addAblum(self, url, author, title):
@@ -110,13 +116,13 @@ class StoreData():
             "insert into wx_ablum (url,author,title,create_at,update_at) values (?,?,?,?,?);",
             [(url,author,title,time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()),time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))]
         )
-        print("写入集合=====")
+        print(colored("写入集合=====","green"),colored(author,"yellow"),colored(title,"red"))
         sql.close()
         return
 
     def getAblums(self):
         sql = simpleToolSql("url")
-        res = sql.query("select * from wx_ablum where update_at<'{t}' order by update_at;".format(t=(datetime.datetime.now()-datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+        res = sql.query("select * from wx_ablum where update_at<'{t}' order by update_at;".format(t=(datetime.datetime.now()-datetime.timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res
