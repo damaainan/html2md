@@ -48,7 +48,9 @@ class ZhiHuGenPdf():
         # return
         soup = BeautifulSoup(htmlstr, features="lxml")
         # 选择正文（去除javascrapt等）
-        fheader = soup.select('header.Post-Header')[0]
+        fheader = ''
+        if len(soup.select('header.Post-Header')) > 0:
+            fheader = soup.select('header.Post-Header')[0]
         fhtml = soup.select('div.Post-RichTextContainer')[0]
 
         title_img = soup.select('.TitleImage')
@@ -77,6 +79,7 @@ class ZhiHuGenPdf():
             # if imgs[im].get('class') == "ztext-gif":
                 # webp
             # print('-----------------')
+            # print(im)
             # print(imgs[im])
             # print(imgs[im].decode())
             # print(imgs[im].extract())
@@ -97,8 +100,9 @@ class ZhiHuGenPdf():
                     src=imgs[im]['data-thumbnail']
                 # print(imgs[im].get('class'))
                 # print(src)
-                if "ztext-gif" in imgs[im].get('class'):
-                    src=src.replace('.jpg','.webp').replace('.png','.webp').replace('.jpeg','.webp')
+                if imgs[im].get('class') != None:
+                    if "ztext-gif" in imgs[im].get('class'):
+                        src=src.replace('.jpg','.webp').replace('.png','.webp').replace('.jpeg','.webp')
                 # print(src)
 
                 imgDict[src]=imgs[im].decode()

@@ -12,6 +12,7 @@ import time
 from lxml import etree
 from lxml import html
 from html.parser import HTMLParser  # 导入html解析库
+from termcolor import colored, cprint
 
 REALPATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -21,7 +22,7 @@ class GenPdf():
     def deal(self, url, title, path):
         title = title.replace("|", "").replace(' ', '').replace(
             '｜', '').replace('?', '？').replace('/', '-')
-        print(title)
+        print(colored(title, "yellow",attrs=["bold"]))
 
         # 方法一
         # res = requests.get(url)
@@ -118,7 +119,7 @@ class GenPdf():
             # HTMLParser().unescape(str1.decode())
 
         fhtml = font + '</head><body>' + str(fhtml) + '</body></html>'
-        print(title)
+        # print(title)
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
 
@@ -355,7 +356,7 @@ class GenPdf():
             # os.makedirs(path+"/html")
             # os.makedirs(path+"/pdf")
             os.makedirs(path)
-            print(path+' 创建成功')
+            print(colored(path, "green"),colored(' 创建成功', "magenta"))
 
         return True
 

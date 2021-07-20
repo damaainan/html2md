@@ -2,14 +2,14 @@
 
 from wechat.store import StoreData
 from wechat.mypdf import GenPdf
-
+from termcolor import colored, cprint
 
 def getPdf():
     store = StoreData()
     # 查数据库
     toPdfList, columns = store.getListFromParam('state=0')
 
-    print("weixin*-*-*-*-*---*---*--*-*-*weixin")
+    print(colored("weixin*-*-*-*-*---*---*--*-*-*weixin","cyan"))
     # print(toPdfList)
     # print(columns)
     # print(type(toPdfList))
