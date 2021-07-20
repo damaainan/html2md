@@ -161,7 +161,7 @@ class GenPdf():
         hfile = html_path + ntitle+'.html'
         pfile = pdf_path + ntitle+'.pdf'
         # os.system('wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile.replace(".pdf","_wk.pdf")))
-        os.system('weasyprint -q "{}" "{}"'.format(hfile, pfile))  # 目前效果最好的
+        # os.system('weasyprint -q "{}" "{}"'.format(hfile, pfile))  # 目前效果最好的
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
         # print(imgDict)
@@ -313,8 +313,8 @@ class GenPdf():
 
         hfile = html_path + ntitle+'_old.html'
         pfile = pdf_path + ntitle+'_old.pdf'
-        os.system(
-            'wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
+        # os.system(
+        #     'wkhtmltopdf --dpi 300 --enable-plugins --enable-forms "{}" "{}"'.format(hfile, pfile))
 
         # TODO 增加功能  把html图片下载到本地并替换 保留 html 获得较好的阅读体验
         # print(imgDict)
@@ -365,7 +365,7 @@ class GenPdf():
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--disable-gpu')
         if platform.system() == "Windows":
-            path_config = 'F:\\bin\\phantomjs.exe'
+            path_config = "F:/bin/chromedriver.exe"
         elif platform.system() == "Darwin":
             path_config = '/usr/local/bin/chromedriver'
         driver = webdriver.Chrome(

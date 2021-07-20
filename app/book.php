@@ -25,6 +25,7 @@ foreach ($href as $val) {
     $name = str_replace('/', '-', $name);
     $name = str_replace('amp;', '', $name);
     $name = str_replace(':', '：', $name);
+    $name = str_replace('?', '？', $name);
     $name = str_replace('*', '＊', $name); // windows 系统中 英文 * : /  不能参与命名文件
     $name = preg_replace("/\r\n/", '', $name);
     // echo $name;

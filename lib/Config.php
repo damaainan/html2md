@@ -18,10 +18,10 @@ class Config{
                 "body" => array("#article_content", 'html'),
             ),
             "segmentfault" => array(
-                "title" => array("#articleTitle a", 'text'),
-                "source" => array("#articleTitle a", 'href'),
+                "title" => array("#sf-article_title a", 'text'),
+                "source" => array("#sf-article_title a", 'href'),
                 // "time" => array(".",'text'),
-                "body" => array(".article__content", 'html'),
+                "body" => array("article", 'html'),
             ),
             "cnblogs" => array(
                 "title" => array("#cb_post_title_url", 'text'),
