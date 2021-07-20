@@ -24,6 +24,8 @@ def deal(url):
     return ret1['result']
 
 def dealHome(url):
+    if url.find("channel") > -1:
+        return dealChannel(url)
     ret2 = getHomeJsonData(url, 1)
     print("****")
     # print(ret2)
@@ -39,7 +41,7 @@ def dealHome(url):
         ret += ret2['result']
         page=page+1
 
-    print(ret)
+    # print(ret)
     return {"result": ret}
 
 # 获取接口内容
@@ -87,6 +89,79 @@ def getHomeJsonData(oldurl: str, page: int):
                 {"link": 'https://www.bilibili.com/video/' + val['bvid'], "title": val['title']})
 
     return {"result": link}
+
+
+def dealChannel(url):
+    ret2 = getChannelJsonData(url, 1)
+    print("****")
+    # print(ret2)
+    ret = []
+    if len(ret2['result']) > 0:
+        ret = ret2['result']
+
+    page = 2
+    while len(ret2['result']) == 30:
+        ret2 = getChannelJsonData(url, page)
+        if len(ret2['result']) == 0:
+            continue
+        ret += ret2['result']
+        page=page+1
+
+    # print(ret)
+    return {"result": ret}
+# https://api.bilibili.com/x/space/channel/video?mid=326749661&cid=61588&pn=4&ps=30&order=0&ctype=0&jsonp=jsonp&callback=__jp9
+
+
+
+# 获取接口内容
+def getChannelJsonData(oldurl: str, page: int):
+    # // 判断等于10个时继续请求
+    s = requests.Session()
+    # 登录要请求的地址，
+    url = "https://api.bilibili.com/x/space/channel/video"
+    # 登录所需要的get参数
+    # 通过抓包的到需要传递的参数
+    param = dealUrl(oldurl)
+    data = {
+        'mid': param['mid'],
+        'cid': param['cid'],
+        'pn': page,
+        'ps': 30,
+        'order': param['order'],
+        'ctype': param['ctype'],
+        'jsonp': param['jsonp'],
+        'callback': param['callback'],
+    }
+    # 通过抓包或chrome开发者工具分析得到登录的请求头信息,
+    headers = {
+        'authority': 'api.bilibili.com' ,
+        'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"' ,
+        'accept': 'application/json, text/plain, */*' ,
+        'sec-ch-ua-mobile': '?0' ,
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36' ,
+        'sec-fetch-site': 'same-site' ,
+        'sec-fetch-mode': 'cors' ,
+        'sec-fetch-dest': 'empty' ,
+        'referer': 'https://space.bilibili.com/326749661/channel/detail?cid=61588&ctype=0' ,
+        'accept-language': 'zh-CN,zh;q=0.9' 
+    }
+    # 开始登录
+    r = s.get(url=url, params=data, headers=headers)
+    # print(data)
+    # print(r.text)
+    data = json.loads(r.text)
+    link = []
+    if "list" in data['data'].keys():
+        art = data['data']['list']['archives']  # 1 个是是dict 多个 list
+
+        for val in art:
+            link.append(
+                {"link": 'https://www.bilibili.com/video/' + val['bvid'], "title": val['title']})
+
+    return {"result": link}
+
+
+
 
 # 获取接口内容
 def getJsonData(oldurl: str):
@@ -160,14 +235,15 @@ def writeScript(data):
     str1 = ""
     str2 = ""
     for val in data:
-        print(colored(val['title'], "white"))
-        title = val['title'].replace('?', '？').replace(' ', '').replace(':', '：').replace('*', '＊').replace('amp;', '').replace('/','')
+        title=val['title']
+        print(title)
+        title = title.replace('?', '？').replace(' ', '').replace(':', '：').replace('*', '＊').replace('amp;', '').replace('/','')
         print(colored(title, "cyan"))
-        str1 = str1 + 'youdl -O "' + title + '" "' + val['link'] + '"\r\n'
-        str2 = str2 + 'ffmpeg -i "' + title + '[00].mp4" -i "' + title + '[01].mp4" -vcodec copy -acodec copy "' + title + '.mp4"' + "\r\n"
+        str1 = str1 + 'you-get --format=dash-flv720 -O "' + title + '" "' + val['link'] + '"\n'
+        str2 = str2 + 'F:/bin/ffmpeg/bin/ffmpeg.exe -i "' + title + '[00].mp4" -i "' + title + '[01].mp4" -vcodec copy -acodec copy "' + title + '.mp4"' + "\n"
     with open('./bi.sh', mode='a') as filename:
         filename.write(str1)
         filename.write('\n\n') # 换行
         filename.write(str2)
         filename.write('\n\n') # 换行
-        filename.write('*=*=**=*=**=*=**==*=*=**=*==*\n\n\n') # 换行
+        filename.write('# *=*=**=*=**=*=**==*=*=**=*==*\n\n\n') # 换行
