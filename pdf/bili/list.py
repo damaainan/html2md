@@ -72,7 +72,7 @@ def getHomeJsonData(oldurl: str, page: int):
         'sec-fetch-site': 'same-site' ,
         'sec-fetch-mode': 'cors' ,
         'sec-fetch-dest': 'empty' ,
-        'referer': 'https://space.bilibili.com/567195437/video?tid=0&page=2&keyword=&order=pubdate' ,
+        'referer': 'https://space.bilibili.com/' + param['mid'] + '/video?tid=' + param['tid'] + '&page=1&keyword=&order=pubdate' ,
         'accept-language': 'zh-CN,zh;q=0.9' 
     }
     # 开始登录
@@ -142,14 +142,17 @@ def getChannelJsonData(oldurl: str, page: int):
         'sec-fetch-site': 'same-site' ,
         'sec-fetch-mode': 'cors' ,
         'sec-fetch-dest': 'empty' ,
-        'referer': 'https://space.bilibili.com/326749661/channel/detail?cid=61588&ctype=0' ,
+        'referer': 'https://space.bilibili.com/'+param['mid']+'/channel/detail?cid='+param['cid']+'&ctype=0' ,
         'accept-language': 'zh-CN,zh;q=0.9' 
     }
     # 开始登录
     r = s.get(url=url, params=data, headers=headers)
-    # print(data)
-    # print(r.text)
-    data = json.loads(r.text)
+    
+    # print(r.text.replace(param['callback'], '', 1)) 有 callback  前缀和 括号 需要去除
+    rest = r.text.replace(param['callback'], '', 1)
+    # print(rest)
+    rest = rest[1:-1]
+    data = json.loads(rest)
     link = []
     if "list" in data['data'].keys():
         art = data['data']['list']['archives']  # 1 个是是dict 多个 list
