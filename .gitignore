@@ -11,5 +11,6 @@ urls.txt
 *.pyc
 *.log
 */ji.sh
+*/bi.sh
 */03.sh
 */02.sh
