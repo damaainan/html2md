@@ -36,10 +36,10 @@ def dealAll(**kwargs):
                 getPdf.wxPdf(url=url, folder=folder)
             else:
                 getPdf.wxPdf(url=url)
-                zgetPdf.zhPdf(url=url)
+                # zgetPdf.zhPdf(url=url)
     elif url.find("bilibili") > -1:
         bList.deal(url)
-        
+
     elif url.find("juejin") > -1:
         if url.find("collection") > 1 or url.find('posts') > -1:
             jlist.deal(url)
@@ -66,7 +66,7 @@ else:
     store = store.StoreData()
     li = store.getAblums()
     for i in li:
-        print(i[2])
+        print(i[0], "===", i[2])
         wList.deal(i[1])
         time.sleep(2)
 

@@ -26,8 +26,8 @@ def deal(url):
     html = getJsonData(url, '')
 
     ret = getFirstPage(html)
-    print(ret['html'])
-    exit(0)
+    # print(ret)
+    # exit(0)
     # sys.exit(0)
     # print('][][][][][[][[][][]')
     # ret = ret1['result']
@@ -37,8 +37,10 @@ def deal(url):
     template = ret['html']
     # 循环请求内容
 
-    for i in ret:
-        url = 'https://www.bookstack.cn/' + ret[i]['link']
+    for data in ret['result']:
+        print(data)
+        # data = json.loads(datai)
+        url = 'https://www.bookstack.cn/' + data['link']
         cont = html = getJsonData(url, 'json')
         # 图片文件 替换为本地
         imghtml = dealImg(cont)
@@ -46,9 +48,11 @@ def deal(url):
         # 替换核心内容
         template = template.replace('######核心内容######', imghtml)
         # 内容写入文件
-        with open("./"+ret[i]['title'] + '.md', "wb") as fp:
+        if not os.path.exists("./" + title):
+            os.mkdir("./" + title)
+        with open("./" + title + "/" + data['title'] + '.html', "w") as fp:
             fp.write(template)
-
+        # exit(0)
     # while len(ret2['result']) == 10:
     # while ret2['continue'] == "1":
     #     ret2 = getJsonData(url, minid)
@@ -152,15 +156,15 @@ def getFirstPage(ohtml):
 
     # head 替换
     ohead = soup.head
-    print(type(ohead))
-    print(dir(ohead))
-    print(ohead.getText())
-    print(ohead.decode_contents())
+    # print(type(ohead))
+    # print(dir(ohead))
+    # print(ohead.getText())
+    # print(ohead.decode_contents())
     # sys.exit(0)
     ohtml = ohtml.replace(ohead.decode_contents(), head)
 
     # 标记内容
-    page = soup.select('#page-content')[0]
+    page = soup.select('#page-content')[0].get_text()
     ohtml = ohtml.replace(page, '######核心内容######')
 
     # 返回新的 html 和所有链接
@@ -173,12 +177,12 @@ def getFirstPage(ohtml):
         link.append({"link": url, "title": title})
 
     title = title.replace(' ', '')
-    print(link)
+    # print(link)
     return {"result": link, 'html': ohtml, 'title': title}
 
 
 # 获取接口内容
-def getJsonData(oldurl: str, type: str):
+def getJsonData(oldurl: str, types: str):
     # // 判断等于10个时继续请求
     s = requests.Session()
     # 登录要请求的地址，
@@ -202,21 +206,22 @@ def getJsonData(oldurl: str, type: str):
         'sec-fetch-user': '?1',
         'sec-fetch-dest': 'document',
         'accept-language': 'zh-CN,zh;q=0.9',
-        'cookie': 'iamadmin=true; UM_distinctid=17a378c84732de-09e3b3527d25e2-6518267c-384000-17a378c84747d5; _ga=GA1.2.592178964.1624429595; __gads=ID=8777fc5a889ffd21-22f7815e75ca000b:T=1626861104:RT=1626861104:S=ALNI_MbH1cPeaRsscUHK8cFukC1XGrodAQ; _gid=GA1.2.1247196783.1626950413; Hm_lvt_227e05b01b8f7eefb29a75df28f53840=1626861102; login=P_-JAwEBDkNvb2tpZVJlbWVtYmVyAf-KAAEDAQhNZW1iZXJJZAEEAAEHQWNjb3VudAEMAAEEVGltZQH_hgAAABD_hQUBAQRUaW1lAf-GAAAAJP-KAf5cFAEKanVueXVhbjgwMgEPAQAAAA7YjWuMNe64aQHgAA==|1627092108904881694|29dde1e81ca110606234102faec518cfa47b5020; CNZZDATA1277690469=1877497362-1624426087-https%253A%252F%252Fwww.baidu.com%252F%7C1627092111; bookstack=3f724aa9b4fefa2b8fd14ad750a024d7; _gat_gtag_UA_166942584_1=1; Hm_lpvt_227e05b01b8f7eefb29a75df28f53840=1627096431',
+        'cookie': 'iamadmin=true; UM_distinctid=17a378c84732de-09e3b3527d25e2-6518267c-384000-17a378c84747d5; _ga=GA1.2.592178964.1624429595; __gads=ID=8777fc5a889ffd21-22f7815e75ca000b:T=1626861104:RT=1626861104:S=ALNI_MbH1cPeaRsscUHK8cFukC1XGrodAQ; Hm_lvt_227e05b01b8f7eefb29a75df28f53840=1626861102; login=P_-JAwEBDkNvb2tpZVJlbWVtYmVyAf-KAAEDAQhNZW1iZXJJZAEEAAEHQWNjb3VudAEMAAEEVGltZQH_hgAAABD_hQUBAQRUaW1lAf-GAAAAJP-KAf5cFAEKanVueXVhbjgwMgEPAQAAAA7YjWuMNe64aQHgAA==|1627092108904881694|29dde1e81ca110606234102faec518cfa47b5020; bookstack=9ce8490b9cb5cce3c7c5a47a1e2d2aa8; CNZZDATA1277690469=1877497362-1624426087-https%253A%252F%252Fwww.baidu.com%252F%7C1629164652; _gid=GA1.2.1948366462.1629168706; _gat_gtag_UA_166942584_1=1; Hm_lpvt_227e05b01b8f7eefb29a75df28f53840=1629168754',
     }
     # 开始登录
-
-    if type == "json":
-        data['fr'] = 'bookstack'
+    print(types)
+    if types == 'json':
+        url = url + '?fr=bookstack'
+        headers['x-requested-with'] = 'XMLHttpRequest'
 
     r = s.get(url=url, params=data, headers=headers)
-    # print(data)
-    # print(r.text)
+    # print(url)
+    print(r.text)
     # 两种情况 获取 json 和 html
-    if type == "json":
+    if types == 'json':
         # 作为 html 解析
         data = json.loads(r.text)
-        return data['body']
+        return data['data']['body']
     else:
         return r.text
 

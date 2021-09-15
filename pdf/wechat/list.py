@@ -48,7 +48,7 @@ def deal(url):
         minid = max(ret1['msgid'])
     elif flag == 'min':
         minid = min(ret1['msgid'])
-        
+
     # 存储链接
     store.addAblum(url, author, title)
     # print(minid)
@@ -69,17 +69,15 @@ def deal(url):
         if len(ret2['result']) == 0:
             continue
         ret += ret2['result']
-        print(colored("==============================","cyan"))
+        print(colored("==============================", "cyan"))
         # print(ret2)
         # print(ret2['msgid'])
         # minid = min(ret2['msgid'])
-
 
         # if flag == 'max':
         #     minid = max(ret2['msgid'])
         # elif flag == 'min':
         #     minid = min(ret2['msgid'])
-
 
         minid = ret2['msgid'][-1]
 
@@ -173,11 +171,12 @@ def getFirstPage(url):
     #         link.append({"link":li_ori[i]['href'],"title":li_ori[i].find_all(class_='js_title')[0].string,"msgid":i+1})
     # else:
     if len(soup.select('.album__label-title')) > 0:
-        title = soup.select('.album__label-title')[0].string
+        # print(soup.select('.album__label-title')[0].get_text())
+        title = soup.select('.album__label-title')[0].get_text()
     else:
-        title = soup.select('.old-album__label-title')[0].string
+        title = soup.select('.old-album__label-title')[0].get_text()
 
-    author = soup.select('.album__author-name')[0].string
+    author = soup.select('.album__author-name')[0].get_text()
     li1 = soup.select('li')
     for i in range(len(li1)):
         msgid.append(li1[i]['data-msgid'])
@@ -230,7 +229,7 @@ def getFirstPage(url):
     #     # link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"turn":turn,"msgid":li1[i]['data-msgid']})
     #     link.append({"link":li1[i]['data-link'],"title":li1[i]['data-title'],"msgid":li1[i]['data-msgid']})
         # 获取最小的 msgid 提供给 json 请求使用
-    return {"result": link, "msgid": msgid, "author": author, "title": title, 'flag': flag, 'continue':'1'}
+    return {"result": link, "msgid": msgid, "author": author, "title": title, 'flag': flag, 'continue': '1'}
 
 
 # 获取接口内容
