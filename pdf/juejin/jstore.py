@@ -1,11 +1,11 @@
 # -*- coding=utf-8 -*-
 
+from db.mysqlite import simpleToolSql
 import time
 import datetime
 import sys
 
 sys.path.append("..")
-from db.mysqlite import simpleToolSql
 
 
 class JuejinStoreData():
@@ -90,7 +90,7 @@ class JuejinStoreData():
             format(
                 u=url,
                 t=(datetime.datetime.now() -
-                   datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+                   datetime.timedelta(hours=72)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res
@@ -103,7 +103,7 @@ class JuejinStoreData():
             format(
                 ti=title,
                 t=(datetime.datetime.now() -
-                   datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+                   datetime.timedelta(hours=72)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res
@@ -143,7 +143,7 @@ class JuejinStoreData():
         sql = simpleToolSql("url")
         res = sql.query("select * from jj_ablum where update_at<'{t}';".format(
             t=(datetime.datetime.now() -
-               datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+               datetime.timedelta(hours=72)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res

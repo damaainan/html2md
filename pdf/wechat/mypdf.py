@@ -14,15 +14,16 @@ from lxml import html
 from html.parser import HTMLParser  # 导入html解析库
 from termcolor import colored, cprint
 
-REALPATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REALPATH = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
 
 
 class GenPdf():
     # 此方法 html 效果更好
     def deal(self, url, title, path):
-        title = title.replace("|", "").replace(' ', '').replace(
-            '｜', '').replace('?', '？').replace('/', '-')
-        print(colored(title, "yellow",attrs=["bold"]))
+        title = title.replace("|", "-").replace(' ', '').replace(
+            '｜', '-').replace('?', '？').replace('/', '-')
+        print(colored(title, "yellow", attrs=["bold"]))
 
         # 方法一
         # res = requests.get(url)
@@ -46,8 +47,8 @@ class GenPdf():
         if title == "":
             title = soup.select('#activity-name')[0].get_text()
             # print(title)
-            title = title.replace("|", "").replace("/", "-").replace(' ', '').replace(
-                '｜', '').replace('?', '？').replace("\n", '').replace("\r", '')
+            title = title.replace("|", "-").replace("/", "-").replace(' ', '').replace(
+                '｜', '-').replace('?', '？').replace("\n", '').replace("\r", '')
             # print("****")
             # print(title)
             # return
@@ -123,7 +124,8 @@ class GenPdf():
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
 
-        fhtml = re.sub(r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;", 'font-size: 16px;', fhtml)
+        fhtml = re.sub(
+            r"font-size: 1[0-5]\.{0,1}[0-9]{0,1}[0-9]{0,1}px;", 'font-size: 16px;', fhtml)
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
         rpath = REALPATH + '/out/wx/' + path
@@ -182,8 +184,8 @@ class GenPdf():
         return title
 
     def oldDeal(self, url, title, path):
-        title = title.replace("|", "").replace(' ', '').replace(
-            '｜', '').replace('?', '？').replace('/', '-')
+        title = title.replace("|", "-").replace(' ', '').replace(
+            '｜', '-').replace('?', '？').replace('/', '-')
         print(title)
 
         # 方法一  pdf 效果相对较好
@@ -212,8 +214,8 @@ class GenPdf():
         if title == "":
             title = soup.select('#activity-name')[0].get_text()
             # print(title)
-            title = title.replace("|", "").replace("/", "-").replace(' ', '').replace(
-                '｜', '').replace('?', '？').replace("\n", '').replace("\r", '')
+            title = title.replace("|", "-").replace("/", "-").replace(' ', '').replace(
+                '｜', '-').replace('?', '？').replace("\n", '').replace("\r", '')
             # print("****")
             print(title)
             # return
@@ -235,7 +237,6 @@ class GenPdf():
         # 处理视频
         # videos = soup.select("iframe.video_iframe")
         # videoret = self.getLocalVideo(videos)
-
 
         # 获取页面样式
         css = soup.select('head style')
@@ -356,7 +357,7 @@ class GenPdf():
             # os.makedirs(path+"/html")
             # os.makedirs(path+"/pdf")
             os.makedirs(path)
-            print(colored(path, "green"),colored(' 创建成功', "magenta"))
+            print(colored(path, "green"), colored(' 创建成功', "magenta"))
 
         return True
 
@@ -498,7 +499,7 @@ class GenPdf():
 
         # rpath = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) + '/out/wx/' + path
         rpath = REALPATH + '/out/wx/' + path
-        html_path = rpath + "/html/" + title+ '/'
+        html_path = rpath + "/html/" + title + '/'
         pdf_path = rpath + "/pdf/"
         self.mkdir(html_path)
         self.mkdir(html_path+"pic/")

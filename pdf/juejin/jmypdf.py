@@ -19,7 +19,8 @@ from selenium.webdriver.chrome.options import Options
 import time
 from lxml import etree
 from lxml import html
-from html.parser import HTMLParser  #导入html解析库
+from html.parser import HTMLParser  # 导入html解析库
+from termcolor import colored, cprint
 
 REALPATH = os.path.dirname(
     os.path.dirname(os.path.dirname(
@@ -29,8 +30,10 @@ REALPATH = os.path.dirname(
 class JuejinGenPdf():
     # 此方法 html 效果更好
     def deal(self, url, title, path):
-        title = title.replace("|", "").replace(' ','').replace('｜', '').replace('?', '？').replace('/', '-')
-        print(title)
+        title = title.replace("|", "").replace(' ', '').replace(
+            '｜', '').replace('?', '？').replace('/', '-').replace(':', '')
+        # print(title)
+        print(colored(title, "yellow", attrs=["bold"]))
 
         # 方法一
         # res = requests.get(url)
@@ -65,7 +68,8 @@ class JuejinGenPdf():
         if title == "":
             title = soup.select('.article-title')[0].get_text()
             # print(title)
-            title = title.replace("|", "").replace("/", "-").replace(' ','').replace('｜','').replace('?','？').replace("\n",'').replace("\r",'')
+            title = title.replace("|", "").replace("/", "-").replace(' ', '').replace(
+                '｜', '').replace('?', '？').replace("\n", '').replace("\r", '').replace(':', '')
         # print("****")
         # print(title)
         # return
@@ -173,7 +177,8 @@ class JuejinGenPdf():
             title_img_str) + str(
                 fheader) + '<p><a href="' + url + '">原文链接</a></p>' + str(
                     fhtml) + '</body></html>'
-        print(title)
+        # print(title)
+        print(colored(title, "yellow"))
         # 增大较小的字体
         # html=html.replace("font-size: 14px","font-size: 18px").replace("font-size: 12px","font-size: 18px").replace("font-size: 11px","font-size: 16px").replace("font-size: 11.9px","font-size: 16px")
 
@@ -244,9 +249,10 @@ class JuejinGenPdf():
         title = title.replace("|", "").replace(' ',
                                                '').replace('｜', '').replace(
                                                    '?', '？').replace('/', '-')
-        print(title)
+        # print(title)
+        print(colored(title, "yellow", attrs=["bold"]))
 
-        ## 方法二
+        # 方法二
         htmlstr = self.getHTMLText(url)
 
         soup = BeautifulSoup(htmlstr, features="lxml")
@@ -270,7 +276,7 @@ class JuejinGenPdf():
         imgDict = {}
         for im in range(len(imgs)):
             # print(dir(imgs[im]))
-            src = ''
+            src = imgs[im]['src']
             if imgs[im].has_attr('src'):
                 if imgs[im].get('data-original'):
                     src = imgs[im]['data-original']
@@ -331,7 +337,7 @@ class JuejinGenPdf():
         font = font.format(title=title)
         for cs in cssret:
             # font = font + "<style>" + css[cs].get_text() + "</style>"
-            # TODO 计算一个相对路径使用 
+            # TODO 计算一个相对路径使用
 
             font = font + "<link rel='stylesheet' type='text/css' href='" + cssret[
                 cs] + "'></link>"
@@ -365,13 +371,13 @@ class JuejinGenPdf():
 
         for cs in cssret:
             # TODO 计算相对路径
-            rel_path = os.path.relpath(cssret[cs], html_path +title+'.html')
+            rel_path = os.path.relpath(cssret[cs], html_path + title+'.html')
             # print('*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*')
             # print(rel_path)
             # print(cssret[cs])
             nrp = re.sub(r'^\.', '', rel_path)
             fhtml = fhtml.replace(cssret[cs], nrp)
-                
+
         fo = open(html_path + title + '.html', "w+", encoding="utf-8")
         fo.write(fhtml)
         fo.close()
@@ -427,7 +433,7 @@ class JuejinGenPdf():
             # os.makedirs(path+"/html")
             # os.makedirs(path+"/pdf")
             os.makedirs(path)
-            print(path + ' 创建成功')
+            print(colored(path + ' 创建成功', "green"))
 
         return True
 
@@ -453,6 +459,7 @@ class JuejinGenPdf():
         time.sleep(10)
         driver.get(url)  # 获取网页
         time.sleep(2)
+        # 滑动滚动条 获取图片
         return driver.page_source
 
     def getHtmlByXpath(self, html_str, xpath):
@@ -499,6 +506,7 @@ class JuejinGenPdf():
             #         imgsub=imgformat
 
             name = href.split('/')[-1] + "." + imgsub
+            name = name.replace('/', '-')
             return name
         return ""
 
@@ -539,13 +547,13 @@ class JuejinGenPdf():
                                   '?', '？').replace('/', '-').replace('"', '')
         print(title)
 
-        ## 方法一
+        # 方法一
         # res = requests.get(url)
         # # data-src替换为src 有时候返回的正文被隐藏了，将hidden去掉
         # html = res.text.replace("data-src", "src").replace('style="visibility: hidden;"',"")
         # html = html.replace("font-size: 16px;font-family: 微软雅黑, sans-serif;letter-spacing: 2px;",'font-size: 20px;font-family: 微软雅黑, sans-serif;letter-spacing: 0px;')
 
-        ## 方法二
+        # 方法二
         htmlstr = self.getHTMLText(url)
         htmlstr = htmlstr.replace("data-src", "src").replace(
             'style="visibility: hidden;"',
@@ -561,12 +569,8 @@ class JuejinGenPdf():
         if title == "":
             title = soup.select('#activity-name')[0].get_text()
             # print(title)
-            title = title.replace("|", "").replace("/", "-").replace(
-                ' ',
-                '').replace('｜',
-                            '').replace('?',
-                                        '？').replace("\n",
-                                                     '').replace("\r", '')
+            title = title.replace("|", "").replace("/", "-").replace(' ', '').replace(
+                '｜', '').replace('?', '？').replace("\n", '').replace("\r", '')
             # print("****")
             # print(title)
             # return

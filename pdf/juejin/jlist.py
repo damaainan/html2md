@@ -5,6 +5,7 @@ import time
 from juejin.jstore import JuejinStoreData
 import operator
 from itertools import groupby
+from termcolor import colored, cprint
 
 #  获取知乎文章列表 支持个人收藏夹  文章列表
 
@@ -25,7 +26,8 @@ def deal(url):
     sdata = CleanResult(ret['result'], ret['title'])
     # print(sdata)
     # 循环数据写入 sql
-    print(ret['title'])
+    # print(ret['title'])
+    print(colored(ret['title'], "green"))
     if len(sdata) > 0:
         for val in sdata:
             # print("*-*-*-*-*-*-*")
@@ -100,7 +102,8 @@ def getJsonFromApi(url, param):
                 "user":
                 data['data'][j]['author_user_info']['user_name'],
                 "type":
-                data['data'][j]['tags'][0]['tag_name'] if len(data['data'][j]['tags']) > 0 else data['data'][j]['category']['category_name'],
+                data['data'][j]['tags'][0]['tag_name'] if len(
+                    data['data'][j]['tags']) > 0 else data['data'][j]['category']['category_name'],
                 "created":
                 data['data'][j]['article_info']['ctime'],
                 "updated":

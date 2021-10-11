@@ -98,7 +98,7 @@ class StoreData():
         sql = simpleToolSql("url")
         # res = sql.query("select * from wx_article where state=0;")
         res = sql.query("select * from wx_ablum where author='{a}' and title='{ti}' and update_at<'{t}' order by update_at;".format(
-            a=author, ti=title, t=(datetime.datetime.now()-datetime.timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S")))
+            a=author, ti=title, t=(datetime.datetime.now()-datetime.timedelta(hours=48)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res
@@ -136,7 +136,7 @@ class StoreData():
     def getAblums(self):
         sql = simpleToolSql("url")
         res = sql.query("select * from wx_ablum where update_at<'{t}' order by update_at;".format(
-            t=(datetime.datetime.now()-datetime.timedelta(hours=24)).strftime("%Y-%m-%d %H:%M:%S")))
+            t=(datetime.datetime.now()-datetime.timedelta(hours=48)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res

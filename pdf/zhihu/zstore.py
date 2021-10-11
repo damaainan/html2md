@@ -1,11 +1,11 @@
 # -*- coding=utf-8 -*-
 
+from db.mysqlite import simpleToolSql
 import time
 import datetime
 import sys
 
 sys.path.append("..")
-from db.mysqlite import simpleToolSql
 
 
 class ZhihuStoreData():
@@ -32,7 +32,8 @@ class ZhihuStoreData():
     def getListFromParam(self, paramsql):
         sql = simpleToolSql("url")
         # res = sql.query("select * from zh_article where state=0;")
-        res, res_name = sql.queryall("select * from zh_article where " + paramsql + ";")
+        res, res_name = sql.queryall(
+            "select * from zh_article where " + paramsql + ";")
         # print(res)
         sql.close()
         return res, res_name
@@ -49,7 +50,8 @@ class ZhihuStoreData():
     # 更新 db
     def updateUrlStateByMsg(self):
         sql = simpleToolSql("url")
-        res = sql.execute("update zh_article set state=1 where msgid = ?;", (0,))
+        res = sql.execute(
+            "update zh_article set state=1 where msgid = ?;", (0,))
         # 需要加逗号 https://blog.csdn.net/yimaoyingbi/article/details/104323701
         print(res)
         sql.close()
@@ -93,7 +95,7 @@ class ZhihuStoreData():
         sql = simpleToolSql("url")
         # res = sql.query("select * from zh_article where state=0;")
         res = sql.query("select * from zh_ablum where url='{u}' and update_at<'{t}';".format(u=url, t=(
-                    datetime.datetime.now() - datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+            datetime.datetime.now() - datetime.timedelta(hours=72)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res
@@ -102,7 +104,7 @@ class ZhihuStoreData():
         sql = simpleToolSql("url")
         # res = sql.query("select * from zh_article where state=0;")
         res = sql.query("select * from zh_ablum where title='{ti}' and update_at<'{t}';".format(ti=title, t=(
-                    datetime.datetime.now() - datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+            datetime.datetime.now() - datetime.timedelta(hours=72)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res
@@ -139,7 +141,7 @@ class ZhihuStoreData():
     def getAblums(self):
         sql = simpleToolSql("url")
         res = sql.query("select * from zh_ablum where update_at<'{t}';".format(
-            t=(datetime.datetime.now() - datetime.timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")))
+            t=(datetime.datetime.now() - datetime.timedelta(hours=72)).strftime("%Y-%m-%d %H:%M:%S")))
         # print(res)
         sql.close()
         return res

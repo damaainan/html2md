@@ -70,16 +70,16 @@ else:
         wList.deal(i[1])
         time.sleep(2)
 
-    # zStore = zstore.ZhihuStoreData()
-    # li = zStore.getAblums()
-    # for i in li:
-    #     print(i[2])
-    #     zlist.deal(i[1])
-    #     time.sleep(2)
+    zStore = zstore.ZhihuStoreData()
+    li = zStore.getAblums()
+    for i in li:
+        print(i[2])
+        zlist.deal(i[1])
+        time.sleep(2)
 
-    # jStore = jstore.JuejinStoreData()
-    # li = jStore.getAblums()
-    # for i in li:
-    #     print(i[2])
-    #     jlist.deal(i[1])
-    #     time.sleep(2)
+    jStore = jstore.JuejinStoreData()
+    li = jStore.getAblums()
+    for i in li:
+        print(i[2])
+        jlist.deal(i[1])
+        time.sleep(2)
