@@ -10,18 +10,20 @@ import operator
 from itertools import groupby
 from termcolor import colored, cprint
 
+
 def deal(url):
     # 如果 homepage 采用另外的方法
     if url.find("space") > -1:
         ret1 = dealHome(url)
     else:
         ret1 = getJsonData(url)
-    
+
     # print(ret1)
     # print(ret1['result'])
     writeScript(ret1['result'])
     # 生成文件
     return ret1['result']
+
 
 def dealHome(url):
     if url.find("channel") > -1:
@@ -39,12 +41,15 @@ def dealHome(url):
         if len(ret2['result']) == 0:
             continue
         ret += ret2['result']
-        page=page+1
+        page = page+1
 
     # print(ret)
     return {"result": ret}
 
 # 获取接口内容
+
+# 主页 他的视频 search 接口
+# "https://api.bilibili.com/x/space/arc/search?mid=326749661&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp"
 def getHomeJsonData(oldurl: str, page: int):
     # // 判断等于10个时继续请求
     s = requests.Session()
@@ -54,26 +59,26 @@ def getHomeJsonData(oldurl: str, page: int):
     # 通过抓包的到需要传递的参数
     param = dealUrl(oldurl)
     data = {
-        'mid':param['mid'],
-        'ps':30,
-        'tid':param['tid'],
-        'pn':page,
-        'order':'pubdate',
-        'jsonp':'jsonp',
+        'mid': param['mid'],
+        'ps': 30,
+        'tid': param['tid'],
+        'pn': page,
+        'order': 'pubdate',
+        'jsonp': 'jsonp',
     }
     # 通过抓包或chrome开发者工具分析得到登录的请求头信息,
     headers = {
-        'authority': 'api.bilibili.com' ,
-        'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"' ,
-        'accept': 'application/json, text/plain, */*' ,
-        'sec-ch-ua-mobile': '?0' ,
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36' ,
-        'origin': 'https://space.bilibili.com' ,
-        'sec-fetch-site': 'same-site' ,
-        'sec-fetch-mode': 'cors' ,
-        'sec-fetch-dest': 'empty' ,
-        'referer': 'https://space.bilibili.com/' + param['mid'] + '/video?tid=' + param['tid'] + '&page=1&keyword=&order=pubdate' ,
-        'accept-language': 'zh-CN,zh;q=0.9' 
+        'authority': 'api.bilibili.com',
+        'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+        'accept': 'application/json, text/plain, */*',
+        'sec-ch-ua-mobile': '?0',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+        'origin': 'https://space.bilibili.com',
+        'sec-fetch-site': 'same-site',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-dest': 'empty',
+        'referer': 'https://space.bilibili.com/' + param['mid'] + '/video?tid=' + param['tid'] + '&page=1&keyword=&order=pubdate',
+        'accept-language': 'zh-CN,zh;q=0.9'
     }
     # 开始登录
     r = s.get(url=url, params=data, headers=headers)
@@ -91,6 +96,8 @@ def getHomeJsonData(oldurl: str, page: int):
     return {"result": link}
 
 
+# 打开频道页时 全部请求第二个
+# "https://api.bilibili.com/x/space/channel/video?mid=567195437&cid=197149&pn=1&ps=30&order=0&ctype=0&jsonp=jsonp&callback=__jp7"
 def dealChannel(url):
     ret2 = getChannelJsonData(url, 1)
     print("****")
@@ -105,12 +112,10 @@ def dealChannel(url):
         if len(ret2['result']) == 0:
             continue
         ret += ret2['result']
-        page=page+1
+        page = page+1
 
     # print(ret)
     return {"result": ret}
-# https://api.bilibili.com/x/space/channel/video?mid=326749661&cid=61588&pn=4&ps=30&order=0&ctype=0&jsonp=jsonp&callback=__jp9
-
 
 
 # 获取接口内容
@@ -134,20 +139,20 @@ def getChannelJsonData(oldurl: str, page: int):
     }
     # 通过抓包或chrome开发者工具分析得到登录的请求头信息,
     headers = {
-        'authority': 'api.bilibili.com' ,
-        'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"' ,
-        'accept': 'application/json, text/plain, */*' ,
-        'sec-ch-ua-mobile': '?0' ,
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36' ,
-        'sec-fetch-site': 'same-site' ,
-        'sec-fetch-mode': 'cors' ,
-        'sec-fetch-dest': 'empty' ,
-        'referer': 'https://space.bilibili.com/'+param['mid']+'/channel/detail?cid='+param['cid']+'&ctype=0' ,
-        'accept-language': 'zh-CN,zh;q=0.9' 
+        'authority': 'api.bilibili.com',
+        'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+        'accept': 'application/json, text/plain, */*',
+        'sec-ch-ua-mobile': '?0',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+        'sec-fetch-site': 'same-site',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-dest': 'empty',
+        'referer': 'https://space.bilibili.com/'+param['mid']+'/channel/detail?cid='+param['cid']+'&ctype=0',
+        'accept-language': 'zh-CN,zh;q=0.9'
     }
     # 开始登录
     r = s.get(url=url, params=data, headers=headers)
-    
+
     # print(r.text.replace(param['callback'], '', 1)) 有 callback  前缀和 括号 需要去除
     rest = r.text.replace(param['callback'], '', 1)
     # print(rest)
@@ -164,9 +169,7 @@ def getChannelJsonData(oldurl: str, page: int):
     return {"result": link}
 
 
-
-
-# 获取接口内容
+# 获取接口内容 处理播放页  https://www.bilibili.com/video/BV1hv411x7we
 def getJsonData(oldurl: str):
     # // 判断等于10个时继续请求
     s = requests.Session()
@@ -175,22 +178,22 @@ def getJsonData(oldurl: str):
     # 登录所需要的get参数
     # 通过抓包的到需要传递的参数
     data = {
-        'bvid':oldurl.split("/")[-1],
-        'jsonp':'jsonp',
+        'bvid': oldurl.split("/")[-1],
+        'jsonp': 'jsonp',
     }
     # 通过抓包或chrome开发者工具分析得到登录的请求头信息,
     headers = {
-        'authority': 'api.bilibili.com' ,
-        'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"' ,
-        'accept': 'application/json, text/plain, */*' ,
-        'sec-ch-ua-mobile': '?0' ,
-        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36' ,
-        'origin': 'https://www.bilibili.com' ,
-        'sec-fetch-site': 'same-site' ,
-        'sec-fetch-mode': 'cors' ,
-        'sec-fetch-dest': 'empty' ,
-        'referer': oldurl ,
-        'accept-language': 'zh-CN,zh;q=0.9' 
+        'authority': 'api.bilibili.com',
+        'sec-ch-ua': '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+        'accept': 'application/json, text/plain, */*',
+        'sec-ch-ua-mobile': '?0',
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_4_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36',
+        'origin': 'https://www.bilibili.com',
+        'sec-fetch-site': 'same-site',
+        'sec-fetch-mode': 'cors',
+        'sec-fetch-dest': 'empty',
+        'referer': oldurl,
+        'accept-language': 'zh-CN,zh;q=0.9'
     }
     # 开始登录
     r = s.get(url=url, params=data, headers=headers)
@@ -214,12 +217,15 @@ def getJsonData(oldurl: str):
 # 功能：list里面的每一个元素都是dict，根据dict某一个key进行去重
 # 函数1
 
+
 def distinct(items, key):
     key = operator.itemgetter(key)
     items = sorted(items, key=key)
     return [next(v) for _, v in groupby(items, key=key)]
 
 # 处理 url 获取参数
+
+
 def dealUrl(url: str):
     ll = url.split("?")[1]
     ll1 = ll.split("#")[0]
@@ -234,19 +240,31 @@ def dealUrl(url: str):
 
     return param
 
+
 def writeScript(data):
     str1 = ""
     str2 = ""
+    flag = 1
+    lend = len(data)
+    num = lend
+    if lend > 99:
+        flag = 3
+    elif lend > 9:
+        flag = 2
+    # data = data[::-1]
+    # 倒序
     for val in data:
-        title=val['title']
+        title = val['title']
         print(title)
-        title = title.replace('?', '？').replace(' ', '').replace(':', '：').replace('*', '＊').replace('amp;', '').replace('/','')
+        title = title.replace('?', '？').replace(' ', '').replace(':', '：').replace('*', '＊').replace('amp;', '').replace('/', '')
+        title = str(num).zfill(flag) + "-" + title
         print(colored(title, "cyan"))
         str1 = str1 + 'you-get --format=dash-flv720 -O "' + title + '" "' + val['link'] + '"\n'
         str2 = str2 + 'F:/bin/ffmpeg/bin/ffmpeg.exe -i "' + title + '[00].mp4" -i "' + title + '[01].mp4" -vcodec copy -acodec copy "' + title + '.mp4"' + "\n"
+        num = num-1
     with open('./bi.sh', mode='a') as filename:
         filename.write(str1)
-        filename.write('\n\n') # 换行
+        filename.write('\n\n')  # 换行
         filename.write(str2)
-        filename.write('\n\n') # 换行
-        filename.write('# *=*=**=*=**=*=**==*=*=**=*==*\n\n\n') # 换行
+        filename.write('\n\n')  # 换行
+        filename.write('# *=*=**=*=**=*=**==*=*=**=*==*\n\n\n')  # 换行
