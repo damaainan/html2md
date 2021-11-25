@@ -50,6 +50,8 @@ def dealHome(url):
 
 # 主页 他的视频 search 接口
 # "https://api.bilibili.com/x/space/arc/search?mid=326749661&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp"
+
+
 def getHomeJsonData(oldurl: str, page: int):
     # // 判断等于10个时继续请求
     s = requests.Session()
@@ -212,6 +214,7 @@ def getJsonData(oldurl: str):
             link.append(
                 {"link": oldurl + '?p=' + str(val['page']), "title": val['part']})
 
+    link = link[::-1]
     return {"result": link}
 
 # 功能：list里面的每一个元素都是dict，根据dict某一个key进行去重
@@ -256,11 +259,15 @@ def writeScript(data):
     for val in data:
         title = val['title']
         print(title)
-        title = title.replace('?', '？').replace(' ', '').replace(':', '：').replace('*', '＊').replace('amp;', '').replace('/', '')
+        title = title.replace('?', '？').replace(' ', '').replace(
+            ':', '：').replace('*', '＊').replace('amp;', '').replace('/', '')
         title = str(num).zfill(flag) + "-" + title
         print(colored(title, "cyan"))
-        str1 = str1 + 'you-get --format=dash-flv720 -O "' + title + '" "' + val['link'] + '"\n'
-        str2 = str2 + 'F:/bin/ffmpeg/bin/ffmpeg.exe -i "' + title + '[00].mp4" -i "' + title + '[01].mp4" -vcodec copy -acodec copy "' + title + '.mp4"' + "\n"
+        str1 = str1 + 'you-get --format=dash-flv720 -O "' + \
+            title + '" "' + val['link'] + '"\n'
+        str2 = str2 + 'F:/bin/ffmpeg/bin/ffmpeg.exe -i "' + title + \
+            '[00].mp4" -i "' + title + \
+            '[01].mp4" -vcodec copy -acodec copy "' + title + '.mp4"' + "\n"
         num = num-1
     with open('./bi.sh', mode='a') as filename:
         filename.write(str1)

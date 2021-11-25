@@ -21,8 +21,8 @@ REALPATH = os.path.dirname(os.path.dirname(
 class GenPdf():
     # 此方法 html 效果更好
     def deal(self, url, title, path):
-        title = title.replace("|", "-").replace(' ', '').replace(
-            '｜', '-').replace('?', '？').replace('/', '-')
+        title = title.replace("|", "-").replace(' ', '').replace('?', '？').replace('/', '-').replace(
+            '\\', '-').replace(':', '：').replace('*', '※').replace('"', '').replace('<', '小于').replace('>', '大于')
         print(colored(title, "yellow", attrs=["bold"]))
 
         # 方法一
@@ -47,8 +47,8 @@ class GenPdf():
         if title == "":
             title = soup.select('#activity-name')[0].get_text()
             # print(title)
-            title = title.replace("|", "-").replace("/", "-").replace(' ', '').replace(
-                '｜', '-').replace('?', '？').replace("\n", '').replace("\r", '')
+            title = title.replace("|", "-").replace(' ', '').replace('?', '？').replace('/', '-').replace('\\', '-').replace(
+                ':', '：').replace('*', '※').replace('"', '').replace('<', '小于').replace('>', '大于').replace("\n", '').replace("\r", '')
             # print("****")
             # print(title)
             # return
@@ -184,8 +184,8 @@ class GenPdf():
         return title
 
     def oldDeal(self, url, title, path):
-        title = title.replace("|", "-").replace(' ', '').replace(
-            '｜', '-').replace('?', '？').replace('/', '-')
+        title = title.replace("|", "-").replace(' ', '').replace('?', '？').replace('/', '-').replace(
+            '\\', '-').replace(':', '：').replace('*', '※').replace('"', '').replace('<', '小于').replace('>', '大于')
         print(title)
 
         # 方法一  pdf 效果相对较好
@@ -214,8 +214,8 @@ class GenPdf():
         if title == "":
             title = soup.select('#activity-name')[0].get_text()
             # print(title)
-            title = title.replace("|", "-").replace("/", "-").replace(' ', '').replace(
-                '｜', '-').replace('?', '？').replace("\n", '').replace("\r", '')
+            title = title.replace("|", "-").replace(' ', '').replace('?', '？').replace('/', '-').replace('\\', '-').replace(
+                ':', '：').replace('*', '※').replace('"', '').replace('<', '小于').replace('>', '大于').replace("\n", '').replace("\r", '')
             # print("****")
             print(title)
             # return
@@ -416,8 +416,8 @@ class GenPdf():
 
     # 此方法 html 效果更好
     def dealHtml(self, url, title, path):
-        title = title.replace("|", "").replace(' ', '').replace(
-            '｜', '').replace('?', '？').replace('/', '-').replace('"', '')
+        title = title.replace("|", "-").replace(' ', '').replace('?', '？').replace('/', '-').replace('\\', '-').replace(
+            ':', '：').replace('*', '※').replace('<', '小于').replace('>', '大于').replace('"', '')
         print(title)
 
         # 方法一
@@ -441,8 +441,8 @@ class GenPdf():
         if title == "":
             title = soup.select('#activity-name')[0].get_text()
             # print(title)
-            title = title.replace("|", "").replace("/", "-").replace(' ', '').replace(
-                '｜', '').replace('?', '？').replace("\n", '').replace("\r", '')
+            title = title.replace("|", "-").replace(' ', '').replace('?', '？').replace('/', '-').replace('\\', '-').replace(
+                ':', '：').replace('*', '※').replace('<', '小于').replace('>', '大于').replace('"', '').replace("\n", '').replace("\r", '')
             # print("****")
             # print(title)
             # return
